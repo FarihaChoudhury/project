@@ -1,0 +1,4 @@
+{'commitAuthor': 'Rahin', 'commitSha': 'a19b7662b0473906eb932aadba887a1e96663802', 'additions': ['+# Author: Rahin Ashraf', '+', '+blah blah - this was written by Rahin Ashraf'], 'deletions': []}
+{'commitAuthor': 'Fariha', 'commitSha': '9334f70e7e8351b7519e6493274d0c5df9e8e4f7', 'additions': ['+# Random repo', '+3rd year project - Random test repo for project', '+# Author: Fariha Choudhury '], 'deletions': []}
+{'commitAuthor': 'Fariha', 'commitSha': '75f689f0e8505618d17fe51c50b9ab31cf9bf91d', 'additions': ['+wage = 20', '+hours = 40', '+weeks = 52', '+salary = wage * hours * weeks ', '+', "+print('Salary is', salary)"], 'deletions': []}
+
