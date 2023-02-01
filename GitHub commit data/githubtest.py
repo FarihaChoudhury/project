@@ -1,5 +1,5 @@
 import requests
-
+# NOT MINE--------- FROM GOOGLE!
 # Create an API  - to get all Github python repos
 url = 'https://api.github.com/search/repositories?q=language:python&sort=stars'
 response = requests.get(url)
@@ -8,7 +8,7 @@ response_dict = response.json() # In a variable, save the API response.
 print(response_dict.keys()) # Evaluate the results.
 
 print("Total repos:", response_dict['total_count']) # find total number of repositories
-repos_dicts = response_dict['items']   #each python repo = item
+repos_dicts = response_dict['items']   # each python repo = item
 print("Repos found:", len(repos_dicts))
 repo_dict = repos_dicts[0]  # examine the first repository
 print("Keys:", len(repo_dict))

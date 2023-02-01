@@ -1,0 +1,74 @@
+[
+  {
+    "commitAuthor": "Fariha",
+    "commitSha": "2bd6ee25cb227b8a0817d79d6879c6cd166c34ed",
+    "commitFileLinesAsList": [
+      "salary = wage * hours * weeks ",
+      "",
+      "print('Salary is', salary)",
+      "#This is a \\n comment"
+    ],
+    "PYTHONCODE": "salary = wage * hours * weeks \n\nprint('Salary is', salary)\n#This is a \\n comment",
+    "additions": [
+      "#This is a \\n comment"
+    ],
+    "deletions": []
+  },
+  {
+    "commitAuthor": "Rahin",
+    "commitSha": "a19b7662b0473906eb932aadba887a1e96663802",
+    "commitFileLinesAsList": [
+      "# Random repo",
+      "3rd year project - Random test repo for project",
+      "# Author: Fariha Choudhury ",
+      "# Author: Rahin Ashraf",
+      "",
+      "blah blah - this was written by Rahin Ashraf"
+    ],
+    "PYTHONCODE": "# Random repo\n3rd year project - Random test repo for project\n# Author: Fariha Choudhury \n# Author: Rahin Ashraf\n\nblah blah - this was written by Rahin Ashraf",
+    "additions": [
+      "# Author: Rahin Ashraf",
+      "",
+      "blah blah - this was written by Rahin Ashraf"
+    ],
+    "deletions": []
+  },
+  {
+    "commitAuthor": "Fariha",
+    "commitSha": "9334f70e7e8351b7519e6493274d0c5df9e8e4f7",
+    "commitFileLinesAsList": [
+      "# Random repo",
+      "3rd year project - Random test repo for project",
+      "# Author: Fariha Choudhury "
+    ],
+    "PYTHONCODE": "# Random repo\n3rd year project - Random test repo for project\n# Author: Fariha Choudhury ",
+    "additions": [
+      "# Random repo",
+      "3rd year project - Random test repo for project",
+      "# Author: Fariha Choudhury "
+    ],
+    "deletions": []
+  },
+  {
+    "commitAuthor": "Fariha",
+    "commitSha": "75f689f0e8505618d17fe51c50b9ab31cf9bf91d",
+    "commitFileLinesAsList": [
+      "wage = 20",
+      "hours = 40",
+      "weeks = 52",
+      "salary = wage * hours * weeks ",
+      "",
+      "print('Salary is', salary)"
+    ],
+    "PYTHONCODE": "wage = 20\nhours = 40\nweeks = 52\nsalary = wage * hours * weeks \n\nprint('Salary is', salary)",
+    "additions": [
+      "wage = 20",
+      "hours = 40",
+      "weeks = 52",
+      "salary = wage * hours * weeks ",
+      "",
+      "print('Salary is', salary)"
+    ],
+    "deletions": []
+  }
+]
