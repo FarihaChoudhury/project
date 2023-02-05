@@ -2,13 +2,20 @@ from antlr4 import *
 from Python3Lexer import Python3Lexer
 from Python3Parser import Python3Parser
 import sys
-# import testFile
 import numpy as np
 import re
 
 # for generic white space: 
 # def count_whitespaces(text):
 #     return len(re.findall(r"\s", text))
+
+
+# """ Opens file and returns its contents"""
+# def openFile(filename):
+#     with open(filename, 'r') as file:
+#         realData = file.read()
+#     return realData
+
 
 """ Opens file and returns its contents"""
 def openFile(filename):
@@ -65,30 +72,29 @@ def countEmptyLines(filename):
 
 
 
+# """Counts total number of lines of code """
+# def countTotalLines(filename):
+#     with open(filename, 'r') as file:
+#         count = 0
+#         for line in file:
+#             count += 1
+#     print(count)
+#     return count 
+    
+
 
 
 def main():
-    #PARSE TREE GENERATOR:
-    # with open('testingText.txt') as file:
-    with open("testFile.py") as file:
-        realData = file.read()
-        # print(realData)
-        # need to strip: remove start and trailing "" for parser to work:
-        strippedData = realData.strip()
-        # print(strippedData)
-        data = f'{strippedData}\n'
+    realData = openFile('testFile.py')
+    strippedData = realData.strip()
+    data = f'{strippedData}\n'
 
-    # using the stripped data - to parse: 
-    input_stream = InputStream(data)
-    lexer = Python3Lexer(input_stream)
-    stream = CommonTokenStream(lexer)
-    parser = Python3Parser(stream)
-    # tree = parser.single_input()
-    tree = parser.file_input()
+    #PARSE TREE GENERATOR:
+    tree, parser = parseData(data)
     print(tree.toStringTree(recog=parser))
     print("\n")
 
-    # count white space:  use real data- where start and trailing spaces have not been stripped:
+   
     #WHITE SPACE COUNTERS: 
     spaces, newlines = countWhitespaces(realData)
     totalLines, emptyLines = countEmptyLines('testFile.py')
