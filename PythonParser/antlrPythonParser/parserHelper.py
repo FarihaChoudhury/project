@@ -99,12 +99,14 @@ def count_comments(filename):
             # checks for # comments 
             if strippedLine.startswith("#"):
                 commentLinesCount += 1
-                # print(strippedLine)
+                print("startswith hash ")
+                print(strippedLine)
 
             #checks for middle of block comment lines
             elif partOfBlockComment:
                 commentLinesCount += 1
-
+                print(strippedLine)
+                print('part of block')
                 if strippedLine.endswith("'''"):
                     partOfBlockComment = False
                 elif strippedLine.endswith('"""'):
@@ -114,23 +116,37 @@ def count_comments(filename):
             elif strippedLine.startswith('"""'):
                 partOfBlockComment = True
                 commentLinesCount += 1
+                if strippedLine.endswith("'''"):
+                    partOfBlockComment = False
+                print("startswith triple'' ")
+                print(strippedLine)
 
-            # checks for ''' beginning comment line
+            # checks for ''' beginning comment line  ***ISSUE: IF LINE HAS ONLY ''' THEN IT DOES =FALSE IN IF STATEMNET, SAME FOR """ FIX!!!"
             elif strippedLine.startswith("'''"):
                 partOfBlockComment = True
                 commentLinesCount += 1
+                if strippedLine.endswith("'''"):
+                    partOfBlockComment = False
+                print("startswith triple' ")
+                print(strippedLine)
 
             # checks for " beginning comment line 
             elif strippedLine.startswith('"'):
                 commentLinesCount += 1
+                print("startswith double' ")
+                print(strippedLine)
 
             # checks for ' beginning comment line 
             elif strippedLine.startswith("'"):
                 commentLinesCount += 1
+                print("startswith single' ")
+                print(strippedLine)
 
             #checks for midline comments starting with # - not 100% accurate 
             elif "#" in strippedLine:
                 commentLinesCount += 1
+                print("mid hash")
+                print(strippedLine)
     
     return commentLinesCount
 
