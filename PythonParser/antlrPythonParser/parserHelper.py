@@ -50,10 +50,10 @@ def parseData(data):
     - counts the number of spaces/ empty strings - this includes tab and empty lines
     - counts the number of new lines 
     - returns the number of spaces and newlines"""
-def countWhitespaces(text):
-    spaces = len(re.findall(r" ", text))
+def countWhitespaces(data):
+    spaces = len(re.findall(r" ", data))
     # tabs = len(re.findall(r"\t", text))
-    newlines = len(re.findall(r"\n", text))
+    newlines = len(re.findall(r"\n", data))
     return spaces, newlines
 
 
@@ -80,8 +80,59 @@ def countEmptyLines(filename):
 #             count += 1
 #     print(count)
 #     return count 
-    
 
+
+
+"""Counts the number of lines of comments in a python .py file
+    - includes: #,' ', " ", """ """ block comments, ''' ''' block comments, 
+    - Also inline #comments which may be inaccurate """
+def count_comments(filename):
+    commentLinesCount = 0
+    partOfBlockComment = False
+    with open(filename, "r") as file:
+        fileContent = file.readlines()
+       
+        for line in fileContent:
+            # removes starting and trailing spaces 
+            strippedLine = line.strip()
+
+            # checks for # comments 
+            if strippedLine.startswith("#"):
+                commentLinesCount += 1
+                # print(strippedLine)
+
+            #checks for middle of block comment lines
+            elif partOfBlockComment:
+                commentLinesCount += 1
+
+                if strippedLine.endswith("'''"):
+                    partOfBlockComment = False
+                elif strippedLine.endswith('"""'):
+                    partOfBlockComment = False      # checks if comment blocks have ended 
+            
+             # checks for """" beginning comment line
+            elif strippedLine.startswith('"""'):
+                partOfBlockComment = True
+                commentLinesCount += 1
+
+            # checks for ''' beginning comment line
+            elif strippedLine.startswith("'''"):
+                partOfBlockComment = True
+                commentLinesCount += 1
+
+            # checks for " beginning comment line 
+            elif strippedLine.startswith('"'):
+                commentLinesCount += 1
+
+            # checks for ' beginning comment line 
+            elif strippedLine.startswith("'"):
+                commentLinesCount += 1
+
+            #checks for midline comments starting with # - not 100% accurate 
+            elif "#" in strippedLine:
+                commentLinesCount += 1
+    
+    return commentLinesCount
 
 
 def main():
@@ -102,6 +153,12 @@ def main():
     print("Newlines:", newlines)
     print("Empty Lines:", emptyLines)
     print("Total lines:", totalLines)
+
+    #COMMENTS COUNTER:
+    comments = count_comments('testFile.py')
+    print("Comment Lines", comments)
+
+
 
 
 if __name__ == '__main__':
