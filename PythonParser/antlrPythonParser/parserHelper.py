@@ -1,3 +1,5 @@
+from io import StringIO
+import tokenize
 from antlr4 import *
 from Python3Lexer import Python3Lexer
 from Python3Parser import Python3Parser
@@ -83,72 +85,117 @@ def countEmptyLines(filename):
 
 
 
-"""Counts the number of lines of comments in a python .py file
-    - includes: #,' ', " ", """ """ block comments, ''' ''' block comments, 
-    - Also inline #comments which may be inaccurate """
+
+# """Counts the number of lines of comments in a python .py file
+#     - includes: #,' ', " ", """ """ block comments, ''' ''' block comments, 
+#     - Also inline #comments which may be inaccurate """
 def count_comments(filename):
     commentLinesCount = 0
-    partOfBlockComment = False
+    inBlockComment = False
+    blockCommentStart = None
     with open(filename, "r") as file:
-        fileContent = file.readlines()
-       
-        for line in fileContent:
-            # removes starting and trailing spaces 
-            strippedLine = line.strip()
+        lines = file.readlines()
+
+        for line in lines:
+            strippedLine = line.strip() # removes starting and trailing spaces 
 
             # checks for # comments 
             if strippedLine.startswith("#"):
                 commentLinesCount += 1
-                print("startswith hash ")
+                print("startswith hash: ")
+                print(strippedLine)
+                print("\n")
+
+            #checks for middle and end of block comment lines
+            elif inBlockComment:
+                commentLinesCount += 1
+                print('part of block/end:')
                 print(strippedLine)
 
-            #checks for middle of block comment lines
-            elif partOfBlockComment:
-                commentLinesCount += 1
-                print(strippedLine)
-                print('part of block')
-                if strippedLine.endswith("'''"):
-                    partOfBlockComment = False
-                elif strippedLine.endswith('"""'):
-                    partOfBlockComment = False      # checks if comment blocks have ended 
-            
-             # checks for """" beginning comment line
+                if blockCommentStart == "'''" or strippedLine.endswith("'''"):
+                    inBlockComment = False
+
+                elif blockCommentStart == '"""' or strippedLine.endswith('"""'):
+                    inBlockComment = False
+                print("\n")
+
+            # """
             elif strippedLine.startswith('"""'):
-                partOfBlockComment = True
-                commentLinesCount += 1
-                if strippedLine.endswith("'''"):
-                    partOfBlockComment = False
-                print("startswith triple'' ")
-                print(strippedLine)
-
-            # checks for ''' beginning comment line  ***ISSUE: IF LINE HAS ONLY ''' THEN IT DOES =FALSE IN IF STATEMNET, SAME FOR """ FIX!!!"
+                if strippedLine!='"""':
+                  if strippedLine.endswith('"""'):
+                    inBlockComment = False
+                    # block_comment_start = ' """ '
+                    commentLinesCount += 1
+                    print("startswith triple'': ")
+                    print(strippedLine)
+                    print("\n")
+                  else: 
+                      inBlockComment = True
+                      # needs to look for end in next lines
+                      blockCommentStart = ' """ '
+                      commentLinesCount += 1
+                      print("startswith triple'': ")
+                      print(strippedLine)
+                      print("\n")
+                elif strippedLine=='"""':
+                    inBlockComment = True
+                    # needs to look for end in next lines
+                    blockCommentStart = ' """ '
+                    commentLinesCount += 1
+                    print("startswith triple'': ")
+                    print(strippedLine)
+                    print("\n")
+            
+            # '''
             elif strippedLine.startswith("'''"):
-                partOfBlockComment = True
-                commentLinesCount += 1
-                if strippedLine.endswith("'''"):
-                    partOfBlockComment = False
-                print("startswith triple' ")
-                print(strippedLine)
+                if strippedLine!="'''":
+                  if strippedLine.endswith("'''"):
+                    inBlockComment = False
+                    commentLinesCount += 1
+                    print("startswith triple' ' ' : ")
+                    print(strippedLine)
+                    print("\n")
+                  else: 
+                      inBlockComment = True
+                      # needs to look for end in next lines
+                      blockCommentStart = "'''"
+                      commentLinesCount += 1
+                      print("startswith triple' ' ': ")
+                      print(strippedLine)
+                      print("\n")
+                elif strippedLine=="'''":
+                    inBlockComment = True
+                    # needs to look for end in next lines
+                    blockCommentStart = "'''"
+                    commentLinesCount += 1
+                    print("startswith triple' ' ' : ")
+                    print(strippedLine)
+                    print("\n")         
 
-            # checks for " beginning comment line 
+            # " comment line 
             elif strippedLine.startswith('"'):
                 commentLinesCount += 1
-                print("startswith double' ")
+                print("startswith double'': ")
                 print(strippedLine)
+                print("\n")
 
-            # checks for ' beginning comment line 
-            elif strippedLine.startswith("'"):
+            # ' beginning comment line 
+            elif strippedLine.startswith("'") and strippedLine !="'":
                 commentLinesCount += 1
-                print("startswith single' ")
+                print("startswith single': ")
                 print(strippedLine)
+                print("\n")
 
-            #checks for midline comments starting with # - not 100% accurate 
+            #midline comments starting with # - not 100% accurate 
             elif "#" in strippedLine:
                 commentLinesCount += 1
-                print("mid hash")
+                print("mid hash:")
                 print(strippedLine)
-    
-    return commentLinesCount
+                print("\n")
+        
+        return commentLinesCount
+
+
 
 
 def main():
@@ -173,7 +220,6 @@ def main():
     #COMMENTS COUNTER:
     comments = count_comments('testFile.py')
     print("Comment Lines", comments)
-
 
 
 

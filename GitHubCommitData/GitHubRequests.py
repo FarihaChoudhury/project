@@ -25,7 +25,7 @@ for i in range(len(collaborators)):
     collaboratorsList.append(collaborators[i]["login"])
     # collaboratorsList.append(collaborators[i]["id"])    to include collaborator unique id
 
-print("Collaborators:")
+print("All collaborators:")
 print(collaboratorsList)
 print("\n")
 
@@ -59,8 +59,10 @@ for i in range(len(allCommitsResponse)):
     deletionsList = []
     allCommitLinesList = []
     allCommitCodeListAsOneString = []
+    filenames = []
 
     for file in commit["files"]:
+        filenames = file['filename']
         patchCode = file["patch"]  # string contains code for whole file, includes the initial @@ -1,3 +1,6 @@ (AKA 'diff')
 
         # Remove: @@ .... @@
@@ -87,8 +89,9 @@ for i in range(len(allCommitsResponse)):
     # Populating list of dictionaries: for each commit made-
     listOfDictionary[i]["commitAuthor"] = commitAuthor
     listOfDictionary[i]["commitSha"] = commitSha
+    listOfDictionary[i]["filesEdited"] = filenames
     listOfDictionary[i]["commitFileLinesAsList"] = allCommitLinesList  # separates lines into items of list
-    listOfDictionary[i]["PYTHONCODE"] = allCommitCodeListAsOneString
+    listOfDictionary[i]["pythonCode"] = allCommitCodeListAsOneString
     listOfDictionary[i]["additions"] = additionsList
     listOfDictionary[i]["deletions"] = deletionsList
 
@@ -102,13 +105,6 @@ for i in range(len(listOfDictionary)):
 
 
 # Saves content of each commit into a text file
-# fp = open("commitDataForRepo.txt", "w")
-# for commit in listOfDictionary:
-#     fp.write(str(commit))
-#     fp.write("\n")
-# fp.close()
-
-
 with open("commitDataForRepo.txt", 'w') as file:
     for commit in listOfDictionary:
         file.write(str(commit))
@@ -117,7 +113,6 @@ with open("commitDataForRepo.txt", 'w') as file:
 
 # Saves content of all commits (list of dictionaries) into a JSON
 with open('allCommitsInRepo.json', 'w') as file:
-    # for i in range(len(listOfDictionary)):
     json.dump(listOfDictionary, file)
 
 # HOW TO OPEN AGAIN AS PYTHON:
