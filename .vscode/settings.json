@@ -1,0 +1,9 @@
+{
+    "cSpell.words": [
+        "antlr"
+    ],
+    "python.analysis.extraPaths": [
+        "./PythonParser/antlrPythonParser/antlrParser",
+        "./PythonParser/antlrPythonParser/pythonParsing"
+    ]
+}

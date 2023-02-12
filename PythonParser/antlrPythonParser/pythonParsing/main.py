@@ -1,7 +1,9 @@
 from antlr4 import *
+import sys
+sys.path.insert(0, '../antlrParser')
 from Python3Lexer import Python3Lexer
 from Python3Parser import Python3Parser
-import sys
+
 # import testFile
 import numpy as np
 import re
@@ -25,9 +27,9 @@ def readFile(file):
 
 
 """ Parsing: using the ANTLR parser 
-    - generates parse tree for inputted data 
+    - generates parse tree for file inputted data 
     - returns parse tree and parser """
-def parseData(data):
+def parseDataFileInput(data):
     input_stream = InputStream(data)
     lexer = Python3Lexer(input_stream)
     stream = CommonTokenStream(lexer)
@@ -38,6 +40,19 @@ def parseData(data):
     # print(tree.toStringTree(recog=parser))
     # print("\n")
 
+""" Parsing: using the ANTLR parser 
+    - generates parse tree for single inputted data 
+    - returns parse tree and parser """
+def parseDataFileInput(data):
+    input_stream = InputStream(data)
+    lexer = Python3Lexer(input_stream)
+    stream = CommonTokenStream(lexer)
+    parser = Python3Parser(stream)
+    # tree = parser.single_input()
+    tree = parser.single_input()
+    return tree, parser
+    # print(tree.toStringTree(recog=parser))
+    # print("\n")
 
 """ Counts white space of a file:
     - counts the number of spaces/ empty strings - this includes tab and empty lines
@@ -99,6 +114,7 @@ def count_comments(filename):
             # checks for ''' beginning comment line
             elif strippedLine.startswith("'''"):
                 partOfBlockComment = True
+                print(partOfBlockComment)
                 commentLinesCount += 1
 
             # checks for " beginning comment line 

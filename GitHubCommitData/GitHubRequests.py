@@ -41,8 +41,8 @@ print("\n")
 
 # FOR ALL COMMITS MADE IN A REPOSITORY: stored in a list of dictionaries
 commitURL = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/commits"
-allCommitsResponse = requests.get(commitURL).json()
-
+allCommitsResponse = requests.get(commitURL)
+allCommitsResponse = allCommitsResponse.json()
 listOfDictionary = [{} for x in range(len(allCommitsResponse))]
 
 

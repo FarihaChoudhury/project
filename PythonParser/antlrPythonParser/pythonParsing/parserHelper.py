@@ -1,5 +1,4 @@
 from io import StringIO
-import tokenize
 from antlr4 import *
 from Python3Lexer import Python3Lexer
 from Python3Parser import Python3Parser
@@ -34,15 +33,29 @@ def readFile(file):
 
 
 """ Parsing: using the ANTLR parser 
-    - generates parse tree for inputted data 
+    - generates parse tree for file inputted data 
     - returns parse tree and parser """
-def parseData(data):
+def parseDataFileInput(data):
     input_stream = InputStream(data)
     lexer = Python3Lexer(input_stream)
     stream = CommonTokenStream(lexer)
     parser = Python3Parser(stream)
     # tree = parser.single_input()
     tree = parser.file_input()
+    return tree, parser
+    # print(tree.toStringTree(recog=parser))
+    # print("\n")
+
+""" Parsing: using the ANTLR parser 
+    - generates parse tree for single inputted data 
+    - returns parse tree and parser """
+def parseDataFileInput(data):
+    input_stream = InputStream(data)
+    lexer = Python3Lexer(input_stream)
+    stream = CommonTokenStream(lexer)
+    parser = Python3Parser(stream)
+    # tree = parser.single_input()
+    tree = parser.single_input()
     return tree, parser
     # print(tree.toStringTree(recog=parser))
     # print("\n")
@@ -196,6 +209,31 @@ def count_comments(filename):
         return commentLinesCount
 
 
+"""Performs classification on the python code inputted
+    - takes input in terms of code text, not a file
+    - passes code into parser 
+    - performs classifications and prints to terminal"""
+def performClassification(inputData):
+    strippedData = inputData.strip()
+    data = f'{strippedData}\n'
+
+    #PARSE TREE GENERATOR:
+    tree, parser = parseDataFileInput(data)
+    print(tree.toStringTree(recog=parser))
+    print("\n")
+
+     #WHITE SPACE COUNTERS: 
+    spaces, newlines = countWhitespaces(inputData)
+    totalLines, emptyLines = countEmptyLines('testFile.py')
+    print("Spaces:", spaces)
+    print("Newlines:", newlines)
+    print("Empty Lines:", emptyLines)
+    print("Total lines:", totalLines)
+
+    #COMMENTS COUNTER:
+    comments = count_comments('testFile.py')
+    print("Comment Lines", comments)
+
 
 
 def main():
@@ -204,7 +242,7 @@ def main():
     data = f'{strippedData}\n'
 
     #PARSE TREE GENERATOR:
-    tree, parser = parseData(data)
+    tree, parser = parseDataFileInput(data)
     print(tree.toStringTree(recog=parser))
     print("\n")
 
