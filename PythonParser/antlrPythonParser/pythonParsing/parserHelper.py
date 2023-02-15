@@ -1,8 +1,10 @@
 from io import StringIO
 from antlr4 import *
+import sys
+sys.path.insert(0, '../antlrParserGeneratedCode')
 from Python3Lexer import Python3Lexer
 from Python3Parser import Python3Parser
-import sys
+
 import numpy as np
 import re
 
@@ -49,7 +51,7 @@ def parseDataFileInput(data):
 """ Parsing: using the ANTLR parser 
     - generates parse tree for single inputted data 
     - returns parse tree and parser """
-def parseDataFileInput(data):
+def parseDataSingleInput(data):
     input_stream = InputStream(data)
     lexer = Python3Lexer(input_stream)
     stream = CommonTokenStream(lexer)
@@ -73,8 +75,8 @@ def countWhitespaces(data):
 
 
 
-""" Counts empty lines of code and total lines of code """
-def countEmptyLines(filename):
+""" Counts empty lines of code of a file and total lines of code """
+def countEmptyLinesOfFile(filename):
     with open(filename, 'r') as file:
         totalLines = 0
         emptyLines = 0
@@ -86,6 +88,18 @@ def countEmptyLines(filename):
     return totalLines, emptyLines
 
 
+""" Counts empty lines of code from input text and total lines of code """
+def countEmptyLinesOfInput(inputData):
+    print("need to fix")
+    # with open(inputData, 'r') as file:
+    #     totalLines = 0
+    #     emptyLines = 0
+    #     for line in file:
+    #         totalLines += 1
+    #         if not line.strip():
+    #             emptyLines += 1
+    # # countTotalLines(filename)  
+    # return totalLines, emptyLines
 
 # """Counts total number of lines of code """
 # def countTotalLines(filename):
@@ -213,18 +227,19 @@ def count_comments(filename):
     - takes input in terms of code text, not a file
     - passes code into parser 
     - performs classifications and prints to terminal"""
-def performClassification(inputData):
+def performClassificationOnInput(inputData):
     strippedData = inputData.strip()
     data = f'{strippedData}\n'
 
     #PARSE TREE GENERATOR:
-    tree, parser = parseDataFileInput(data)
+    tree, parser = parseDataSingleInput(data)
     print(tree.toStringTree(recog=parser))
     print("\n")
 
      #WHITE SPACE COUNTERS: 
     spaces, newlines = countWhitespaces(inputData)
-    totalLines, emptyLines = countEmptyLines('testFile.py')
+    # totalLines, emptyLines = countEmptyLines('testFile.py')
+    totalLines, emptyLines = countEmptyLinesOfInput(inputData)   # NEED TO FIX!!!
     print("Spaces:", spaces)
     print("Newlines:", newlines)
     print("Empty Lines:", emptyLines)
@@ -249,7 +264,7 @@ def main():
    
     #WHITE SPACE COUNTERS: 
     spaces, newlines = countWhitespaces(realData)
-    totalLines, emptyLines = countEmptyLines('testFile.py')
+    totalLines, emptyLines = countEmptyLinesOfFile('testFile.py')   # TAKES FILE!!!
     print("Spaces:", spaces)
     print("Newlines:", newlines)
     print("Empty Lines:", emptyLines)

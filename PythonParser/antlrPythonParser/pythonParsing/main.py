@@ -1,6 +1,6 @@
 from antlr4 import *
 import sys
-sys.path.insert(0, '../antlrParser')
+sys.path.insert(0, '../antlrParserGeneratedCode')
 from Python3Lexer import Python3Lexer
 from Python3Parser import Python3Parser
 

@@ -4,6 +4,7 @@
     ],
     "python.analysis.extraPaths": [
         "./PythonParser/antlrPythonParser/antlrParser",
-        "./PythonParser/antlrPythonParser/pythonParsing"
+        "./PythonParser/antlrPythonParser/pythonParsing",
+        "./PythonParser/antlrPythonParser/antlrParserGeneratedCode"
     ]
 }
