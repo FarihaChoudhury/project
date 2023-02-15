@@ -29,12 +29,12 @@ def count_comments(filename):
             # checks for # comments 
             if strippedLine.startswith("<!--") and strippedLine.endswith("-->"):
                 commentLinesCount += 1
-                print("start and ended comment - one line comment")
+                # print("start and ended comment - one line comment")
             
             elif strippedLine.startswith("<!--") and not strippedLine.endswith("-->"):
                 commentLinesCount += 1
                 partOfBlockComment = True
-                print("start block comment")
+                # print("start block comment")
 
             #checks for middle of block comment lines
             elif partOfBlockComment:
@@ -42,14 +42,14 @@ def count_comments(filename):
 
                 if strippedLine.endswith("-->"):
                     partOfBlockComment = False
-                    print("finished block comment")
-                else:
-                    print("still in block")
+                    # print("finished block comment")
+                # else:
+                #     print("still in block")
 
             #checks for midline comments starting with # - not 100% accurate 
             elif "<!--" and "-->" in strippedLine:
                 commentLinesCount += 1
-                print("midline comment")
+                # print("midline comment")
     
     return commentLinesCount
 
