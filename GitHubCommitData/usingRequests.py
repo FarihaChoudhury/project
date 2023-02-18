@@ -22,14 +22,16 @@ def codeContributionOf():
     dataClassObject = dataClass()
     OWNER = "FarihaChoudhury"
     REPO = "PublicRepoTest"
-    accessToken = "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"
+    # accessToken = "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"
+    accessToken =  "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"
 
     collaboratorsURL, commitURL, filesURL, headers = set_up(OWNER, REPO, accessToken)
 
     # DO GET ON GITHUB API:
     collaboratorsResponse = getGitHubResponseWithHeaders(collaboratorsURL, headers)
-    allCommitsResponse = getGitHubResponse(commitURL)
-    allFilesResponse = getGitHubResponse(filesURL)
+    # allCommitsResponse = getGitHubResponse(commitURL)
+    allCommitsResponse = getGitHubResponseWithHeaders(commitURL, headers)
+    allFilesResponse = getGitHubResponseWithHeaders(filesURL, headers)
     # collaboratorsResponse, allCommitsResponse, allFilesResponse = getGitHubCommitData(collaboratorsURL, commitURL, filesURL, specificFileURL, headers)
 
     # CONVERT TO JSON!
@@ -58,7 +60,8 @@ def codeContributionOf():
     """FILE NAMES DATA"""
     allFiles = getFilenamesList(files)
     dataClass.setFilenamesDictionaryKeys(dataClass)
-    contributorsOfEachFile(OWNER, REPO, allFiles)
+    contributorsOfEachFile(OWNER, REPO, allFiles, headers)
+    print("All filenames:")
     print(dataClass.filenamesDictionary)    
 
     
@@ -71,11 +74,11 @@ def codeContributionOf():
 
 """Calls on json query method to retrieve collaborators of each file in git repository
     - populates dictionary of collaborators for each file """
-def contributorsOfEachFile(owner, repo, allFiles):
+def contributorsOfEachFile(owner, repo, allFiles, headers):
     for filename in allFiles:
         # print(filename)
         specificFileURL = specifcFileGitHubQuery(owner, repo, filename)
-        specificFileResponse = getGitHubResponse(specificFileURL)
+        specificFileResponse = getGitHubResponseWithHeaders(specificFileURL, headers)
         file = convertGitHubResponseToJson(specificFileResponse)
         collaboratorsOfFileList = getCollaboratorsOfFile(file)
         # print(collaboratorsOfFileList)
@@ -96,9 +99,11 @@ def openJsonFile(jsonFile):
     print("\n")
     print(d[0]['commitAuthor'])
     print(d[0]['filesEdited'])
-    print(d[0]['pythonCode'])
+    # print(d[0]['pythonCode'])
     print(d[0]['additions'])
+    print(d[0]["additionsPerFile"])
     print(d[0]['deletions'])
+    print(d[0]["deletionsPerFile"])
 
     # dictionary = dictionaryToHoldFilenames()
     # countFilenames(jsonFile, dictionary)
