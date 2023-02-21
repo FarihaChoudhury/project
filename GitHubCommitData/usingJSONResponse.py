@@ -1,16 +1,31 @@
 import json
 import sys
+from CommitData import dataClass
+sys.path.insert(0, '../PythonParser/antlrPythonParser/pythonParsing')
+sys.path.insert(0, '../PythonParser/antlrPythonParser/htmlParsing')
+sys.path.insert(0, '../PythonParser/antlrPythonParser/antlrParserGeneratedCode')
+from Python3Lexer import Python3Lexer
+from Python3Parser import Python3Parser
+from parserHelper import performClassificationOnInput
+# from pythonParsing import 
 
 
 """calls on additions for files in all commits and deletions for files in all commits"""
-def readAdditionsAndDeletions():
-    readAdditionsForFilesInAllCommits()
-    readDeletionsForFilesInAllCommits()
+def readAdditionsAndDeletions(dataClass):
+    # 1- create template for results
+    dataClass.createResultsTemplate()
+    print("\n template made --- \n")
+    # 2 - read additions and deletions
+    print("\n addition: \n")
+    readAdditionsFromClass(dataClass)
+    print("\n deletions: \n")
+    readDeletionsFromClass(dataClass)
+    
 
 """Opens JSON file and prints its content for the last commit made"""
 # allCommitsInRepo.json 
 # def openJsonFile(jsonFile):
-def openJsonFile():
+def openJsonFile(dataClass):
     jsonFile = "allCommitsInRepo.json"
     print("JSON FILE: ")
     # with open('allCommitsInRepo.json', 'r') as file:
@@ -28,59 +43,103 @@ def openJsonFile():
     #     print(commitData[i]["deletionsPerFile"])
     print("\n")
     print("look:")
-    readAdditionsForFilesInAllCommits()
-    # print("\n")
-    # print(d[0]['commitAuthor'])
-    # print(d[0]['filesEdited'])
-    # # print(d[0]['pythonCode'])
-    # # print(d[0]['additions'])
-    # print(d[0]["additionsPerFile"])
-    # # print(d[0]['deletions'])
-    # print(d[0]["deletionsPerFile"])
+    readAdditionsFromClass(dataClass)
+    # readAdditionsForFilesInAllCommits()
 
 
 """Reads the additionsPerFile item in the list of dictionaries of all commits made in a repository"""
-def readAdditionsForFilesInAllCommits():
-    jsonFile = "allCommitsInRepo.json"
-    with open(jsonFile, 'r') as file:
-        commitData = json.load(file)
-
+def readAdditionsFromClass(dataClass):
+    commitData = dataClass.listOfDictionary
+    # print(commitData)
     additions = []
     for i in range(len(commitData)):
         # add all additions for all commits into one list
         additions.append(commitData[i]["additionsPerFile"][0])
-    # call function to differentiate code types: python, html, text 
+    # call function to differentiate code types: python, html, text
     differentiateCodeTypes(additions)
     return additions
 
 
+"""Reads the deletionsPerFile item in the list of dictionaries of all commits made in a repository"""
+def readDeletionsFromClass(dataClass):
+    commitData = dataClass.listOfDictionary
+    deletions = []
+    for i in range(len(commitData)):
+        # add all deletions for all commits into one list
+        deletions.append(commitData[i]["deletionsPerFile"][0])
+    # call function to differentiate code types: python, html, text 
+    differentiateCodeTypes(deletions)
+    return deletions
+
+
+# """Reads the additionsPerFile item in the list of dictionaries of all commits made in a repository"""
+# def readAdditionsForFilesInAllCommits():
+#     jsonFile = "allCommitsInRepo.json"
+#     with open(jsonFile, 'r') as file:
+#         commitData = json.load(file)
+
+#     additions = []
+#     for i in range(len(commitData)):
+#         # add all additions for all commits into one list
+#         additions.append(commitData[i]["additionsPerFile"][0])
+#     # call function to differentiate code types: python, html, text 
+#     differentiateCodeTypes(additions)
+#     return additions
 
 """Takes a list which contains dictionary items and checks the keys of these items
     - if the key holds a Python file, text file or HTML file, the necessary classifications will be called on the values """
 def differentiateCodeTypes(listOfDictionariesForCommits): 
     for i in range(len(listOfDictionariesForCommits)):    
         # iterates each item of the list of dictionaries by the key and value 
-        for key, val in listOfDictionariesForCommits[i][0].items():
-            # print(key)
-            if key.endswith(".py"):
-                print("PYTHON FILE: ")
-                print(key)
-                retrievePythonCodeToParse(val)
-            elif key.endswith(".md") or key.endswith(".txt"):
-                print("TEXT FILE:")
-                print(key)
-                retrieveTextCodeToParse(val)
-            elif key.endswith(".html"):
-                print("HTML FILES:")
-                print(key)
-                retrieveHTMLCodeToParse(val)
+        if listOfDictionariesForCommits[i].items(): 
+            for key, val in listOfDictionariesForCommits[i].items():
+                if key.endswith(".py"):
+                    print(" PYTHON FILE: ")
+                    """NEED TO DIFFERENTIATE THE FILENAMES (KEY) AND THEN PUT INTO RELEVANT ONES"""
+                    print(key)
+                    retrievePythonCodeToParse(val, key)
+                elif key.endswith(".md") or key.endswith(".txt"):
+                    print(" TEXT FILE:")
+                    print(key)
+                    retrieveTextCodeToParse(val)
+                elif key.endswith(".html"):
+                    print(" HTML FILES:")
+                    print(key)
+                    retrieveHTMLCodeToParse(val)
+
+
+# """Takes a list which contains dictionary items and checks the keys of these items
+#     - if the key holds a Python file, text file or HTML file, the necessary classifications will be called on the values """
+# def differentiateCodeTypes(listOfDictionariesForCommits): 
+#     for i in range(len(listOfDictionariesForCommits)):    
+#         # iterates each item of the list of dictionaries by the key and value 
+#         # print(listOfDictionariesForCommits[i])
+#         if listOfDictionariesForCommits[i][0].items(): 
+#             for key, val in listOfDictionariesForCommits[i][0].items():
+#                 # print(key)
+#                 if key.endswith(".py"):
+#                     print("PYTHON FILE: ")
+#                     print(key)
+#                     retrievePythonCodeToParse(val)
+#                 elif key.endswith(".md") or key.endswith(".txt"):
+#                     print("TEXT FILE:")
+#                     print(key)
+#                     retrieveTextCodeToParse(val)
+#                 elif key.endswith(".html"):
+#                     print("HTML FILES:")
+#                     print(key)
+#                     retrieveHTMLCodeToParse(val)
 
 
 """Accesses the value of the dictionaries which store the Python code"""
-def retrievePythonCodeToParse(valueList):
-    for val in valueList:
-        print(val)
+def retrievePythonCodeToParse(valueList, filename):
+    for valItem in valueList:
+        print(valItem)
+        # print(f'{valItem}\n')
         # CALL PYTHON PARSER!!!
+        spaces, newLines, emptyLines, totalLines, comments = performClassificationOnInput(valItem)
+        # NEED TO UPDATE TEMPLATE WITH THESE!!
+        print("\n")
 
 """Accesses the value of the dictionaries which store the text"""
 def retrieveTextCodeToParse(valueList):
@@ -107,8 +166,10 @@ def readDeletionsForFilesInAllCommits():
         # add all deletions for all commits into one list
         deletions.append(commitData[i]["deletionsPerFile"][0])
     # call function to differentiate code types: python, html, text 
+    print(deletions)
     differentiateCodeTypes(deletions)
     return deletions
+
 
 
 # """Saves content of the list of dictionaries onto a .txt file and a .JSON file"""     

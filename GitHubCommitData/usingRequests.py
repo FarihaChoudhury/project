@@ -69,6 +69,7 @@ def codeContributionOf():
     textFile, jsonFile = storeDataInFile(dataClass.listOfDictionary)
     # openJsonFile(jsonFile)
 
+    return dataClassObject
 
 
 

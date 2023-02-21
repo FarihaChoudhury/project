@@ -131,12 +131,10 @@ def storeCommitsInListOfDictionaries(allCommits, OWNER, REPO, headers):
 
         for file in commit["files"]:
             x=0
-            # print(file["filename"])
             filenames.append(file["filename"])
             
         
             patchCode = file["patch"]  # string contains code for whole file, includes the initial @@ -1,3 +1,6 @@ (AKA 'diff')
-            # print("NEXT FILE:")
             # Remove: @@ .... @@
             newLineSymbol = "\n"
             parts = patchCode.split(newLineSymbol, 1)
@@ -146,25 +144,35 @@ def storeCommitsInListOfDictionaries(allCommits, OWNER, REPO, headers):
 
             # splits patchCode into lines:
             lines = patchCode.split("\n")  # list of each line of code from whole commit file, includes '@@ -1,3 +1,6 @@'
-            # i=0 
-            additionsForFile[x][file["filename"]] = []
-            deletionsForFile[x][file["filename"]] = []
+            additionsPerFile = []
+            deletionsPerFile = []
+            
             # Populate each additions line into
             for j in range(len(lines)):
                 if lines[j].startswith("+"):
                     additionsList.append(lines[j][1:])    # [1:]removes the +/ - from beginning of lines
-                    additionsForFile[x][file["filename"]].append(lines[j][1:])
+                    # additionsForFile[x][file["filename"]].append(lines[j][1:])
+                    additionsPerFile.append(lines[j][1:])
                     # print(filenames)
                     # print(lines[j][1:])
                     # print("\n")
                 if lines[j].startswith("-"):
                     deletionsList.append(lines[j][1:])
-                    deletionsForFile[x][file["filename"]].append(lines[j][1:])
+                    # print("here:")
+                    # if deletionsForFile[x][file["filename"]]
+                    """append to per file list so it can be accumulated at the end """
+                    # print(deletionsForFile[x][file["filename"]])
+                    # deletionsForFile[x][file["filename"]].append(lines[j][1:])
+                    deletionsPerFile.append(lines[j][1:])
                 else:
                     allCommitLinesList.append(lines[j][1:])   #  add all lines from commit file
+            # checks if there was any additions/deletions in current commit => if so then adds to accumulated dictionary 
+            if len(additionsPerFile) != 0:
+                additionsForFile[x][file["filename"]] = additionsPerFile
+
+            if len(deletionsPerFile) != 0:
+                deletionsForFile[x][file["filename"]] = deletionsPerFile
             x+=1
-            # print("ADDITIONS:")
-            # print(additionsForFile)
 
         allCommitCodeListAsOneString = "\n".join(allCommitLinesList)
 
@@ -175,10 +183,12 @@ def storeCommitsInListOfDictionaries(allCommits, OWNER, REPO, headers):
         listOfDictionary[i]["commitFileLinesAsList"] = allCommitLinesList  # separates lines into items of list
         listOfDictionary[i]["pythonCode"] = allCommitCodeListAsOneString
         listOfDictionary[i]["additions"] = additionsList
-        listOfDictionary[i]["additionsPerFile"] = [additionsForFile]
+        listOfDictionary[i]["additionsPerFile"] = additionsForFile
         listOfDictionary[i]["deletions"] = deletionsList
         listOfDictionary[i]["deletionsPerFile"] = deletionsForFile
 
+    # print(additionsForFile)
+    # print("\n LOOK AT ALL DATA::")
     """PRINT ALL COMMITS INFO::::"""
     # printListOfDictionaries(listOfDictionary)
     return listOfDictionary, size

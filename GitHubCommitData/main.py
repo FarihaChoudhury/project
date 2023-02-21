@@ -1,11 +1,12 @@
-from usingJSONResponse import openJsonFile
+from usingJSONResponse import openJsonFile, readAdditionsAndDeletions
 from usingRequests import codeContributionOf
 
 
 """To run the whole code contribution classifier"""
 def main():
-    codeContributionOf()
-    openJsonFile()
+    dataClass = codeContributionOf()
+    # openJsonFile(dataClass)
+    readAdditionsAndDeletions(dataClass)
 
 
 

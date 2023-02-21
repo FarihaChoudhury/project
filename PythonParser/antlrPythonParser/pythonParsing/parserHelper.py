@@ -4,13 +4,12 @@ import sys
 sys.path.insert(0, '../antlrParserGeneratedCode')
 from Python3Lexer import Python3Lexer
 from Python3Parser import Python3Parser
+# sys.path.insert(0, '../antlrParserGeneratedCode')
+# from Python3Lexer import Python3Lexer
+# from Python3Parser import Python3Parser
 
 import numpy as np
 import re
-
-# for generic white space: 
-# def count_whitespaces(text):
-#     return len(re.findall(r"\s", text))
 
 
 # """ Opens file and returns its contents"""
@@ -52,7 +51,8 @@ def parseDataFileInput(data):
     - generates parse tree for single inputted data 
     - returns parse tree and parser """
 def parseDataSingleInput(data):
-    input_stream = InputStream(data)
+    # Add \n for end of file - antlr requires 
+    input_stream = InputStream(f'{data}\n')
     lexer = Python3Lexer(input_stream)
     stream = CommonTokenStream(lexer)
     parser = Python3Parser(stream)
@@ -73,6 +73,9 @@ def countWhitespaces(data):
     newlines = len(re.findall(r"\n", data))
     return spaces, newlines
 
+    # for generic white space: 
+    # def count_whitespaces(text):
+    #     return len(re.findall(r"\s", text))
 
 
 """ Counts empty lines of code of a file and total lines of code """
@@ -91,6 +94,14 @@ def countEmptyLinesOfFile(filename):
 """ Counts empty lines of code from input text and total lines of code """
 def countEmptyLinesOfInput(inputData):
     print("need to fix")
+    totalLines = 1
+    emptyLines = 0
+    if not inputData.strip():
+        # cannot strip if empty => increments count 
+        emptyLines = 1
+    return totalLines, emptyLines
+
+
     # with open(inputData, 'r') as file:
     #     totalLines = 0
     #     emptyLines = 0
@@ -223,35 +234,89 @@ def count_comments(filename):
         return commentLinesCount
 
 
+
+"""inaccurate as it considers line by line - mid block comment lines not accounted for..."""
+def countCommentsOnInputLine(line):
+    strippedLine = line.strip()
+    commentLinesCount = 0
+    # single # comments 
+    if strippedLine.startswith("#"):
+        commentLinesCount += 1
+        print("startswith hash: ")
+        print(strippedLine)
+        print("\n")
+
+    # triple """ or '''
+    elif strippedLine.startswith('"""') or strippedLine.endswith('"""'):
+        commentLinesCount += 1
+        print("startswith triple '' or ends with it: ")
+        print(strippedLine)
+        print("\n")
+    elif strippedLine.startswith("'''") or strippedLine.endswith("'''"):
+        commentLinesCount += 1
+        print("startswith triple ' or ends with it: ")
+        print(strippedLine)
+        print("\n")
+  
+    # single " or ' 
+    elif strippedLine.startswith('"') or strippedLine.endswith('"'):
+        commentLinesCount += 1
+        print("startswith single '' or ends with it: ")
+        print(strippedLine)
+        print("\n")
+    elif strippedLine.startswith("'") or strippedLine.endswith("'"):
+        commentLinesCount += 1
+        print("startswith single ' or ends with it: ")
+        print(strippedLine)
+        print("\n")
+
+     #midline comments starting with # - not 100% accurate 
+    elif "#" in strippedLine:
+        commentLinesCount += 1
+        print("mid hash:")
+        print(strippedLine)
+        print("\n")
+
+    return commentLinesCount
+
+
 """Performs classification on the python code inputted
     - takes input in terms of code text, not a file
     - passes code into parser 
-    - performs classifications and prints to terminal"""
+    - performs classifications and prints to terminal
+    - returns these """
 def performClassificationOnInput(inputData):
     strippedData = inputData.strip()
-    data = f'{strippedData}\n'
+    # to be in antlr form:
+    # data = f'{strippedData}\n'
 
     #PARSE TREE GENERATOR:
-    tree, parser = parseDataSingleInput(data)
+    tree, parser = parseDataSingleInput(strippedData)
     print(tree.toStringTree(recog=parser))
     print("\n")
 
      #WHITE SPACE COUNTERS: 
-    spaces, newlines = countWhitespaces(inputData)
+    spaces, newLines = countWhitespaces(inputData)
     # totalLines, emptyLines = countEmptyLines('testFile.py')
     totalLines, emptyLines = countEmptyLinesOfInput(inputData)   # NEED TO FIX!!!
     print("Spaces:", spaces)
-    print("Newlines:", newlines)
+    print("Newlines:", newLines)
     print("Empty Lines:", emptyLines)
     print("Total lines:", totalLines)
 
     #COMMENTS COUNTER:
-    comments = count_comments('testFile.py')
+    comments = countCommentsOnInputLine(inputData)
+    # comments = count_comments('testFile.py')
     print("Comment Lines", comments)
 
+    return spaces, newLines, emptyLines, totalLines, comments
 
 
-def main():
+
+# def main():
+# def performClassificationOnFile(filename):
+def performClassificationOnFile():
+    # realData = openFile(filename)
     realData = openFile('testFile.py')
     strippedData = realData.strip()
     data = f'{strippedData}\n'
@@ -265,6 +330,7 @@ def main():
     #WHITE SPACE COUNTERS: 
     spaces, newlines = countWhitespaces(realData)
     totalLines, emptyLines = countEmptyLinesOfFile('testFile.py')   # TAKES FILE!!!
+    # totalLines, emptyLines = countEmptyLinesOfFile(filename) 
     print("Spaces:", spaces)
     print("Newlines:", newlines)
     print("Empty Lines:", emptyLines)
@@ -276,9 +342,13 @@ def main():
 
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
 
+if __name__ == '__main__':
+    # allows you to call openJsonFile() from terminal 
+    globals()[sys.argv[1]]()
+    # RUN: python3 parserHelper.py openJsonFile 
 
 
 
