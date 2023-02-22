@@ -51,8 +51,9 @@ def parseDataFileInput(data):
     - generates parse tree for single inputted data 
     - returns parse tree and parser """
 def parseDataSingleInput(data):
+    strippedData = data.strip()
     # Add \n for end of file - antlr requires 
-    input_stream = InputStream(f'{data}\n')
+    input_stream = InputStream(f'{strippedData}\n')
     lexer = Python3Lexer(input_stream)
     stream = CommonTokenStream(lexer)
     parser = Python3Parser(stream)
@@ -69,9 +70,12 @@ def parseDataSingleInput(data):
     - returns the number of spaces and newlines"""
 def countWhitespaces(data):
     spaces = len(re.findall(r" ", data))
+    return spaces
+
+def countNewLines(data):
     # tabs = len(re.findall(r"\t", text))
     newlines = len(re.findall(r"\n", data))
-    return spaces, newlines
+    return newlines
 
     # for generic white space: 
     # def count_whitespaces(text):
@@ -93,7 +97,7 @@ def countEmptyLinesOfFile(filename):
 
 """ Counts empty lines of code from input text and total lines of code """
 def countEmptyLinesOfInput(inputData):
-    print("need to fix")
+    # print("need to fix")
     totalLines = 1
     emptyLines = 0
     if not inputData.strip():
@@ -242,40 +246,40 @@ def countCommentsOnInputLine(line):
     # single # comments 
     if strippedLine.startswith("#"):
         commentLinesCount += 1
-        print("startswith hash: ")
-        print(strippedLine)
-        print("\n")
+        # print("startswith hash: ")
+        # print(strippedLine)
+        # print("\n")
 
     # triple """ or '''
     elif strippedLine.startswith('"""') or strippedLine.endswith('"""'):
         commentLinesCount += 1
-        print("startswith triple '' or ends with it: ")
-        print(strippedLine)
-        print("\n")
+        # print("startswith triple '' or ends with it: ")
+        # print(strippedLine)
+        # print("\n")
     elif strippedLine.startswith("'''") or strippedLine.endswith("'''"):
         commentLinesCount += 1
-        print("startswith triple ' or ends with it: ")
-        print(strippedLine)
-        print("\n")
+        # print("startswith triple ' or ends with it: ")
+        # print(strippedLine)
+        # print("\n")
   
     # single " or ' 
     elif strippedLine.startswith('"') or strippedLine.endswith('"'):
         commentLinesCount += 1
-        print("startswith single '' or ends with it: ")
-        print(strippedLine)
-        print("\n")
+        # print("startswith single '' or ends with it: ")
+        # print(strippedLine)
+        # print("\n")
     elif strippedLine.startswith("'") or strippedLine.endswith("'"):
         commentLinesCount += 1
-        print("startswith single ' or ends with it: ")
-        print(strippedLine)
-        print("\n")
+        # print("startswith single ' or ends with it: ")
+        # print(strippedLine)
+        # print("\n")
 
      #midline comments starting with # - not 100% accurate 
     elif "#" in strippedLine:
         commentLinesCount += 1
-        print("mid hash:")
-        print(strippedLine)
-        print("\n")
+        # print("mid hash:")
+        # print(strippedLine)
+        # print("\n")
 
     return commentLinesCount
 
@@ -285,20 +289,21 @@ def countCommentsOnInputLine(line):
     - passes code into parser 
     - performs classifications and prints to terminal
     - returns these """
-def performClassificationOnInput(inputData):
-    strippedData = inputData.strip()
-    # to be in antlr form:
-    # data = f'{strippedData}\n'
+def performClassificationOnPythonInput(inputData):
+    # to be in antlr form: need to strip -- and include new line-- but done in parseDataSingleInput
+        # strippedData = inputData.strip()
+        # data = f'{strippedData}\n'
 
     #PARSE TREE GENERATOR:
-    tree, parser = parseDataSingleInput(strippedData)
+    tree, parser = parseDataSingleInput(inputData)
     print(tree.toStringTree(recog=parser))
     print("\n")
 
-     #WHITE SPACE COUNTERS: 
-    spaces, newLines = countWhitespaces(inputData)
+    #WHITE SPACE COUNTERS: 
+    spaces = countWhitespaces(inputData)
+    newLines = countNewLines(inputData)
     # totalLines, emptyLines = countEmptyLines('testFile.py')
-    totalLines, emptyLines = countEmptyLinesOfInput(inputData)   # NEED TO FIX!!!
+    totalLines, emptyLines = countEmptyLinesOfInput(inputData)
     print("Spaces:", spaces)
     print("Newlines:", newLines)
     print("Empty Lines:", emptyLines)

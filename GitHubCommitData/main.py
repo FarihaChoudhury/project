@@ -1,4 +1,4 @@
-from usingJSONResponse import openJsonFile, readAdditionsAndDeletions
+from usingJSONResponse import readAdditionsAndDeletions
 from usingRequests import codeContributionOf
 
 

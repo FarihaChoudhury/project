@@ -209,10 +209,10 @@ def printListOfDictionaries(listOfDictionary):
 """Saves content of the list of dictionaries onto a .txt file and a .JSON file"""     
 def storeDataInFile(listOfDictionary):
     # Saves content of each commit into a text file
-    with open('commitDataForRepo.txt', 'w') as file:
-        for commit in listOfDictionary:
-            file.write(str(commit))
-            file.write("\n")
+    # with open('commitDataForRepo.txt', 'w') as file:
+    #     for commit in listOfDictionary:
+    #         file.write(str(commit))
+    #         file.write("\n")
 
     # Saves content of all commits (list of dictionaries) into a JSON
     with open('allCommitsInRepo.json', 'w') as file:

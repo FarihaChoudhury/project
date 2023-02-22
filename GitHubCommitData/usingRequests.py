@@ -61,8 +61,8 @@ def codeContributionOf():
     allFiles = getFilenamesList(files)
     dataClass.setFilenamesDictionaryKeys(dataClass)
     contributorsOfEachFile(OWNER, REPO, allFiles, headers)
-    print("All filenames:")
-    print(dataClass.filenamesDictionary)    
+    # print("All filenames:")
+    # print(dataClass.filenamesDictionary)    
 
     
     # STORE TO FILES:  'commitDataForRepo.txt', 'allCommitsInRepo.json 
