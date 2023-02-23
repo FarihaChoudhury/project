@@ -261,7 +261,7 @@ def countCommentsOnInputLine(line):
         # print("startswith triple ' or ends with it: ")
         # print(strippedLine)
         # print("\n")
-  
+
     # single " or ' 
     elif strippedLine.startswith('"') or strippedLine.endswith('"'):
         commentLinesCount += 1
@@ -282,6 +282,12 @@ def countCommentsOnInputLine(line):
         # print("\n")
 
     return commentLinesCount
+
+
+def countCommentsOnLineRegex(line):
+    strippedLine = line.strip()
+    commentLinesCount = 0
+
 
 
 """Performs classification on the python code inputted

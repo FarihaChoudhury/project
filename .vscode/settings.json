@@ -6,6 +6,7 @@
         "./PythonParser/antlrPythonParser/antlrParser",
         "./PythonParser/antlrPythonParser/pythonParsing",
         "./PythonParser/antlrPythonParser/antlrParserGeneratedCode",
-        "./PythonParser/antlrPythonParser/textParsing"
+        "./PythonParser/antlrPythonParser/textParsing",
+        "./PythonParser"
     ]
 }

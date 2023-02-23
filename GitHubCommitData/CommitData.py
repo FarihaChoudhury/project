@@ -165,7 +165,7 @@ class dataClass:
             contributorData["comment lines"]= 0
             contributorData["code lines"]= 0
             contributorData["total lines"]= 0
-            contributorData["HTML tags"]= 0
+            contributorData["HTML tags"]= []
            
             additions["additions"].update(contributorData)
             deletions["deletions"].update(contributorData)

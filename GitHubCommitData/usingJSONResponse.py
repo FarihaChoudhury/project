@@ -1,7 +1,7 @@
 import json
 import sys
 from CommitData import dataClass
-# from PythonParser.antlrPythonParser.htmlParsing.htmlParse import performClassificationOnHTMLInput
+# from antlrPythonParser.htmlParsing.htmlParse import performClassificationOnHTMLInput
 # from PythonParser.antlrPythonParser.textParsing.textParse import performClassificationOnTextInput
 sys.path.insert(0, '../PythonParser/antlrPythonParser/pythonParsing')
 sys.path.insert(0, '../PythonParser/antlrPythonParser/htmlParsing')
