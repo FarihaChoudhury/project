@@ -81,6 +81,7 @@ def find():
     print(len(result))
 
 
+"""Better: """
 
 def find2():
     line1= " #1 "

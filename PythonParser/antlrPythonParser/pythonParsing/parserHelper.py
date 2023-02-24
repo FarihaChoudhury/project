@@ -106,28 +106,6 @@ def countEmptyLinesOfInput(inputData):
     return totalLines, emptyLines
 
 
-    # with open(inputData, 'r') as file:
-    #     totalLines = 0
-    #     emptyLines = 0
-    #     for line in file:
-    #         totalLines += 1
-    #         if not line.strip():
-    #             emptyLines += 1
-    # # countTotalLines(filename)  
-    # return totalLines, emptyLines
-
-# """Counts total number of lines of code """
-# def countTotalLines(filename):
-#     with open(filename, 'r') as file:
-#         count = 0
-#         for line in file:
-#             count += 1
-#     print(count)
-#     return count 
-
-
-
-
 # """Counts the number of lines of comments in a python .py file
 #     - includes: #,' ', " ", """ """ block comments, ''' ''' block comments, 
 #     - Also inline #comments which may be inaccurate """
@@ -302,15 +280,17 @@ def performClassificationOnPythonInput(inputData):
 
     #PARSE TREE GENERATOR:
     tree, parser = parseDataSingleInput(inputData)
-    print(tree.toStringTree(recog=parser))
-    print("\n")
+    # print(tree.toStringTree(recog=parser))
+    # print("\n")
 
     #WHITE SPACE COUNTERS: 
     spaces = countWhitespaces(inputData)
+    spacesWithoutIndent = countWhitespaces(inputData.strip())
     newLines = countNewLines(inputData)
     # totalLines, emptyLines = countEmptyLines('testFile.py')
     totalLines, emptyLines = countEmptyLinesOfInput(inputData)
     print("Spaces:", spaces)
+    print("Spaces without indents:", spacesWithoutIndent)
     print("Newlines:", newLines)
     print("Empty Lines:", emptyLines)
     print("Total lines:", totalLines)
@@ -320,7 +300,7 @@ def performClassificationOnPythonInput(inputData):
     # comments = count_comments('testFile.py')
     print("Comment Lines", comments)
 
-    return spaces, newLines, emptyLines, totalLines, comments
+    return spaces, spacesWithoutIndent, newLines, emptyLines, totalLines, comments
 
 
 

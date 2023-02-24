@@ -59,9 +59,40 @@ def storeJSONresults(dataClass):
         json.dump(dataClass.resultsListSeparate, file)
     
 
+def readAdditionsFromClass(dataClass):
+    commitData = dataClass.listOfDictionary
+    additions = []
+    # for i in range(len(commitData)):
+    print(0)
+    if (commitData[0]["additionsPerFile"][0]):
+        # print(commitData[i])
+        # sets all additions for specific commits into one list
+        contributor = commitData[0]["commitAuthor"]
+        # print(contributor)
+        additions = commitData[0]["additionsPerFile"][0]
+        # print(additions)
+        differentiateCodeTypes(dataClass, contributor, additions, True)
+        # else:
+        #     print("no addition here")
+    return additions
+
+"""Reads the deletionsPerFile item in the list of dictionaries of all commits made in a repository"""
+def readDeletionsFromClass(dataClass):
+    commitData = dataClass.listOfDictionary
+    deletions = []
+    # for i in range(len(commitData)):
+    print(0)
+    if (commitData[0]["deletionsPerFile"][0]):
+        contributor = commitData[0]["commitAuthor"]
+        # print(contributor)
+        deletions = commitData[0]["deletionsPerFile"][0]
+        # print(deletions)
+        # call function to differentiate the code types of each line and perform classification
+        differentiateCodeTypes(dataClass, contributor, deletions, False)
+    return deletions
 
 """Reads the additionsPerFile item in the list of dictionaries of all commits made in a repository"""
-def readAdditionsFromClass(dataClass):
+def readAdditionsFromClassREAL(dataClass):
     commitData = dataClass.listOfDictionary
     additions = []
     for i in range(len(commitData)):
@@ -74,12 +105,10 @@ def readAdditionsFromClass(dataClass):
             additions = commitData[i]["additionsPerFile"][0]
             print(additions)
             differentiateCodeTypes(dataClass, contributor, additions, True)
-        # else:
-        #     print("no addition here")
     return additions
 
 """Reads the deletionsPerFile item in the list of dictionaries of all commits made in a repository"""
-def readDeletionsFromClass(dataClass):
+def readDeletionsFromClassREAL(dataClass):
     commitData = dataClass.listOfDictionary
     deletions = []
     for i in range(len(commitData)):
@@ -91,9 +120,6 @@ def readDeletionsFromClass(dataClass):
             print(deletions)
             # call function to differentiate the code types of each line and perform classification
             differentiateCodeTypes(dataClass, contributor, deletions, False)
-    
-        # else:
-        #     print("no deletion here")
     return deletions
 
 
@@ -188,21 +214,21 @@ def retrievePythonCodeToParse(dataClass, contributor, filename, valueList, incre
     
     print(increment)
     for valItem in valueList:
-        spaces, newLines, emptyLines, totalLines, comments = performClassificationOnPythonInput(valItem)
+        spaces, spacesWithoutIndent, newLines, emptyLines, totalLines, comments = performClassificationOnPythonInput(valItem)
         codeLines = (totalLines - comments) - emptyLines
 
-        updateDataInResults(dataClass, contributor, increment, spaces=spaces, newLines=newLines, emptyLines=emptyLines, comments=comments, codeLines=codeLines, totalLines=totalLines)
+        updateDataInResults(dataClass, contributor, increment, spaces=spaces, strippedSpaces=spacesWithoutIndent, newLines=newLines, emptyLines=emptyLines, comments=comments, codeLines=codeLines, totalLines=totalLines)
         print(dataClass.resultsListSeparate)
         print("\n")
 
 
 """Accesses the value of the dictionaries which store the text"""
 def retrieveTextCodeToParse(dataClass, contributor, filename, valueList, increment):
-    print(increment)
+    # print(increment)
     for valItem in valueList:
-        spaces, emptyLines, totalLines = performClassificationOnTextInput(valItem)
+        spaces, spacesWithoutIndent, emptyLines, totalLines = performClassificationOnTextInput(valItem)
         # print("next")
-        updateDataInResults(dataClass, contributor, increment, spaces = spaces, emptyLines = emptyLines, totalLines = totalLines )
+        updateDataInResults(dataClass, contributor, increment, spaces=spaces, strippedSpaces=spacesWithoutIndent, emptyLines = emptyLines, totalLines = totalLines )
         print(dataClass.resultsListSeparate)
         print("\n")
 
@@ -210,49 +236,91 @@ def retrieveTextCodeToParse(dataClass, contributor, filename, valueList, increme
 
 """Accesses the value of the dictionaries which store the HTML code"""
 def retrieveHTMLCodeToParse(dataClass, contributor, filename, valueList, increment):
-    print(increment)
+    # print(increment)
     for valItem in valueList:
         # print(valItem)
 
-        spaces, newLines, emptyLines, totalLines, comments = performClassificationOnHTMLInput(valItem)
-        codeLines = (totalLines - comments) - emptyLines
-        updateDataInResults(dataClass, contributor, increment, spaces=spaces, newLines=newLines, emptyLines=emptyLines, comments=comments, codeLines=codeLines, totalLines=totalLines)
+        spaces, spacesWithoutIndent, newLines, emptyLines, totalLines, htmlComments, tagCountDict, templateTagCountDict, evalVars = performClassificationOnHTMLInput(valItem)
+        codeLines = (totalLines - htmlComments) - emptyLines
+        # print("YIKES: \n",  templateTagCountDict)
+        # print("YIKES: \n",  tagCountDict)
+        updateDataInResults(
+            dataClass, 
+            contributor, 
+            increment, 
+            spaces=spaces,
+            strippedSpaces=spacesWithoutIndent, 
+            newLines=newLines, 
+            emptyLines=emptyLines, 
+            HTMLcomments=htmlComments, 
+            codeLines=codeLines, 
+            totalLines=totalLines,
+            HTMLtags = tagCountDict,
+            HTMLtemplateTags = templateTagCountDict,
+            HTMLevalVars = evalVars)
         print(dataClass.resultsListSeparate)
         print("\n")
         
 
-def updateDataInResults(dataClass, contributor, increment, spaces = 0, newLines = 0, emptyLines = 0, comments = 0, codeLines = 0, totalLines = 0):
+def updateDataInResults(dataClass, contributor, increment, spaces = None, strippedSpaces =None, newLines = None, emptyLines = None, comments = None, codeLines = None, totalLines = None, HTMLcomments = None, HTMLtags=None, HTMLtemplateTags=None, HTMLevalVars=None):
     if increment == True: 
         additionsCategory = "additions"
         incrementResults(dataClass, contributor, "spaces", spaces, additionsCategory)
+        incrementResults(dataClass, contributor, "spaces without indents", strippedSpaces, additionsCategory)
         incrementResults(dataClass, contributor, "new lines", newLines, additionsCategory)
         incrementResults(dataClass, contributor, "empty lines", emptyLines, additionsCategory)
         incrementResults(dataClass, contributor, "comment lines", comments, additionsCategory)
         incrementResults(dataClass, contributor, "code lines", codeLines, additionsCategory)
         incrementResults(dataClass, contributor, "total lines", totalLines, additionsCategory)
+        incrementResults(dataClass, contributor, "HTML comments", HTMLcomments, additionsCategory)
+        incrementResults(dataClass, contributor, "HTML evaluation vars", HTMLevalVars, additionsCategory)
+        incrementResults(dataClass, contributor, "HTML tags", None, additionsCategory, incrementTags= HTMLtags)
+        incrementResults(dataClass, contributor, "HTML template tags", None, additionsCategory, incrementTemplateTags= HTMLtemplateTags)
+        # incrementResults(dataClass, contributor, "HTML comments", None, additionsCategory, incrementItem= HTMLcomments)
+        # if HTMLtags: 
+        #     dataClass.incrementHTMLtags(contributor, "HTML tags", HTMLtags, additionsCategory)
         # dataClass.incrementDataByValueForSeparate(contributor, "spaces", spaces, additionsCategory)
         print("INCREMENT")
 
     else: 
         deletionsCategory = "deletions"
         decrementResults(dataClass, contributor, "spaces", spaces, deletionsCategory)
+        decrementResults(dataClass, contributor, "spaces without indents", strippedSpaces, deletionsCategory)
         decrementResults(dataClass, contributor, "new lines", newLines, deletionsCategory)
         decrementResults(dataClass, contributor, "empty lines", emptyLines, deletionsCategory)
         decrementResults(dataClass, contributor, "comment lines", comments, deletionsCategory)
         decrementResults(dataClass, contributor, "code lines", codeLines, deletionsCategory)
         decrementResults(dataClass, contributor, "total lines", totalLines, deletionsCategory)
+        decrementResults(dataClass, contributor, "HTML comments", HTMLcomments, deletionsCategory)
+
+        decrementResults(dataClass, contributor, "HTML evaluation vars", HTMLevalVars, deletionsCategory)
+        decrementResults(dataClass, contributor, "HTML tags", None, deletionsCategory, decrementTags= HTMLtags)
+        decrementResults(dataClass, contributor, "HTML template tags", None, deletionsCategory, decrementTemplateTags= HTMLtemplateTags)
         # dataClass.decrementDataByValueForSeparate(contributor, "spaces", spaces, deletionsCategory)
         print("DECREMENT")
 
 
-def incrementResults(dataClass, collaborator, option, incrementValue, category):
-    dataClass.incrementDataByValueForSeparate(collaborator, option, incrementValue, category)
-    dataClass.incrementDataByValueForSeparate(collaborator, option, incrementValue, "overall")
+def incrementResults(dataClass, collaborator, option, incrementValue, category, incrementTags=None, incrementTemplateTags=None):
+    if incrementValue:
+        dataClass.incrementDataByValueForSeparate(collaborator, option, incrementValue, category)
+        # dataClass.incrementDataByValueForSeparate(collaborator, option, incrementValue, "overall")
+    if incrementTags:
+        dataClass.incrementHTMLtags(collaborator, option, incrementTags, category, dataClass.addedTags, dataClass.tags)
+    if incrementTemplateTags:
+        dataClass.incrementHTMLtags(collaborator, option, incrementTemplateTags, category, dataClass.addedTemplateTags,  dataClass.templateTags)
+        
 
-def decrementResults(dataClass, collaborator, option, decrementValue, category):
+def decrementResults(dataClass, collaborator, option, decrementValue, category, decrementTags=None, decrementTemplateTags=None):
+    if decrementValue: 
     # increment the "deletions" category then decrement overall 
-    dataClass.incrementDataByValueForSeparate(collaborator, option, decrementValue, category)
-    dataClass.decrementDataByValueForSeparate(collaborator, option, decrementValue, "overall")
+        dataClass.decrementDataByValueForSeparate(collaborator, option, decrementValue, category)
+
+
+    if decrementTags:
+        dataClass.decrementHTMLtags(collaborator, option, decrementTags, category, dataClass.deletedTags, dataClass.tags)
+    if decrementTemplateTags:
+        dataClass.decrementHTMLtags(collaborator, option, decrementTemplateTags, category, dataClass.deletedTemplateTags, dataClass.templateTags)
+        # dataClass.decrementDataByValueForSeparate(collaborator, option, decrementValue, "overall")
 
 
 

@@ -10,16 +10,18 @@ def performClassificationOnTextInput(inputData):
 
     #WHITE SPACE COUNTERS: 
     spaces = countWhitespaces(inputData)
+    spacesWithoutIndent = countWhitespaces(inputData.strip())
     # totalLines, emptyLines = countEmptyLines('testFile.py')
     totalLines, emptyLines = countEmptyLinesOfInput(inputData)
-    print("Spaces:", spaces)
+    # print("Spaces:", spaces)
+    # print("Spaces without indents:", spacesWithoutIndent)
     # print("Newlines:", newLines)
-    print("Empty Lines:", emptyLines)
-    print("Total lines:", totalLines)
+    # print("Empty Lines:", emptyLines)
+    # print("Total lines:", totalLines)
 
     # #COMMENTS COUNTER:
     # comments = countCommentsOnInputLine(inputData)
     # # comments = count_comments('testFile.py')
     # print("Comment Lines", comments)
 
-    return spaces, emptyLines, totalLines
+    return spaces, spacesWithoutIndent, emptyLines, totalLines

@@ -1,26 +1,79 @@
 
 import sys
+import re
 # from PythonParser.antlrPythonParser.htmlParsing.pythonHTMLparser import HTMLParserClass
 sys.path.insert(0, '../pythonParsing')
 from parserHelper import countEmptyLinesOfFile, countEmptyLinesOfInput, countWhitespaces, countNewLines, openFile
 from pythonHTMLparser import HTMLParserClass
 
 
-def useHTMLParser():
-    # Sample HTML code
-    # html_code = """
-    # <head>
-    # </body>
-    # """
-    html_code = '<html><head><title>Test</title></head>'
+
+
+"""identifies <..> tags"""
+def identifyHTMLtags(inputData):
+    # 1 html, 2 heads, 1 title: 
+    html_code = '<!--hello-->'
     # Create a new parser object and feed it the HTML code
     htmlParser = HTMLParserClass()
-    htmlParser.feed(html_code)
+    # htmlParser.feed(html_code)
+    htmlParser.feed(inputData.strip())
+
+    tagCountDict={}
 
     # Print out the tag types and their counts
     for tag, count in htmlParser.tagTypesDictionary.items():
-        print(f"Tag {tag}: {count}")
+        temp = {tag: count}
+        tagCountDict.update(temp)
+        # print(f"Tag {tag}: {count}")
+    
+    return tagCountDict
+    # gives a dictionary for each line of code --- 
 
+    # need to update existing dictionary - increment/decrement 
+
+
+
+
+# def call():
+#     pee = identifyDjangoTemplateTags()
+#     see= identifyHTMLEvaluationVars()
+#     # print(pee)
+#     print(see)
+
+
+# to identify and store {%...%}
+def identifyDjangoTemplateTags(inputData):
+    templateTag = {}
+
+    """finds {% and gets the first word after it so it can be stored in dict!}"""
+    code = 'This is some code { % for i in range(5) %}{{ i }}{% endfor %} and here is {% another %} code block.'
+
+    matches = re.findall(r'{\s*%\s*(\S+)\b', inputData)
+    if matches:
+        for match in matches:
+            first_word = re.search(r'\w+', match).group()
+            print(f"First word after : {first_word}")
+            templateTag[first_word]=1
+    # else:
+    #     print("No code blocks found.")
+    # print(templateTag)
+    return templateTag
+
+
+# to identify and count {{ }}
+def identifyHTMLEvaluationVars(inputData):
+    """finds {{ and counts occurrences}"""
+    code = 'This is some code {% for i in range(5) %}{{ i }} { { hi} } '
+
+    matches = re.findall(r'{\s*{\s*(\S+)\b', inputData)
+    count = len(matches)
+    return count
+
+
+"""EXPLANATION:
+    r'{\s*{\s*(\S+)\b'
+    Find { with any amount of spaces (\s*), followed by { again, then matches any non white space \S, 
+    \b ensures that the match stops at the end of the first word after the {% delimiter}}"""
 
 
 
@@ -59,20 +112,27 @@ def countHTMLComments(line):
 def performClassificationOnHTMLInput(inputData):
     # WHITE SPACE COUNTERS: 
     spaces = countWhitespaces(inputData)
+    spacesWithoutIndent = countWhitespaces(inputData.strip())
     newLines = countNewLines(inputData)
-    # totalLines, emptyLines = countEmptyLines('testFile.py')
-    totalLines, emptyLines = countEmptyLinesOfInput(inputData)
-    print("Spaces:", spaces)
-    print("Newlines:", newLines)
-    print("Empty Lines:", emptyLines)
-    print("Total lines:", totalLines)
 
-    #COMMENTS COUNTER:
-    comments = countHTMLComments(inputData)
-    # comments = count_comments('testFile.py')
-    print("Comment Lines", comments)
-    print("i came to here")
-    return spaces, newLines, emptyLines, totalLines, comments
+    totalLines, emptyLines = countEmptyLinesOfInput(inputData)
+    # print("Spaces:", spaces)
+    # print("Spaces without indents:", spacesWithoutIndent)
+    # print("Newlines:", newLines)
+    # print("Empty Lines:", emptyLines)
+    # print("Total lines:", totalLines)
+
+    #COMMENTS COUNTER: inputData
+    htmlComments = countHTMLComments(inputData)
+    # print("Comment Lines", htmlComments)
+
+    # retrieves tags and template tags 
+    tagCountDict = identifyHTMLtags(inputData)
+    templateTagCountDict = identifyDjangoTemplateTags(inputData)
+    evalVars = identifyHTMLEvaluationVars(inputData)
+
+
+    return spaces, spacesWithoutIndent, newLines, emptyLines, totalLines, htmlComments, tagCountDict, templateTagCountDict, evalVars
 
 
 
