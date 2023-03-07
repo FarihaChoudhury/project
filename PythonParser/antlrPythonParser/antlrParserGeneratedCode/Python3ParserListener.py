@@ -266,6 +266,7 @@ class Python3ParserListener(ParseTreeListener):
 
     # Exit a parse tree produced by Python3Parser#import_stmt.
     def exitImport_stmt(self, ctx:Python3Parser.Import_stmtContext):
+        print ("import")
         pass
 
 
@@ -397,6 +398,7 @@ class Python3ParserListener(ParseTreeListener):
 
     # Enter a parse tree produced by Python3Parser#for_stmt.
     def enterFor_stmt(self, ctx:Python3Parser.For_stmtContext):
+        print("for statement!!")
         pass
 
     # Exit a parse tree produced by Python3Parser#for_stmt.

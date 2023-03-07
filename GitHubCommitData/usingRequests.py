@@ -5,7 +5,7 @@ from gitHubCommitRequest import getCollaboratorsOfFile
 """RUN FROM THIS FILE TO GET CODE CONTRIBUTION DATA"""
 
 # sys.path.insert(0, '../pythonParsing')
-from gitHubCommitRequest import set_up, specifcFileGitHubQuery, getGitHubResponseWithHeaders, getGitHubResponse, convertGitHubResponseToJson, storeCollaboratorInList, storeCommitsInListOfDictionaries, storeDataInFile, getFilenamesList
+from gitHubCommitRequest import set_up, specifcFileGitHubQuery, getGitHubResponse, convertGitHubResponseToJson, storeCollaboratorInList, storeCommitsInListOfDictionaries, getFilenamesList
 
 
     # # FOR CONTRIBUTORS OF SPECIFIC FILE:
@@ -28,10 +28,10 @@ def codeContributionOf():
     collaboratorsURL, commitURL, filesURL, headers = set_up(OWNER, REPO, accessToken)
 
     # DO GET ON GITHUB API:
-    collaboratorsResponse = getGitHubResponseWithHeaders(collaboratorsURL, headers)
+    collaboratorsResponse = getGitHubResponse(collaboratorsURL, headers)
     # allCommitsResponse = getGitHubResponse(commitURL)
-    allCommitsResponse = getGitHubResponseWithHeaders(commitURL, headers)
-    allFilesResponse = getGitHubResponseWithHeaders(filesURL, headers)
+    allCommitsResponse = getGitHubResponse(commitURL, headers)
+    allFilesResponse = getGitHubResponse(filesURL, headers)
     # collaboratorsResponse, allCommitsResponse, allFilesResponse = getGitHubCommitData(collaboratorsURL, commitURL, filesURL, specificFileURL, headers)
 
     # CONVERT TO JSON!
@@ -43,30 +43,26 @@ def codeContributionOf():
 
     """STORE IN DATA CLASS: """
     # COLLABORATORS: 
-    dataClass.setCollaborators(dataClass, collaborators = storeCollaboratorInList(collaborators))
-    # print("FROM CLASS:")
-    # print(dataClass.collaboratorsList)
+    dataClassObject.setCollaborators(collaborators = storeCollaboratorInList(collaborators))
 
     # LIST OF DICTIONARY
-    listOfDictionary, size = storeCommitsInListOfDictionaries(commits, OWNER, REPO, headers)
-    # print("test1 from function")
-    # print(listOfDictionary)
+    # listOfDictionary, size = storeCommitsInListOfDictionaries(commits, OWNER, REPO, headers)
+    listOfDictionary = storeCommitsInListOfDictionaries(commits, OWNER, REPO, headers)
 
-    dataClass.createListOfDictionary(dataClass, size)
-    dataClass.setListOfDictionary(dataClass, listOfDictionary)
-    # print("\n test from class:")
-    # print(dataClass.listOfDictionary)
+    # dataClassObject.createListOfDictionary(size)
+    dataClassObject.setListOfDictionary(listOfDictionary)
 
     """FILE NAMES DATA"""
     allFiles = getFilenamesList(files)
-    dataClass.setFilenamesDictionaryKeys(dataClass)
-    contributorsOfEachFile(OWNER, REPO, allFiles, headers)
-    # print("All filenames:")
-    # print(dataClass.filenamesDictionary)    
+    dataClassObject.setFilenamesDictionaryKeys()
+    contributorsOfEachFile(OWNER, REPO, allFiles, headers, dataClassObject)   
 
-    
-    # STORE TO FILES:  'commitDataForRepo.txt', 'allCommitsInRepo.json 
-    textFile, jsonFile = storeDataInFile(dataClass.listOfDictionary)
+    listOfDictionary.append(REPO)
+    # STORE TO FILES: 'allCommitsInRepo.json 
+    jsonFile = storeDataInFile(listOfDictionary, 'allCommitsInRepo.json')
+
+    listOfDictionary.pop()
+    # jsomFile = storeDataInFile(REPO, 'repositoryInfo.json')
     # openJsonFile(jsonFile)
 
     return dataClassObject
@@ -75,24 +71,31 @@ def codeContributionOf():
 
 """Calls on json query method to retrieve collaborators of each file in git repository
     - populates dictionary of collaborators for each file """
-def contributorsOfEachFile(owner, repo, allFiles, headers):
+def contributorsOfEachFile(owner, repo, allFiles, headers, dataClassObject):
     for filename in allFiles:
         # print(filename)
         specificFileURL = specifcFileGitHubQuery(owner, repo, filename)
-        specificFileResponse = getGitHubResponseWithHeaders(specificFileURL, headers)
+        specificFileResponse = getGitHubResponse(specificFileURL, headers)
         file = convertGitHubResponseToJson(specificFileResponse)
         collaboratorsOfFileList = getCollaboratorsOfFile(file)
         # print(collaboratorsOfFileList)
 
         for collaborator in collaboratorsOfFileList:
-            dataClass.setFilenamesDictionaryValues(dataClass, collaborator, filename)
+            dataClassObject.setFilenamesDictionaryValues(collaborator, filename)
 
 
+"""Saves content of the list of dictionaries onto a .JSON file"""     
+def storeDataInFile(listOfDictionary, filename):
+    # Saves content of all commits (list of dictionaries) into a JSON
+    with open(filename, 'w') as file:
+        json.dump(listOfDictionary, file)
+    
+    return 'allCommitsInRepo.json'
 
-"""Opens JSON file and prints its content for the last commit made"""
+
+"""Opens JSON file and prints its content for the last commit made [0]"""
 def openJsonFile(jsonFile):
     print("JSON FILE: ")
-    # with open('allCommitsInRepo.json', 'r') as file:
     with open(jsonFile, 'r') as file:
         d = json.load(file)
         # print(d)
@@ -105,44 +108,6 @@ def openJsonFile(jsonFile):
     print(d[0]["additionsPerFile"])
     print(d[0]['deletions'])
     print(d[0]["deletionsPerFile"])
-
-    # dictionary = dictionaryToHoldFilenames()
-    # countFilenames(jsonFile, dictionary)
-    # countFilenames(jsonFile)
-
-
-
-# def dictionaryToHoldFilenames():
-#     dictionary = {}
-#     for i in range (len(dataClass.collaboratorsList)) : 
-#         dictionary[dataClass.collaboratorsList[i]] = set()
-    
-#     print(dictionary)
-#     return dictionary 
-
-# def countFilenames(jsonFile, dictionary):
-#     print("\n filenames")
-#     with open(jsonFile, 'r') as file:
-#         d = json.load(file)
-
-#     for i in range(len(d)):
-#         dictionary[d[i]['commitAuthor']].add(d[i]['filesEdited'])
-
-
-#     print(dictionary)
-
-            # for j in range (len(dataClass.collaboratorsList)):
-            #     if d[i]['commitAuthor'] == dataClass.collaboratorsList[j]:
-            #         print(d[i]['commitAuthor'])
-            #         print("fin^")
-            #     # else:
-            #     #     print("1")
-            #     #     print(d[i]['commitAuthor'])
-            #     #     print("2")
-            #     #     print(dataClass.collaboratorsList[j])
-            # # print(d[i]['commitAuthor'])
-            # # print(d[i]['filesEdited'])
-        # print("\n")
 
 
 

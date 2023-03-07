@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <link rel="stylesheet" href="styles.css"> <!-- Link to my stylesheet -->
+        <h1>GitHub Results</h1>
+        <h2 id="repository">Results of classification for a specified repository:    </h2>
+        
+    </head>
+    <body>
+        <script>
+            // Get repository name
+            fetch('allCommitsInRepo.json')
+            .then(response => response.json())
+            .then(data => {
+                val = data.length - 1
+                
+                var repoName = document.getElementById('repository');
+                repoName.innerHTML += data[val]
+            })
+
+            //ensures reload of cache - stores until each new reload - https://hacks.mozilla.org/2016/03/referrer-and-cache-control-apis-for-fetch/
+            fetch('results.json', {cache: "reload"})
+                .then(response => response.json())
+                .then(data => {
+                    
+                    console.log(data[0])
+                    console.log(Object.keys(data[0]))
+
+                    table_html = ""   
+                    for (var i=0; i<data.length; i++){
+                        table_html = ""
+                        key = Object.keys(data[i])
+                        collaborator = key[0]
+                        table_html += "<div><h3>" + "Collaborator:  &nbsp" + collaborator +" </h3></div>"
+
+                        //retrieves 'files edited, addition, deletion, overall'
+                        listOfHeader = Object.keys(data[i][collaborator])
+                        console.log("Titles:" + listOfHeader)
+        
+                        for (var j=0; j< listOfHeader.length; j++){
+                            eachHeader = listOfHeader[j]
+                            console.log(listOfHeader[j])
+
+                            //contents of each 'files added'/ 'additions' / 'deletion' / 'overall' 
+                            // IF CONTENTS is just an array list (e.g., for files added), displays them, else fetches internals 
+                            contents =  data[i][collaborator][eachHeader]
+                            console.log("CONTENTS:", contents)
+                            
+                            if (Array.isArray(contents)){
+                                table_html += "&nbsp"
+                                table_html += "<div><div><h4><b>" + eachHeader+ ":</b>&nbsp"+ contents.join(", &nbsp") +"</h4></div>" 
+                            }
+                            else{
+                                table_html += "&nbsp"
+                                table_html += "<div><h4><b>" + eachHeader+ ":</b></h4></div>"
+                                getContentsOfList(data, eachHeader, contents)
+                            }
+                        }
+
+                        var resultsDiv = document.getElementById('display results');
+                        resultsDiv.innerHTML += table_html 
+                    }
+
+
+                    function getContentsOfList(data, eachHeader, contents){
+                        listOfTitles = Object.keys(contents)
+                        // console.log("INSIDE:" + listOfTitles)
+                        console.log("INSIDE:" + eachHeader)
+                        for (var i=0; i<listOfTitles.length; i++){
+                            values = contents[listOfTitles[i]]
+                            
+                            if (values == '[object Object]'){
+                                listOfObjects = Object.keys(values)
+                                console.log("OBJECT is:" + values)
+                                console.log(listOfObjects)
+
+                                
+                                //Sometimes tags hold empty list due to deletions thus consider empty case
+                                if (listOfObjects.length != 0){
+                                    table_html += "<div><div><div>" + listOfTitles[i]+ ":     "
+                                    getContentsOfDict(data, eachHeader, values, listOfObjects)
+                                }
+                                else {  //if it is 0:
+                                    console.log(listOfObjects)
+                                    // console.log("MISSING??" + listOfTitles[i])
+                                    table_html += "<div><div><div>" + listOfTitles[i]+ ":     <b>"+  0 +"</b></div></div></div>" 
+                                }
+                            }
+                            else{
+                                table_html += "<div><div><div>" + listOfTitles[i]+ ":      <b>"+  values +"</b></div></div></div>" 
+                            }
+                            console.log("key is:" + listOfTitles[i])
+                            console.log("value is:" + values)
+                        }
+     
+
+                    }
+                    function getContentsOfDict(data, eachHeader, values, listOfObjects){
+                        // console.log("REACHED HERE ---" +listOfObjects[0])
+                        console.log("HEREEEEE", listOfObjects[0])
+                        for (var i =0; i<listOfObjects.length; i++){
+                            item = listOfObjects[i]
+                            console.log("REACHED HERE ---" +values[item])
+                            table_html += "<b>&nbsp"+ item + "=      "+  values[item] +", &nbsp</b>"  
+                        }
+                        table_html += "</div></div></div></div></div>"
+                        //closes the divs
+
+                    }
+                })
+        </script>
+    </body>
+    <div id="display results">
+    </div>
+    
+</html>

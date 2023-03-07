@@ -17,7 +17,7 @@ from htmlParse import performClassificationOnHTMLInput
 # from pythonParsing import 
 
 
-"""Converts a set into a list object for JSON serialise purposes"""
+"""Converts a set into a list object for JSON serialize purposes"""
 def jsonSetSerializer(setObject):
     if isinstance(setObject, set):
         return list(setObject)
@@ -59,44 +59,46 @@ def storeJSONresults(dataClass):
         json.dump(dataClass.resultsListSeparate, file)
     
 
-def readAdditionsFromClass(dataClass):
-    commitData = dataClass.listOfDictionary
-    additions = []
-    # for i in range(len(commitData)):
-    print(0)
-    if (commitData[0]["additionsPerFile"][0]):
-        # print(commitData[i])
-        # sets all additions for specific commits into one list
-        contributor = commitData[0]["commitAuthor"]
-        # print(contributor)
-        additions = commitData[0]["additionsPerFile"][0]
-        # print(additions)
-        differentiateCodeTypes(dataClass, contributor, additions, True)
-        # else:
-        #     print("no addition here")
-    return additions
+# def readAdditionsFromClass(dataClass):
+#     commitData = dataClass.listOfDictionary
+#     additions = []
+#     # for i in range(len(commitData)):
+#     print(8)
+#     if (commitData[8]["additionsPerFile"][0]):
+#         # print(commitData[i])
+#         # sets all additions for specific commits into one list
+#         contributor = commitData[8]["commitAuthor"]
+#         print(contributor)
+#         additions = commitData[8]["additionsPerFile"][0]
+#         print(additions)
+#         differentiateCodeTypes(dataClass, contributor, additions, True)
+#         # else:
+#         #     print("no addition here")
+#     return additions
 
-"""Reads the deletionsPerFile item in the list of dictionaries of all commits made in a repository"""
-def readDeletionsFromClass(dataClass):
-    commitData = dataClass.listOfDictionary
-    deletions = []
-    # for i in range(len(commitData)):
-    print(0)
-    if (commitData[0]["deletionsPerFile"][0]):
-        contributor = commitData[0]["commitAuthor"]
-        # print(contributor)
-        deletions = commitData[0]["deletionsPerFile"][0]
-        # print(deletions)
-        # call function to differentiate the code types of each line and perform classification
-        differentiateCodeTypes(dataClass, contributor, deletions, False)
-    return deletions
+# """Reads the deletionsPerFile item in the list of dictionaries of all commits made in a repository"""
+# def readDeletionsFromClass(dataClass):
+#     commitData = dataClass.listOfDictionary
+#     deletions = []
+#     # for i in range(len(commitData)):
+#     print(8)
+#     if (commitData[8]["deletionsPerFile"][0]):
+#         contributor = commitData[8]["commitAuthor"]
+#         # print(contributor)
+#         deletions = commitData[8]["deletionsPerFile"][0]
+#         # print(deletions)
+#         # call function to differentiate the code types of each line and perform classification
+#         differentiateCodeTypes(dataClass, contributor, deletions, False)
+#     return deletions
 
+"''THIS IS REAL VERSIONS - USES ALLLLL COMMITS: "
 """Reads the additionsPerFile item in the list of dictionaries of all commits made in a repository"""
-def readAdditionsFromClassREAL(dataClass):
+def readAdditionsFromClass(dataClass):
     commitData = dataClass.listOfDictionary
     additions = []
     for i in range(len(commitData)):
         print(i)
+        print(commitData[i]["additionsPerFile"][0])
         if (commitData[i]["additionsPerFile"][0]):
             # print(commitData[i])
             # sets all additions for specific commits into one list
@@ -108,7 +110,7 @@ def readAdditionsFromClassREAL(dataClass):
     return additions
 
 """Reads the deletionsPerFile item in the list of dictionaries of all commits made in a repository"""
-def readDeletionsFromClassREAL(dataClass):
+def readDeletionsFromClass(dataClass):
     commitData = dataClass.listOfDictionary
     deletions = []
     for i in range(len(commitData)):
@@ -143,6 +145,11 @@ def differentiateCodeTypes(dataClass, contributor, listOfDictionariesForCommits,
                 print(" HTML FILES:")
                 # print(key)
                 retrieveHTMLCodeToParse(dataClass, contributor, key, val, increment)
+            elif key.endswith(".JSON"):
+                print(" JSON FILES:")
+                # print(key)
+                # retrieveHTMLCodeToParse(dataClass, contributor, key, val, increment)
+            # else: 
 
 
 
@@ -216,7 +223,7 @@ def retrievePythonCodeToParse(dataClass, contributor, filename, valueList, incre
     for valItem in valueList:
         spaces, spacesWithoutIndent, newLines, emptyLines, totalLines, comments = performClassificationOnPythonInput(valItem)
         codeLines = (totalLines - comments) - emptyLines
-
+        # PRINT STATEMENTS!!
         updateDataInResults(dataClass, contributor, increment, spaces=spaces, strippedSpaces=spacesWithoutIndent, newLines=newLines, emptyLines=emptyLines, comments=comments, codeLines=codeLines, totalLines=totalLines)
         print(dataClass.resultsListSeparate)
         print("\n")
@@ -242,6 +249,9 @@ def retrieveHTMLCodeToParse(dataClass, contributor, filename, valueList, increme
 
         spaces, spacesWithoutIndent, newLines, emptyLines, totalLines, htmlComments, tagCountDict, templateTagCountDict, evalVars = performClassificationOnHTMLInput(valItem)
         codeLines = (totalLines - htmlComments) - emptyLines
+        # printStatements
+
+
         # print("YIKES: \n",  templateTagCountDict)
         # print("YIKES: \n",  tagCountDict)
         updateDataInResults(
@@ -262,7 +272,7 @@ def retrieveHTMLCodeToParse(dataClass, contributor, filename, valueList, increme
         print("\n")
         
 
-def updateDataInResults(dataClass, contributor, increment, spaces = None, strippedSpaces =None, newLines = None, emptyLines = None, comments = None, codeLines = None, totalLines = None, HTMLcomments = None, HTMLtags=None, HTMLtemplateTags=None, HTMLevalVars=None):
+def updateDataInResults(dataClass, contributor, increment, spaces = None, strippedSpaces =None, newLines = None, emptyLines = None, comments = None, codeLines = None, totalLines = None, printStatements = None, HTMLcomments = None, HTMLtags=None, HTMLtemplateTags=None, HTMLevalVars=None):
     if increment == True: 
         additionsCategory = "additions"
         incrementResults(dataClass, contributor, "spaces", spaces, additionsCategory)
@@ -272,6 +282,7 @@ def updateDataInResults(dataClass, contributor, increment, spaces = None, stripp
         incrementResults(dataClass, contributor, "comment lines", comments, additionsCategory)
         incrementResults(dataClass, contributor, "code lines", codeLines, additionsCategory)
         incrementResults(dataClass, contributor, "total lines", totalLines, additionsCategory)
+        incrementResults(dataClass, contributor, "print statements", printStatements, additionsCategory)
         incrementResults(dataClass, contributor, "HTML comments", HTMLcomments, additionsCategory)
         incrementResults(dataClass, contributor, "HTML evaluation vars", HTMLevalVars, additionsCategory)
         incrementResults(dataClass, contributor, "HTML tags", None, additionsCategory, incrementTags= HTMLtags)
@@ -291,8 +302,8 @@ def updateDataInResults(dataClass, contributor, increment, spaces = None, stripp
         decrementResults(dataClass, contributor, "comment lines", comments, deletionsCategory)
         decrementResults(dataClass, contributor, "code lines", codeLines, deletionsCategory)
         decrementResults(dataClass, contributor, "total lines", totalLines, deletionsCategory)
+        decrementResults(dataClass, contributor, "print statements", printStatements, deletionsCategory)
         decrementResults(dataClass, contributor, "HTML comments", HTMLcomments, deletionsCategory)
-
         decrementResults(dataClass, contributor, "HTML evaluation vars", HTMLevalVars, deletionsCategory)
         decrementResults(dataClass, contributor, "HTML tags", None, deletionsCategory, decrementTags= HTMLtags)
         decrementResults(dataClass, contributor, "HTML template tags", None, deletionsCategory, decrementTemplateTags= HTMLtemplateTags)

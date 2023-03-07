@@ -2,22 +2,12 @@ from io import StringIO
 from antlr4 import *
 import sys
 sys.path.insert(0, '../antlrParserGeneratedCode')
+from Python3ParserListener import Python3ParserListener
 from Python3Lexer import Python3Lexer
 from Python3Parser import Python3Parser
-# sys.path.insert(0, '../antlrParserGeneratedCode')
-# from Python3Lexer import Python3Lexer
-# from Python3Parser import Python3Parser
-
 import numpy as np
 import re
-
-
-# """ Opens file and returns its contents"""
-# def openFile(filename):
-#     with open(filename, 'r') as file:
-#         realData = file.read()
-#     return realData
-
+"""Helper functions for python code parsing"""
 
 """ Opens file and returns its contents"""
 def openFile(filename):
@@ -59,6 +49,10 @@ def parseDataSingleInput(data):
     parser = Python3Parser(stream)
     # tree = parser.single_input()
     tree = parser.single_input()
+    # pythonListener = Python3ParserListener()
+    # walker = ParseTreeWalker()
+    # walker.walk(pythonListener, walker)
+    # ParseTreeWalker.DEFAULT.walk()
     return tree, parser
     # print(tree.toStringTree(recog=parser))
     # print("\n")
@@ -224,47 +218,29 @@ def countCommentsOnInputLine(line):
     # single # comments 
     if strippedLine.startswith("#"):
         commentLinesCount += 1
-        # print("startswith hash: ")
-        # print(strippedLine)
-        # print("\n")
 
     # triple """ or '''
     elif strippedLine.startswith('"""') or strippedLine.endswith('"""'):
         commentLinesCount += 1
-        # print("startswith triple '' or ends with it: ")
-        # print(strippedLine)
-        # print("\n")
     elif strippedLine.startswith("'''") or strippedLine.endswith("'''"):
         commentLinesCount += 1
-        # print("startswith triple ' or ends with it: ")
-        # print(strippedLine)
-        # print("\n")
 
     # single " or ' 
     elif strippedLine.startswith('"') or strippedLine.endswith('"'):
         commentLinesCount += 1
-        # print("startswith single '' or ends with it: ")
-        # print(strippedLine)
-        # print("\n")
     elif strippedLine.startswith("'") or strippedLine.endswith("'"):
         commentLinesCount += 1
-        # print("startswith single ' or ends with it: ")
-        # print(strippedLine)
-        # print("\n")
 
      #midline comments starting with # - not 100% accurate 
     elif "#" in strippedLine:
         commentLinesCount += 1
-        # print("mid hash:")
-        # print(strippedLine)
-        # print("\n")
 
     return commentLinesCount
 
 
-def countCommentsOnLineRegex(line):
-    strippedLine = line.strip()
-    commentLinesCount = 0
+# def countCommentsOnLineRegex(line):
+#     strippedLine = line.strip()
+#     commentLinesCount = 0
 
 
 
@@ -280,7 +256,8 @@ def performClassificationOnPythonInput(inputData):
 
     #PARSE TREE GENERATOR:
     tree, parser = parseDataSingleInput(inputData)
-    # print(tree.toStringTree(recog=parser))
+    result = tree.toStringTree(recog=parser)
+    print(result)
     # print("\n")
 
     #WHITE SPACE COUNTERS: 
@@ -289,6 +266,7 @@ def performClassificationOnPythonInput(inputData):
     newLines = countNewLines(inputData)
     # totalLines, emptyLines = countEmptyLines('testFile.py')
     totalLines, emptyLines = countEmptyLinesOfInput(inputData)
+
     print("Spaces:", spaces)
     print("Spaces without indents:", spacesWithoutIndent)
     print("Newlines:", newLines)
@@ -299,6 +277,15 @@ def performClassificationOnPythonInput(inputData):
     comments = countCommentsOnInputLine(inputData)
     # comments = count_comments('testFile.py')
     print("Comment Lines", comments)
+
+    printStatementCount, loopCount, conditionCount, importCount, funcCount, classCount = analyseCodeTypes(result)
+    print("Prints:", printStatementCount)
+    print("Loops:", loopCount)
+    print("Conditions:", conditionCount)
+    print("Imports:", importCount)
+    print("Functions:", funcCount)
+    print("ClassDefs:", classCount)   
+
 
     return spaces, spacesWithoutIndent, newLines, emptyLines, totalLines, comments
 
@@ -333,13 +320,134 @@ def performClassificationOnFile():
 
 
 
+
+# def findPrint(parsedItem):
+#     printStatementcount = 0
+#     loopCount = 0 
+#     conditionsCount = 0
+#     importCount = 0
+#     funcCount = 0 
+#     classCount = 0
+#     match parsedItem:
+#         # PRINT 
+#         case 'print))':
+#             print(" print") 
+#             printStatementcount +=1
+#         # LOOPS
+#         case '(while_stmt' | '(for_stmt':
+#             print(" WHILE")
+#             loopCount +=1
+#         # CONDITIONS
+#         case '(if_stmt' | '(match_stmt' :
+#             print(" CONDITION")
+#             conditionsCount += 1
+#         # IMPORTS
+#         case '(import_stmt':
+#             print(" IMPORT")
+#             importCount += 1
+#         # FUNCTIONS
+#         case '(funcdef':
+#             print(" FUNCTION")
+#             funcCount+= 1
+#         # CLASSES
+#         case '(classdef':
+#             print(" CLASS")
+#             classCount +=1
+        
+#     return printStatementcount, loopCount, conditionsCount, importCount, funcCount, classCount
+                # try_stmt
+            # case _:
+            #     print('Command not recognized')
+                # print(parsedData.split())
+
+# def analyseCodeTypes(parsedData):
+#     list =  parsedData.split()
+#     printStatementCount=0
+#     loopsCount = 0
+#     conditionCount = 0
+#     importCount = 0
+#     funcCount = 0
+#     classCount = 0
+#     for i in range(len(list)):
+#         # z = findMore(list[i])
+#         # if z != "":
+#         #     print(z)
+#         prints, loops, conditions, imports, functions, classDefs = findPrint(list[i])
+#         printStatementCount += prints
+#         loopsCount += loops
+#         conditionCount += conditions
+#         importCount+= imports
+#         funcCount += functions
+#         classCount += classDefs
+
+#         # loopsCount += findLoops(list[i])
+
+# # def findLoops(parsedItem):
+
+#     print(printStatementCount)
+#     print(loopsCount)
+#     print(conditionCount)
+#     print(importCount)
+#     print(funcCount)
+#     print(classCount)
+#     return printStatementCount, loopsCount, conditionCount, importCount, funcCount, classCount
+
+
+def analyseCodeTypes(parsedData):
+    list =  parsedData.split()
+    printStatementCount=0
+    loopCount = 0
+    conditionCount = 0
+    importCount = 0
+    funcCount = 0
+    classCount = 0
+    for i in range(len(list)):
+        match list[i]:
+            # PRINT 
+            case 'print))':
+                printStatementCount +=1
+            # LOOPS
+            case '(while_stmt' | '(for_stmt':
+                loopCount +=1
+            # CONDITIONS
+            case '(if_stmt' | '(match_stmt':
+                conditionCount += 1
+            # IMPORTS
+            case '(import_stmt':
+                importCount += 1
+            # FUNCTIONS
+            case '(funcdef':
+                funcCount+= 1
+            # CLASSES
+            case '(classdef':
+                classCount +=1
+    return printStatementCount, loopCount, conditionCount, importCount, funcCount, classCount
+
+
+def testing():
+    CODE = "if a: print(a)"
+    # strippedData = data.strip()
+    # Add \n for end of file - antlr requires 
+    input_stream = InputStream(f'{CODE}\n')
+    lexer = Python3Lexer(input_stream)
+    stream = CommonTokenStream(lexer)
+    parser = Python3Parser(stream)
+    # tree = parser.single_input()
+    tree = parser.single_input()
+    result = tree.toStringTree(recog=parser)
+
+    print(result)
+    analyseCodeTypes(result)
+    
+    return tree, parser
+
+
+
 # if __name__ == '__main__':
 #     main()
 
 if __name__ == '__main__':
-    # allows you to call openJsonFile() from terminal 
     globals()[sys.argv[1]]()
-    # RUN: python3 parserHelper.py openJsonFile 
 
 
 

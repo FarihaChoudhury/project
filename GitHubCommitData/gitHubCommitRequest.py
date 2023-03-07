@@ -35,31 +35,18 @@ def specifcFileGitHubQuery(owner, repo, filename):
     return specificFileURL
 
 
-"""Conducts the API get command with provided url and headers, and returns its response"""
-def getGitHubResponseWithHeaders(collaboratorsURL, headers):
-    response = requests.get(collaboratorsURL, headers=headers)
+"""Conducts the API get command with provided url and returns its response, takes headers as an optional parameter"""
+def getGitHubResponse(url, headers=None):
+    if headers: 
+        response = requests.get(url, headers=headers)
+    else:
+        response = requests.get(url)
     return response
-
-"""Conducts the API get command with provided url and returns its response"""
-def getGitHubResponse(url):
-    response = requests.get(url)
-    return response
-
-# """Retrieves the collaborators and commit details of a single repository"""
-# def getGitHubCommitData(collaboratorsURL, commitURL, filesURL, headers):
-#     collaboratorsResponse = requests.get(collaboratorsURL, headers=headers)
-#     allCommitsResponse = requests.get(commitURL)
-#     allFilesResponse = requests.get(filesURL)
-
-#     return collaboratorsResponse, allCommitsResponse, allFilesResponse
-
-
 
 """Converts the GitHub API response into JSON format"""
 def convertGitHubResponseToJson(response):
     jsonResponse = response.json()
     return jsonResponse
-
 
 """Query all file names to return list of all filenames"""
 def getFilenamesList(files):
@@ -74,17 +61,7 @@ def getCollaboratorsOfFile(file):
     collaboratorsOfFile = []
     for i in range(len(file)):
         collaboratorsOfFile.append(file[i]["author"]["login"])
-        # print (file[i]["author"]["login"])
-    # print(len(file))
     return collaboratorsOfFile
-
-# def convertGitHubResponseToJson(collaboratorsResponse, allCommitsResponse):
-#     collaborators = collaboratorsResponse.json()
-#     commits = allCommitsResponse.json()
-#     # print("LOOK HERE:....")
-#     # print (commits[1])
-#     return collaborators, commits
-
 
 """Store GitHub API collaborators response in a list"""
 def storeCollaboratorInList(collaborators):
@@ -92,10 +69,7 @@ def storeCollaboratorInList(collaborators):
     for i in range(len(collaborators)):
         collaboratorsList.append(collaborators[i]["login"])
         # collaboratorsList.append(collaborators[i]["id"])    to include collaborator unique i
-
-    """PRINT COLLABORATORS::::"""
     # printCollaborators(collaboratorsList)
-
     return collaboratorsList
 
 
@@ -108,7 +82,7 @@ def printCollaborators(collaboratorsList):
 """Store GitHub API commit response in a list of dictionaries"""
 def storeCommitsInListOfDictionaries(allCommits, OWNER, REPO, headers):
     listOfDictionary = [{} for x in range(len(allCommits))]
-    size = len(allCommits)
+    # size = len(allCommits)
     # EACH COMMIT DATA:
     for i in range(len(allCommits)):
         commitSha = allCommits[i]['sha']
@@ -132,7 +106,6 @@ def storeCommitsInListOfDictionaries(allCommits, OWNER, REPO, headers):
         for file in commit["files"]:
             x=0
             filenames.append(file["filename"])
-            
         
             patchCode = file["patch"]  # string contains code for whole file, includes the initial @@ -1,3 +1,6 @@ (AKA 'diff')
             # Remove: @@ .... @@
@@ -151,21 +124,13 @@ def storeCommitsInListOfDictionaries(allCommits, OWNER, REPO, headers):
             for j in range(len(lines)):
                 if lines[j].startswith("+"):
                     additionsList.append(lines[j][1:])    # [1:]removes the +/ - from beginning of lines
-                    # additionsForFile[x][file["filename"]].append(lines[j][1:])
                     additionsPerFile.append(lines[j][1:])
-                    # print(filenames)
-                    # print(lines[j][1:])
-                    # print("\n")
                 if lines[j].startswith("-"):
                     deletionsList.append(lines[j][1:])
-                    # print("here:")
-                    # if deletionsForFile[x][file["filename"]]
                     """append to per file list so it can be accumulated at the end """
-                    # print(deletionsForFile[x][file["filename"]])
-                    # deletionsForFile[x][file["filename"]].append(lines[j][1:])
                     deletionsPerFile.append(lines[j][1:])
                 else:
-                    allCommitLinesList.append(lines[j][1:])   #  add all lines from commit file
+                    allCommitLinesList.append(lines[j][1:])   #  add all lines from commit file - DO I EVEN NEED??
             # checks if there was any additions/deletions in current commit => if so then adds to accumulated dictionary 
             if len(additionsPerFile) != 0:
                 additionsForFile[x][file["filename"]] = additionsPerFile
@@ -180,45 +145,26 @@ def storeCommitsInListOfDictionaries(allCommits, OWNER, REPO, headers):
         listOfDictionary[i]["commitAuthor"] = commitAuthor
         listOfDictionary[i]["commitSha"] = commitSha
         listOfDictionary[i]["filesEdited"] = filenames
-        listOfDictionary[i]["commitFileLinesAsList"] = allCommitLinesList  # separates lines into items of list
-        listOfDictionary[i]["pythonCode"] = allCommitCodeListAsOneString
+        listOfDictionary[i]["commitFileLinesAsList"] = allCommitLinesList  # i dont really use it
+        listOfDictionary[i]["pythonCode"] = allCommitCodeListAsOneString  # i dont really ever use it 
         listOfDictionary[i]["additions"] = additionsList
         listOfDictionary[i]["additionsPerFile"] = additionsForFile
         listOfDictionary[i]["deletions"] = deletionsList
         listOfDictionary[i]["deletionsPerFile"] = deletionsForFile
 
-    # print(additionsForFile)
-    # print("\n LOOK AT ALL DATA::")
     """PRINT ALL COMMITS INFO::::"""
     # printListOfDictionaries(listOfDictionary)
-    return listOfDictionary, size
+    # return listOfDictionary, size
+    return listOfDictionary
 
 
 """Prints content of list of dictionary which holds commit data for each commit made in specified repository"""
 def printListOfDictionaries(listOfDictionary):
     print("List of dictionary:")
-    # print each index with space between:
-    # listOfDictionary[0]
     for i in range(len(listOfDictionary)):
         print(listOfDictionary[i])
         print("\n")
-    print("done")
 
-
-
-"""Saves content of the list of dictionaries onto a .txt file and a .JSON file"""     
-def storeDataInFile(listOfDictionary):
-    # Saves content of each commit into a text file
-    # with open('commitDataForRepo.txt', 'w') as file:
-    #     for commit in listOfDictionary:
-    #         file.write(str(commit))
-    #         file.write("\n")
-
-    # Saves content of all commits (list of dictionaries) into a JSON
-    with open('allCommitsInRepo.json', 'w') as file:
-        json.dump(listOfDictionary, file)
-    
-    return 'commitDataForRepo.txt', 'allCommitsInRepo.json'
 
 
     

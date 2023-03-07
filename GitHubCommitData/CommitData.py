@@ -4,6 +4,7 @@ import json
 
 
 class dataClass:
+    listOfDictionary=[{}]
     collaboratorsList = []
     filenames = [{}]
     results= [{}]
@@ -22,10 +23,11 @@ class dataClass:
         self.collaboratorsList = collaborators
 
 
-    def createListOfDictionary(self, size):
-        self.listOfDictionary = [{} for x in range(size)]
+    # def createListOfDictionary(self, size):
+    #     self.listOfDictionary = [{} for x in range(size)]
     
     def setListOfDictionary(self, commitData):
+        # self.listOfDictionary = commitData
         self.listOfDictionary = commitData
         # print(self.listOfDictionary)
     
@@ -69,10 +71,17 @@ class dataClass:
             contributorData["comment lines"]= 0
             contributorData["code lines"]= 0
             contributorData["total lines"]= 0
+            contributorData["print statements"]= 0
+            contributorData["conditionals"]= 0
+            contributorData["loops"]= 0
+            contributorData["imports"]= 0
+            contributorData["functions"]= 0
+            contributorData["class definitions"]= 0
             contributorData["HTML comments"] = 0
             contributorData["HTML tags"]= {}
             contributorData["HTML template tags"]= {}
             contributorData["HTML evaluation vars"] = 0
+
            
             additions["additions"].update(contributorData)
             deletions["deletions"].update(contributorData)
