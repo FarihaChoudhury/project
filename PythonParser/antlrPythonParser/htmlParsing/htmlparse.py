@@ -12,14 +12,12 @@ def identifyHTMLtags(inputData):
     # Create a new parser object and feed it the HTML code
     htmlParser = HTMLParserClass()
     htmlParser.feed(inputData.strip())
-
     tagCountDict={}
 
     # Print out the tag types and their counts
     for tag, count in htmlParser.tagTypesDictionary.items():
         temp = {tag: count}
         tagCountDict.update(temp)
-        # print(f"Tag {tag}: {count}")
     
     return tagCountDict
     # gives a dictionary for each line of code --- 
@@ -39,6 +37,7 @@ def identifyDjangoTemplateTags(inputData):
             templateTag[first_word]=1
     return templateTag
 
+
 """Identifies HTML Evaluation variables
     - finds {{, keeps count of occurrence """
 def identifyHTMLEvaluationVars(inputData):
@@ -51,16 +50,12 @@ def identifyHTMLEvaluationVars(inputData):
         \b ensures that the match stops at the end of the first word after the {% delimiter}}"""
 
 
-
-
-
 """Counts the number comments in a html line of code 
     - includes: <!-- and --> comments
     - Also inline comments """
 def countHTMLComments(line):
     strippedLine = line.strip()
     commentLinesCount = 0
-
     # checks for <!-- starting lines comments 
     if strippedLine.startswith("<!--"):
         commentLinesCount += 1
@@ -85,7 +80,6 @@ def performClassificationOnHTMLInput(inputData):
     spaces = countWhitespaces(inputData)
     spacesWithoutIndent = countWhitespaces(inputData.strip())
     newLines = countNewLines(inputData)
-
     totalLines, emptyLines = countEmptyLinesOfInput(inputData)
 
     #COMMENTS COUNTER: inputData
@@ -95,7 +89,6 @@ def performClassificationOnHTMLInput(inputData):
     tagCountDict = identifyHTMLtags(inputData)
     templateTagCountDict = identifyDjangoTemplateTags(inputData)
     evalVars = identifyHTMLEvaluationVars(inputData)
-
 
     return spaces, spacesWithoutIndent, newLines, emptyLines, totalLines, htmlComments, tagCountDict, templateTagCountDict, evalVars
 
