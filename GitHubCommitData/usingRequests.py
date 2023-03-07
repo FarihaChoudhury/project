@@ -2,20 +2,10 @@ import json
 import sys
 from CommitData import dataClass
 from gitHubCommitRequest import getCollaboratorsOfFile
-"""RUN FROM THIS FILE TO GET CODE CONTRIBUTION DATA"""
-
-# sys.path.insert(0, '../pythonParsing')
+from textParse import filterFilenames
 from gitHubCommitRequest import set_up, specifcFileGitHubQuery, getGitHubResponse, convertGitHubResponseToJson, storeCollaboratorInList, storeCommitsInListOfDictionaries, getFilenamesList
-
-
-    # # FOR CONTRIBUTORS OF SPECIFIC FILE:
-    # print("\n collaborators of specific file")
-    # specificFileResponse = requests.get(specificFileURL)
-    # specificFileContent = specificFileResponse.json()
-    # for i in range(len(specificFileContent)):
-    #     print(specificFileContent[i]["author"]["login"])
-
-    # print(specificFileContent[])
+# sys.path.insert(0, '../pythonParsing')
+"""RUN FROM THIS FILE TO GET CODE CONTRIBUTION DATA"""
 
 
 def codeContributionOf():
@@ -73,15 +63,14 @@ def codeContributionOf():
     - populates dictionary of collaborators for each file """
 def contributorsOfEachFile(owner, repo, allFiles, headers, dataClassObject):
     for filename in allFiles:
-        # print(filename)
-        specificFileURL = specifcFileGitHubQuery(owner, repo, filename)
-        specificFileResponse = getGitHubResponse(specificFileURL, headers)
-        file = convertGitHubResponseToJson(specificFileResponse)
-        collaboratorsOfFileList = getCollaboratorsOfFile(file)
-        # print(collaboratorsOfFileList)
+        if filterFilenames(filename):
+            specificFileURL = specifcFileGitHubQuery(owner, repo, filename)
+            specificFileResponse = getGitHubResponse(specificFileURL, headers)
+            file = convertGitHubResponseToJson(specificFileResponse)
+            collaboratorsOfFileList = getCollaboratorsOfFile(file)
 
-        for collaborator in collaboratorsOfFileList:
-            dataClassObject.setFilenamesDictionaryValues(collaborator, filename)
+            for collaborator in collaboratorsOfFileList:
+                dataClassObject.setFilenamesDictionaryValues(collaborator, filename)
 
 
 """Saves content of the list of dictionaries onto a .JSON file"""     
@@ -93,21 +82,21 @@ def storeDataInFile(listOfDictionary, filename):
     return 'allCommitsInRepo.json'
 
 
-"""Opens JSON file and prints its content for the last commit made [0]"""
-def openJsonFile(jsonFile):
-    print("JSON FILE: ")
-    with open(jsonFile, 'r') as file:
-        d = json.load(file)
-        # print(d)
+# """Opens JSON file and prints its content for the last commit made [0]"""
+# def openJsonFile(jsonFile):
+#     print("JSON FILE: ")
+#     with open(jsonFile, 'r') as file:
+#         d = json.load(file)
+#         # print(d)
 
-    print("\n")
-    print(d[0]['commitAuthor'])
-    print(d[0]['filesEdited'])
-    # print(d[0]['pythonCode'])
-    print(d[0]['additions'])
-    print(d[0]["additionsPerFile"])
-    print(d[0]['deletions'])
-    print(d[0]["deletionsPerFile"])
+#     print("\n")
+#     print(d[0]['commitAuthor'])
+#     print(d[0]['filesEdited'])
+#     # print(d[0]['pythonCode'])
+#     print(d[0]['additions'])
+#     print(d[0]["additionsPerFile"])
+#     print(d[0]['deletions'])
+#     print(d[0]["deletionsPerFile"])
 
 
 

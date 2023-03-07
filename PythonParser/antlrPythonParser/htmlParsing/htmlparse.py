@@ -1,7 +1,7 @@
 import sys
 import re
 sys.path.insert(0, '../pythonParsing')
-from parserHelper import countEmptyLinesOfFile, countEmptyLinesOfInput, countWhitespaces, countNewLines, openFile
+from parserHelper import countEmptyLinesOfInput, countWhitespaces, countNewLines, openFile
 from pythonHTMLparser import HTMLParserClass
 
 """Helper functions for HTML code parsing"""
@@ -23,9 +23,6 @@ def identifyHTMLtags(inputData):
     
     return tagCountDict
     # gives a dictionary for each line of code --- 
-
-
-
 
 
 

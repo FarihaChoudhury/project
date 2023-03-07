@@ -250,21 +250,15 @@ def countCommentsOnInputLine(line):
     - performs classifications and prints to terminal
     - returns these """
 def performClassificationOnPythonInput(inputData):
-    # to be in antlr form: need to strip -- and include new line-- but done in parseDataSingleInput
-        # strippedData = inputData.strip()
-        # data = f'{strippedData}\n'
-
     #PARSE TREE GENERATOR:
     tree, parser = parseDataSingleInput(inputData)
     result = tree.toStringTree(recog=parser)
     print(result)
-    # print("\n")
 
     #WHITE SPACE COUNTERS: 
     spaces = countWhitespaces(inputData)
     spacesWithoutIndent = countWhitespaces(inputData.strip())
     newLines = countNewLines(inputData)
-    # totalLines, emptyLines = countEmptyLines('testFile.py')
     totalLines, emptyLines = countEmptyLinesOfInput(inputData)
 
     print("Spaces:", spaces)
@@ -278,17 +272,106 @@ def performClassificationOnPythonInput(inputData):
     # comments = count_comments('testFile.py')
     print("Comment Lines", comments)
 
-    printStatementCount, loopCount, conditionCount, importCount, funcCount, classCount = analyseCodeTypes(result)
+    printStatementCount, loopCount, conditionCount, importCount, funcCount, classCount, classDefinition, viewCount, modelCount, formCount= analyseCodeTypes(result)
     print("Prints:", printStatementCount)
     print("Loops:", loopCount)
     print("Conditions:", conditionCount)
     print("Imports:", importCount)
     print("Functions:", funcCount)
     print("ClassDefs:", classCount)   
+    print("classDef list:", classDefinition)
 
 
-    return spaces, spacesWithoutIndent, newLines, emptyLines, totalLines, comments
+    return spaces, spacesWithoutIndent, newLines, emptyLines, totalLines, comments, printStatementCount, loopCount, conditionCount, importCount, funcCount, classCount, classDefinition, viewCount, modelCount, formCount
 
+
+
+def analyseCodeTypes(parsedData):
+    list =  parsedData.split()
+    printStatementCount=0
+    loopCount = 0
+    conditionCount = 0
+    importCount = 0
+    funcCount = 0
+    classCount = 0 
+    className=""
+    for i in range(len(list)):
+        match list[i]:
+            # PRINT 
+            case 'print))':
+                printStatementCount +=1
+            # LOOPS
+            case '(while_stmt' | '(for_stmt':
+                loopCount +=1
+            # CONDITIONS
+            case '(if_stmt' | '(match_stmt':
+                conditionCount += 1
+            # IMPORTS
+            case '(import_stmt':
+                importCount += 1
+            # FUNCTIONS
+            case '(funcdef':
+                funcCount+= 1
+            # CLASSES
+            case '(classdef':
+                # +3 to get the name from the antlr result of ..(classdef class (name UserModelTestCase) => UserModelTestCase)
+                className = removeBracket(list[i+3])
+                classCount +=1
+
+    # Checks if the class is a view, model, form or none
+    viewCount, modelCount, formCount = viewModelFormChecker(className, parsedData)
+    print("", viewCount, modelCount, formCount)
+
+    return printStatementCount, loopCount, conditionCount, importCount, funcCount, classCount, className, viewCount, modelCount, formCount
+
+def viewModelFormChecker(className, parsedData):
+    viewCount = 0
+    modelCount = 0
+    formCount = 0 
+    if (className):
+        if not "TestCase" in parsedData:
+            if "View" in parsedData:
+                print("VIEW FOUND")
+                viewCount += 1
+            elif "Form" in parsedData:
+                print("FORM FOUND")
+                formCount += 1
+            elif "Model" in parsedData:
+                print("MODEL FOUND")
+                modelCount += 1
+
+    return viewCount, modelCount, formCount
+        # # define variables here to avoid repetition
+        # viewCount, modelCount, formCount = checkViews(parsedData, viewCount, modelCount, formCount)
+        # print("", viewCount, modelCount, formCount)
+
+
+
+def removeBracket(className):
+    if className.endswith(")"):
+        return className[:-1]
+    else:
+        return className
+
+
+
+def testing():
+    CODE = "class Post(models.Model):"
+    # CODE = "class dataClass:"
+    # strippedData = data.strip()
+    # Add \n for end of file - antlr requires 
+    input_stream = InputStream(f'{CODE}\n')
+    lexer = Python3Lexer(input_stream)
+    stream = CommonTokenStream(lexer)
+    parser = Python3Parser(stream)
+    # tree = parser.single_input()
+    tree = parser.single_input()
+    result = tree.toStringTree(recog=parser)
+
+    print(result)
+    analyseCodeTypes(result)
+    
+    return tree, parser
 
 
 # def main():
@@ -318,154 +401,8 @@ def performClassificationOnFile():
     comments = count_comments('testFile.py')
     print("Comment Lines", comments)
 
-
-
-
-# def findPrint(parsedItem):
-#     printStatementcount = 0
-#     loopCount = 0 
-#     conditionsCount = 0
-#     importCount = 0
-#     funcCount = 0 
-#     classCount = 0
-#     match parsedItem:
-#         # PRINT 
-#         case 'print))':
-#             print(" print") 
-#             printStatementcount +=1
-#         # LOOPS
-#         case '(while_stmt' | '(for_stmt':
-#             print(" WHILE")
-#             loopCount +=1
-#         # CONDITIONS
-#         case '(if_stmt' | '(match_stmt' :
-#             print(" CONDITION")
-#             conditionsCount += 1
-#         # IMPORTS
-#         case '(import_stmt':
-#             print(" IMPORT")
-#             importCount += 1
-#         # FUNCTIONS
-#         case '(funcdef':
-#             print(" FUNCTION")
-#             funcCount+= 1
-#         # CLASSES
-#         case '(classdef':
-#             print(" CLASS")
-#             classCount +=1
-        
-#     return printStatementcount, loopCount, conditionsCount, importCount, funcCount, classCount
-                # try_stmt
-            # case _:
-            #     print('Command not recognized')
-                # print(parsedData.split())
-
-# def analyseCodeTypes(parsedData):
-#     list =  parsedData.split()
-#     printStatementCount=0
-#     loopsCount = 0
-#     conditionCount = 0
-#     importCount = 0
-#     funcCount = 0
-#     classCount = 0
-#     for i in range(len(list)):
-#         # z = findMore(list[i])
-#         # if z != "":
-#         #     print(z)
-#         prints, loops, conditions, imports, functions, classDefs = findPrint(list[i])
-#         printStatementCount += prints
-#         loopsCount += loops
-#         conditionCount += conditions
-#         importCount+= imports
-#         funcCount += functions
-#         classCount += classDefs
-
-#         # loopsCount += findLoops(list[i])
-
-# # def findLoops(parsedItem):
-
-#     print(printStatementCount)
-#     print(loopsCount)
-#     print(conditionCount)
-#     print(importCount)
-#     print(funcCount)
-#     print(classCount)
-#     return printStatementCount, loopsCount, conditionCount, importCount, funcCount, classCount
-
-
-def analyseCodeTypes(parsedData):
-    list =  parsedData.split()
-    printStatementCount=0
-    loopCount = 0
-    conditionCount = 0
-    importCount = 0
-    funcCount = 0
-    classCount = 0
-    for i in range(len(list)):
-        match list[i]:
-            # PRINT 
-            case 'print))':
-                printStatementCount +=1
-            # LOOPS
-            case '(while_stmt' | '(for_stmt':
-                loopCount +=1
-            # CONDITIONS
-            case '(if_stmt' | '(match_stmt':
-                conditionCount += 1
-            # IMPORTS
-            case '(import_stmt':
-                importCount += 1
-            # FUNCTIONS
-            case '(funcdef':
-                funcCount+= 1
-            # CLASSES
-            case '(classdef':
-                classCount +=1
-    return printStatementCount, loopCount, conditionCount, importCount, funcCount, classCount
-
-
-def testing():
-    CODE = "if a: print(a)"
-    # strippedData = data.strip()
-    # Add \n for end of file - antlr requires 
-    input_stream = InputStream(f'{CODE}\n')
-    lexer = Python3Lexer(input_stream)
-    stream = CommonTokenStream(lexer)
-    parser = Python3Parser(stream)
-    # tree = parser.single_input()
-    tree = parser.single_input()
-    result = tree.toStringTree(recog=parser)
-
-    print(result)
-    analyseCodeTypes(result)
-    
-    return tree, parser
-
-
-
 # if __name__ == '__main__':
 #     main()
 
 if __name__ == '__main__':
     globals()[sys.argv[1]]()
-
-
-
-# HOW TO RUN:
-# Go to project folder (outside antlr folder) 
-# run: python3 main.py  :))) be happy im proud of you 
-
-
-# def main():
-
-#     # input_stream = InputStream('print("hello world")\n')
-#     # print(testFile)
-
-#     # filename = 'testingText.txt'
-#     # data = np.loadtxt(filename, delimiter=',', dtype=str)
-#     # print(data)
-
-#     with open('testingText.txt') as file:
-#         data = file.read()
-
-#     # print(data)

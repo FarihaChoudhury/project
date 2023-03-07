@@ -13,8 +13,7 @@
             fetch('allCommitsInRepo.json')
             .then(response => response.json())
             .then(data => {
-                val = data.length - 1
-                
+                val = data.length - 1 //get last item in list
                 var repoName = document.getElementById('repository');
                 repoName.innerHTML += data[val]
             })
