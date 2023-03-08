@@ -11,6 +11,13 @@
         "./PythonParser",
         "./PythonParser/antlrPythonParser/htmlParsing",
         "./GitHubCommitData",
-        "./PythonParser/antlrPythonParser"
+        "./PythonParser/antlrPythonParser",
+        "./Classification/antlrPythonParser/pythonParsing",
+        "./Classification/antlrPythonParser/textParsing",
+        "./Classification/antlrPythonParser/htmlParsing",
+        "./Classification/Parsing/pythonParsing",
+        "./Classification/Parsing/textParsing",
+        "./Classification/Parsing/htmlParsing",
+        "./Classification/Parsing/antlrParserGeneratedCode"
     ]
 }

@@ -2,7 +2,7 @@ from io import StringIO
 from antlr4 import *
 import sys
 sys.path.insert(0, '../antlrParserGeneratedCode')
-from Python3ParserListener import Python3ParserListener
+# from Python3ParserListener import Python3ParserListener
 from Python3Lexer import Python3Lexer
 from Python3Parser import Python3Parser
 import numpy as np
@@ -20,7 +20,7 @@ def parseDataSingleInput(data):
     lexer = Python3Lexer(input_stream)
     stream = CommonTokenStream(lexer)
     parser = Python3Parser(stream)
-    tree = parser.single_input()
+    tree = parser.single_input()  #May print error message to terminal - this is handled by ANTLR and can be ignored
     # print(tree.toStringTree(recog=parser))
     # print("\n")
     return tree, parser
@@ -42,7 +42,6 @@ def countNewLines(data):
 
 """ Counts empty lines of code from input text and total lines of code """
 def countEmptyLinesOfInput(inputData):
-    # print("need to fix")
     totalLines = 1
     emptyLines = 0
     if not inputData.strip():
@@ -143,6 +142,7 @@ def analyseCodeTypes(parsedData):
                 classCount +=1
     # Checks if the class is a view, model, form or none
     viewCount, modelCount, formCount = viewModelFormChecker(className, parsedData)
+
     # print("", viewCount, modelCount, formCount)
     return printStatementCount, loopCount, conditionCount, importCount, funcCount, classCount, className, viewCount, modelCount, formCount
 

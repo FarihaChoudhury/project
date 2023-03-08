@@ -4,10 +4,10 @@ import sys
 # from CommitData import dataClass
 # from antlrPythonParser.htmlParsing.htmlParse import performClassificationOnHTMLInput
 # from PythonParser.antlrPythonParser.textParsing.textParse import performClassificationOnTextInput
-sys.path.insert(0, '../PythonParser/antlrPythonParser/pythonParsing')
-sys.path.insert(0, '../PythonParser/antlrPythonParser/htmlParsing')
-sys.path.insert(0, '../PythonParser/antlrPythonParser/textParsing')
-sys.path.insert(0, '../PythonParser/antlrPythonParser/antlrParserGeneratedCode')
+sys.path.insert(0, '../Classification/Parsing/pythonParsing')
+sys.path.insert(0, '../Classification/Parsing/htmlParsing')
+sys.path.insert(0, '../Classification/Parsing/textParsing')
+sys.path.insert(0, '../Classification/Parsing/antlrParserGeneratedCode')
 from pythonParse import performClassificationOnPythonInput
 from textParse import performClassificationOnTextInput
 from htmlParse import performClassificationOnHTMLInput
@@ -97,7 +97,6 @@ def readAdditionsFromClass(dataClass):
     additions = []
     for i in range(len(commitData)):
         print(i)
-        print(commitData[i]["additionsPerFile"][0])
         if (commitData[i]["additionsPerFile"][0]):
             # print(commitData[i])
             # sets all additions for specific commits into one list
