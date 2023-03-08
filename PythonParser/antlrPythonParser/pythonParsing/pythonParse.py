@@ -91,22 +91,19 @@ def performClassificationOnPythonInput(inputData):
     result = tree.toStringTree(recog=parser)
     print(result)
 
-    #WHITE SPACE COUNTERS: 
     spaces = countWhitespaces(inputData)
     spacesWithoutIndent = countWhitespaces(inputData.strip())
     newLines = countNewLines(inputData)
     totalLines, emptyLines = countEmptyLinesOfInput(inputData)
+    comments = countCommentsOnInputLine(inputData)
+
+    printStatementCount, loopCount, conditionCount, importCount, funcCount, classCount, classDefinition, viewCount, modelCount, formCount= analyseCodeTypes(result)
     # print("Spaces:", spaces)
     # print("Spaces without indents:", spacesWithoutIndent)
     # print("Newlines:", newLines)
     # print("Empty Lines:", emptyLines)
     # print("Total lines:", totalLines)
-
-    #COMMENTS COUNTER:
-    comments = countCommentsOnInputLine(inputData)
-    print("Comment Lines", comments)
-    #OTHERS
-    printStatementCount, loopCount, conditionCount, importCount, funcCount, classCount, classDefinition, viewCount, modelCount, formCount= analyseCodeTypes(result)
+    # print("Comment Lines", comments)
     # print("Prints:", printStatementCount)
     # print("Loops:", loopCount)
     # print("Conditions:", conditionCount)
@@ -144,7 +141,6 @@ def analyseCodeTypes(parsedData):
                 # +3 to get the name from the antlr result of ..(classdef class (name UserModelTestCase) => UserModelTestCase)
                 className = removeBracket(list[i+3])
                 classCount +=1
-
     # Checks if the class is a view, model, form or none
     viewCount, modelCount, formCount = viewModelFormChecker(className, parsedData)
     # print("", viewCount, modelCount, formCount)
@@ -169,7 +165,7 @@ def viewModelFormChecker(className, parsedData):
         # viewCount, modelCount, formCount = checkViews(parsedData, viewCount, modelCount, formCount)
         # print("", viewCount, modelCount, formCount)
 
-"""Removes bracket from parse tree result of classnames"""
+"""Removes bracket from parse tree result of class names"""
 def removeBracket(className):
     if className.endswith(")"):
         return className[:-1]

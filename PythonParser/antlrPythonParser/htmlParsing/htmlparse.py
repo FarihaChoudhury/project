@@ -6,7 +6,6 @@ from pythonHTMLparser import HTMLParserClass
 
 """Helper functions for HTML code parsing"""
 
-
 """identifies <..> tags"""
 def identifyHTMLtags(inputData):
     # Create a new parser object and feed it the HTML code
@@ -14,14 +13,12 @@ def identifyHTMLtags(inputData):
     htmlParser.feed(inputData.strip())
     tagCountDict={}
 
-    # Print out the tag types and their counts
     for tag, count in htmlParser.tagTypesDictionary.items():
         temp = {tag: count}
         tagCountDict.update(temp)
     
     return tagCountDict
     # gives a dictionary for each line of code --- 
-
 
 
 """ Identifies Django template tags
@@ -69,22 +66,16 @@ def countHTMLComments(line):
     return commentLinesCount
 
 
-
-
 """Performs classification on the HTML code inputted
     - takes input in terms of code text, not a file
     - performs classifications and prints to terminal
     - returns these """
 def performClassificationOnHTMLInput(inputData):
-    # WHITE SPACE COUNTERS: 
     spaces = countWhitespaces(inputData)
     spacesWithoutIndent = countWhitespaces(inputData.strip())
     newLines = countNewLines(inputData)
     totalLines, emptyLines = countEmptyLinesOfInput(inputData)
-
-    #COMMENTS COUNTER: inputData
     htmlComments = countHTMLComments(inputData)
-
     # retrieves tags, template tags, and evaluation variables
     tagCountDict = identifyHTMLtags(inputData)
     templateTagCountDict = identifyDjangoTemplateTags(inputData)
