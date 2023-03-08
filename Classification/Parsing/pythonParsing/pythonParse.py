@@ -88,7 +88,7 @@ def performClassificationOnPythonInput(inputData):
     #PARSE TREE GENERATOR:
     tree, parser = parseDataSingleInput(inputData)
     result = tree.toStringTree(recog=parser)
-    print(result)
+    # print(result)
 
     spaces = countWhitespaces(inputData)
     spacesWithoutIndent = countWhitespaces(inputData.strip())

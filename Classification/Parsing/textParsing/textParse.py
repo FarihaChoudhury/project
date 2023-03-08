@@ -15,7 +15,7 @@ def performClassificationOnTextInput(inputData):
 """Filters filenames by specific file extensions and returns false for these"""
 def filterFilenames(filename):
     invalidFilenames = (".eot",".svg","ttf","woff",".yml",".xml",".iml",".gitignore",".coveragerc", ".idea", ".vscode", "__pycache__", 
-                        "django.yml", "__init__.py", "requirements.txt", "manage.py", "wsgi.py", "asgi.py")
+                        "django.yml", "__init__.py", "requirements.txt", "manage.py", "wsgi.py", "asgi.py", "Procfile", )
 
     # match filename:
     #     case "django.yml":

@@ -22,6 +22,7 @@ def set_up(owner, repo, accessToken):
 
     # COLLABORATORS DATA: name and repository ID
     collaboratorsURL = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/collaborators"
+
     commitURL = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/commits"
     filesURL =  "https://api.github.com/repos/"+ OWNER + "/" + REPO +"/git/trees/"+ BRANCH +"?recursive=1"
    
@@ -42,10 +43,11 @@ def getGitHubResponse(url, headers=None):
     try:
         if headers: 
             response = requests.get(url, headers=headers)
-            response.raise_for_status()
+            # response.raise_for_status()
         else:
             response = requests.get(url)
-            response.raise_for_status()
+            # response.raise_for_status()
+        response.raise_for_status()
         return response
     except requests.exceptions.HTTPError as error:
         print ("Http Error: ",error)
@@ -121,41 +123,43 @@ def storeCommitsInListOfDictionaries(allCommits, OWNER, REPO, headers):
         filenames = []
 
         for file in commit["files"]:
+            
             if filterFilenames(file["filename"]):
                 x=0
                 filenames.append(file["filename"])
             
-                patchCode = file["patch"]  # string contains code for whole file, includes the initial @@ -1,3 +1,6 @@ (AKA 'diff')
-                # Remove: @@ .... @@
-                newLineSymbol = "\n"
-                parts = patchCode.split(newLineSymbol, 1)
-                if len(parts) > 1:
-                    patchCode = parts[1]
-                # print(patchCode)
+                if (file["patch"]):
+                    patchCode = file["patch"]  # string contains code for whole file, includes the initial @@ -1,3 +1,6 @@ (AKA 'diff')
+                    # Remove: @@ .... @@
+                    newLineSymbol = "\n"
+                    parts = patchCode.split(newLineSymbol, 1)
+                    if len(parts) > 1:
+                        patchCode = parts[1]
+                    # print(patchCode)
 
-                # splits patchCode into lines:
-                lines = patchCode.split("\n")  # list of each line of code from whole commit file, includes '@@ -1,3 +1,6 @@'
-                additionsPerFile = []
-                deletionsPerFile = []
-                
-                # Populate each additions line into
-                for j in range(len(lines)):
-                    if lines[j].startswith("+"):
-                        additionsList.append(lines[j][1:])    # [1:]removes the +/ - from beginning of lines
-                        additionsPerFile.append(lines[j][1:])
-                    if lines[j].startswith("-"):
-                        deletionsList.append(lines[j][1:])
-                        """append to per file list so it can be accumulated at the end """
-                        deletionsPerFile.append(lines[j][1:])
-                    else:
-                        allCommitLinesList.append(lines[j][1:])   #  add all lines from commit file - DO I EVEN NEED??
-                # checks if there was any additions/deletions in current commit => if so then adds to accumulated dictionary 
-                if len(additionsPerFile) != 0:
-                    additionsForFile[x][file["filename"]] = additionsPerFile
+                    # splits patchCode into lines:
+                    lines = patchCode.split("\n")  # list of each line of code from whole commit file, includes '@@ -1,3 +1,6 @@'
+                    additionsPerFile = []
+                    deletionsPerFile = []
+                    
+                    # Populate each additions line into
+                    for j in range(len(lines)):
+                        if lines[j].startswith("+"):
+                            additionsList.append(lines[j][1:])    # [1:]removes the +/ - from beginning of lines
+                            additionsPerFile.append(lines[j][1:])
+                        if lines[j].startswith("-"):
+                            deletionsList.append(lines[j][1:])
+                            """append to per file list so it can be accumulated at the end """
+                            deletionsPerFile.append(lines[j][1:])
+                        else:
+                            allCommitLinesList.append(lines[j][1:])   #  add all lines from commit file - DO I EVEN NEED??
+                    # checks if there was any additions/deletions in current commit => if so then adds to accumulated dictionary 
+                    if len(additionsPerFile) != 0:
+                        additionsForFile[x][file["filename"]] = additionsPerFile
 
-                if len(deletionsPerFile) != 0:
-                    deletionsForFile[x][file["filename"]] = deletionsPerFile
-                x+=1
+                    if len(deletionsPerFile) != 0:
+                        deletionsForFile[x][file["filename"]] = deletionsPerFile
+                    x+=1
 
         allCommitCodeListAsOneString = "\n".join(allCommitLinesList)
 

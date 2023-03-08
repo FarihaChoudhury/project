@@ -1,6 +1,6 @@
 import json
 import sys
-from CommitData import dataClass
+from CommitData import DataClass
 from gitHubCommitRequest import getCollaboratorsOfFile
 from textParse import filterFilenames
 from gitHubCommitRequest import set_up, specificFileGitHubQuery, getGitHubResponse, convertGitHubResponseToJson, storeCollaboratorInList, storeCommitsInListOfDictionaries, getFilenamesList
@@ -9,7 +9,7 @@ from gitHubCommitRequest import set_up, specificFileGitHubQuery, getGitHubRespon
 
 
 def codeContributionOf(OWNER, REPO, accessToken):
-    dataClassObject = dataClass()
+    dataClassObject = DataClass()
 
     collaboratorsURL, commitURL, filesURL, headers = set_up(OWNER, REPO, accessToken)
 

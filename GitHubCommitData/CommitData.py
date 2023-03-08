@@ -4,7 +4,7 @@ import json
 import os
 
 
-class dataClass:
+class DataClass:
     listOfDictionary=[{}]
     collaboratorsList = []
     filenames = [{}]
@@ -38,13 +38,20 @@ class dataClass:
     def setFilenamesDictionaryKeys(self):
         self.filenamesDictionary = {}
         for i in range (len(self.collaboratorsList)):
+            # print(self.collaboratorsList)
             self.filenamesDictionary[self.collaboratorsList[i]] = set()
 
 
     """Sets the values being the filenames for the collaborator keys, in filenamesDictionary"""
-    def setFilenamesDictionaryValues(self, collaborator, file):
-        self.filenamesDictionary[collaborator].add(file)
+    # def setFilenamesDictionaryValues(self, collaborator, file):
+    #     self.filenamesDictionary[collaborator].add(file)
 
+    #     """Sets the values being the filenames for the collaborator keys, in filenamesDictionary"""
+    def setFilenamesDictionaryValues(self, collaborator, file):
+        # self.filenamesDictionary[collaborator].add(file)
+        for key, val in self.filenamesDictionary.items():
+            if key == (collaborator):
+                self.filenamesDictionary[collaborator].add(file)
 
     """prints the results information per repository, for all commits """
     def accessResultsList(self):
