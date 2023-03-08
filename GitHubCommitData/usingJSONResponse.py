@@ -1,15 +1,14 @@
 import json
+import os
 import sys
-from CommitData import dataClass
+# from CommitData import dataClass
 # from antlrPythonParser.htmlParsing.htmlParse import performClassificationOnHTMLInput
 # from PythonParser.antlrPythonParser.textParsing.textParse import performClassificationOnTextInput
 sys.path.insert(0, '../PythonParser/antlrPythonParser/pythonParsing')
 sys.path.insert(0, '../PythonParser/antlrPythonParser/htmlParsing')
 sys.path.insert(0, '../PythonParser/antlrPythonParser/textParsing')
 sys.path.insert(0, '../PythonParser/antlrPythonParser/antlrParserGeneratedCode')
-from Python3Lexer import Python3Lexer
-from Python3Parser import Python3Parser
-from parserHelper import performClassificationOnPythonInput
+from pythonParse import performClassificationOnPythonInput
 from textParse import performClassificationOnTextInput
 from htmlParse import performClassificationOnHTMLInput
 
@@ -55,7 +54,7 @@ def storeJSONresults(dataClass):
                 # set the filenames set as list:
                 dataClass.resultsListSeparate[i][key]["files edited"] = jsonSetSerializer(dataClass.resultsListSeparate[i][key]["files edited"])
     # store results to json file
-    with open('results.json', "w") as file:
+    with open(os.path.join('../ResultsForCommitData', 'results.json'), "w") as file:
         json.dump(dataClass.resultsListSeparate, file)
     
 
@@ -91,7 +90,7 @@ def storeJSONresults(dataClass):
 #         differentiateCodeTypes(dataClass, contributor, deletions, False)
 #     return deletions
 
-"''THIS IS REAL VERSIONS - USES ALLLLL COMMITS: "
+# "''THIS IS REAL VERSIONS - USES ALLLLL COMMITS: "
 """Reads the additionsPerFile item in the list of dictionaries of all commits made in a repository"""
 def readAdditionsFromClass(dataClass):
     commitData = dataClass.listOfDictionary
@@ -109,7 +108,7 @@ def readAdditionsFromClass(dataClass):
             differentiateCodeTypes(dataClass, contributor, additions, True)
     return additions
 
-"""Reads the deletionsPerFile item in the list of dictionaries of all commits made in a repository"""
+# """Reads the deletionsPerFile item in the list of dictionaries of all commits made in a repository"""
 def readDeletionsFromClass(dataClass):
     commitData = dataClass.listOfDictionary
     deletions = []
@@ -125,105 +124,29 @@ def readDeletionsFromClass(dataClass):
     return deletions
 
 
+"""Takes a list which contains dictionary items and checks the keys of these items
+    - if the key holds a Python file, text file or HTML file, the necessary classifications will be called on the values """
 def differentiateCodeTypes(dataClass, contributor, listOfDictionariesForCommits, increment): 
-
     if listOfDictionariesForCommits.items(): 
         for key, val in listOfDictionariesForCommits.items():
             if key.endswith(".py"):
-                print(" PYTHON FILE: ")
-                # print(key)
-                # print(val)
+                # print(" PYTHON FILE: ")
                 retrievePythonCodeToParse(dataClass, contributor, key, val, increment)
-                print("\n")
-            elif key.endswith(".md") or key.endswith(".txt"):
-                print(" TEXT FILE:")
-                # print(key)
-                # print(val)
+            elif key.endswith(".md") or key.endswith(".txt") or key.endswith(".JSON"):
+                # print(" TEXT OR JSON FILE:")
                 retrieveTextCodeToParse(dataClass, contributor, key, val, increment)
-                print("\n")
             elif key.endswith(".html"):
-                print(" HTML FILES:")
-                # print(key)
+                # print(" HTML FILES:")
                 retrieveHTMLCodeToParse(dataClass, contributor, key, val, increment)
-            elif key.endswith(".JSON"):
-                print(" JSON FILES:")
-                # print(key)
-                # retrieveHTMLCodeToParse(dataClass, contributor, key, val, increment)
-            # else: 
 
 
 
-# """Reads the additionsPerFile item in the list of dictionaries of all commits made in a repository"""
-# def readAdditionsForFilesInAllCommits():
-#     jsonFile = "allCommitsInRepo.json"
-#     with open(jsonFile, 'r') as file:
-#         commitData = json.load(file)
-
-#     additions = []
-#     for i in range(len(commitData)):
-#         # add all additions for all commits into one list
-#         additions.append(commitData[i]["additionsPerFile"][0])
-#     # call function to differentiate code types: python, html, text 
-#     differentiateCodeTypes(additions)
-#     return additions
-
-# """Takes a list which contains dictionary items and checks the keys of these items
-#     - if the key holds a Python file, text file or HTML file, the necessary classifications will be called on the values """
-# def differentiateCodeTypes(listOfDictionariesForCommits, dataClass, contributor): 
-#     for i in range(len(listOfDictionariesForCommits)): 
-#         print(listOfDictionariesForCommits)   
-#         # iterates each item of the list of dictionaries by the key and value 
-#         if listOfDictionariesForCommits[i].items(): 
-#             for key, val in listOfDictionariesForCommits[i].items():
-#                 if key.endswith(".py"):
-#                     print(" PYTHON FILE: ")
-#                     """NEED TO DIFFERENTIATE THE FILENAMES (KEY) AND THEN PUT INTO RELEVANT ONES"""
-#                     print(key)
-#                     retrievePythonCodeToParse(val, key, dataClass, contributor)
-#                     print("\n FINISHED:")
-#                     print(dataClass.resultsList)
-#                 elif key.endswith(".md") or key.endswith(".txt"):
-#                     print(" TEXT FILE:")
-#                     print(key)
-#                     retrieveTextCodeToParse(val)
-#                 elif key.endswith(".html"):
-#                     print(" HTML FILES:")
-#                     print(key)
-#                     retrieveHTMLCodeToParse(val)
-
-
-# """Takes a list which contains dictionary items and checks the keys of these items
-#     - if the key holds a Python file, text file or HTML file, the necessary classifications will be called on the values """
-# def differentiateCodeTypes(listOfDictionariesForCommits): 
-#     for i in range(len(listOfDictionariesForCommits)):    
-#         # iterates each item of the list of dictionaries by the key and value 
-#         # print(listOfDictionariesForCommits[i])
-#         if listOfDictionariesForCommits[i][0].items(): 
-#             for key, val in listOfDictionariesForCommits[i][0].items():
-#                 # print(key)
-#                 if key.endswith(".py"):
-#                     print("PYTHON FILE: ")
-#                     print(key)
-#                     retrievePythonCodeToParse(val)
-#                 elif key.endswith(".md") or key.endswith(".txt"):
-#                     print("TEXT FILE:")
-#                     print(key)
-#                     retrieveTextCodeToParse(val)
-#                 elif key.endswith(".html"):
-#                     print("HTML FILES:")
-#                     print(key)
-#                     retrieveHTMLCodeToParse(val)
-
-
-"""Accesses the value of the dictionaries which store the Python code"""
+"""Accesses the value of the dictionaries which store the Python code, calls function to perform the classification and passes the results to be updated"""
 def retrievePythonCodeToParse(dataClass, contributor, filename, valueList, increment):
-    """NEED TO DIFFERENTIATE THE FILENAMES (KEY) AND THEN PUT INTO RELEVANT ONES"""
-    
     print(increment)
     for valItem in valueList:
         spaces, spacesWithoutIndent, newLines, emptyLines, totalLines, comments,  printStatementCount, loopCount, conditionCount, importCount, funcCount, classCount, classDefinition, viewCount, modelCount, formCount = performClassificationOnPythonInput(valItem)
         codeLines = (totalLines - comments) - emptyLines
-        # PRINT STATEMENTS!
         updateDataInResults(
             dataClass, 
             contributor, 
@@ -244,18 +167,15 @@ def retrievePythonCodeToParse(dataClass, contributor, filename, valueList, incre
             classDefinitionList = classDefinition, 
             viewCount = viewCount, 
             modelCount = modelCount, 
-            formCount= formCount
-            )
-        print(dataClass.resultsListSeparate)
-        print("\n")
+            formCount= formCount)
+        # print(dataClass.resultsListSeparate)
+        # print("\n")
 
 
-"""Accesses the value of the dictionaries which store the text"""
+"""Accesses the value of the dictionaries which store the text/JSON data, calls function to perform the classification and passes the results to be updated"""
 def retrieveTextCodeToParse(dataClass, contributor, filename, valueList, increment):
-    # print(increment)
     for valItem in valueList:
         spaces, spacesWithoutIndent, emptyLines, totalLines = performClassificationOnTextInput(valItem)
-        # print("next")
         updateDataInResults(
             dataClass, 
             contributor, 
@@ -264,20 +184,15 @@ def retrieveTextCodeToParse(dataClass, contributor, filename, valueList, increme
             strippedSpaces=spacesWithoutIndent, 
             emptyLines = emptyLines, 
             totalLines = totalLines)
-        print(dataClass.resultsListSeparate)
-        print("\n")
+        # print(dataClass.resultsListSeparate)
+        # print("\n")
 
 
-
-"""Accesses the value of the dictionaries which store the HTML code"""
+"""Accesses the value of the dictionaries which store the HTML code, calls function to perform the classification and passes the results to be updated"""
 def retrieveHTMLCodeToParse(dataClass, contributor, filename, valueList, increment):
-    # print(increment)
     for valItem in valueList:
-        # print(valItem)
-
         spaces, spacesWithoutIndent, newLines, emptyLines, totalLines, htmlComments, tagCountDict, templateTagCountDict, evalVars = performClassificationOnHTMLInput(valItem)
         codeLines = (totalLines - htmlComments) - emptyLines
-
         updateDataInResults(
             dataClass, 
             contributor, 
@@ -292,8 +207,8 @@ def retrieveHTMLCodeToParse(dataClass, contributor, filename, valueList, increme
             HTMLtags = tagCountDict,
             HTMLtemplateTags = templateTagCountDict,
             HTMLevalVars = evalVars)
-        print(dataClass.resultsListSeparate)
-        print("\n")
+        # print(dataClass.resultsListSeparate)
+        # print("\n")
         
 
 def updateDataInResults(dataClass, contributor, increment, spaces = None, strippedSpaces =None, newLines = None, emptyLines = None, comments = None, 
@@ -323,11 +238,7 @@ def updateDataInResults(dataClass, contributor, increment, spaces = None, stripp
         incrementResults(dataClass, contributor, "HTML evaluation vars", HTMLevalVars, additionsCategory)
         incrementResults(dataClass, contributor, "HTML tags", None, additionsCategory, incrementTags= HTMLtags)
         incrementResults(dataClass, contributor, "HTML template tags", None, additionsCategory, incrementTemplateTags= HTMLtemplateTags)
-        # incrementResults(dataClass, contributor, "HTML comments", None, additionsCategory, incrementItem= HTMLcomments)
-        # if HTMLtags: 
-        #     dataClass.incrementHTMLtags(contributor, "HTML tags", HTMLtags, additionsCategory)
-        # dataClass.incrementDataByValueForSeparate(contributor, "spaces", spaces, additionsCategory)
-        print("INCREMENT")
+        # print("INCREMENT")
 
     else: 
         deletionsCategory = "deletions"
@@ -352,38 +263,33 @@ def updateDataInResults(dataClass, contributor, increment, spaces = None, stripp
         decrementResults(dataClass, contributor, "HTML evaluation vars", HTMLevalVars, deletionsCategory)
         decrementResults(dataClass, contributor, "HTML tags", None, deletionsCategory, decrementTags= HTMLtags)
         decrementResults(dataClass, contributor, "HTML template tags", None, deletionsCategory, decrementTemplateTags= HTMLtemplateTags)
-        # dataClass.decrementDataByValueForSeparate(contributor, "spaces", spaces, deletionsCategory)
-        print("DECREMENT")
+        # print("DECREMENT")
 
 
 def incrementResults(dataClass, collaborator, option, incrementValue, category, incrementTags=None, incrementTemplateTags=None, classDefinitionList=None):
     if incrementValue:
-        dataClass.incrementDataByValueForSeparate(collaborator, option, incrementValue, category)
-        # dataClass.incrementDataByValueForSeparate(collaborator, option, incrementValue, "overall")
+        dataClass.incrementResultsDataByValue(collaborator, option, incrementValue, category)
     if incrementTags:
-        dataClass.incrementHTMLtags(collaborator, option, incrementTags, category, dataClass.addedTags, dataClass.tags)
+        dataClass.incrementHTMLtagsInResults(collaborator, option, incrementTags, category, dataClass.addedTags, dataClass.tags)
     if incrementTemplateTags:
-        dataClass.incrementHTMLtags(collaborator, option, incrementTemplateTags, category, dataClass.addedTemplateTags,  dataClass.templateTags)
+        dataClass.incrementHTMLtagsInResults(collaborator, option, incrementTemplateTags, category, dataClass.addedTemplateTags,  dataClass.templateTags)
     if classDefinitionList:
-        dataClass.appendClassDefinitionsList(collaborator, option, classDefinitionList, category, dataClass.addedClasses, dataClass.classesList)
+        dataClass.appendClassDefinitionsListFromResults(collaborator, option, classDefinitionList, category, dataClass.addedClasses, dataClass.classesList)
         
 
 def decrementResults(dataClass, collaborator, option, decrementValue, category, decrementTags=None, decrementTemplateTags=None, classDefinitionList=None):
     if decrementValue: 
     # increment the "deletions" category then decrement overall 
-        dataClass.decrementDataByValueForSeparate(collaborator, option, decrementValue, category)
-
+        dataClass.decrementResultsDataByValue(collaborator, option, decrementValue, category)
     if decrementTags:
-        dataClass.decrementHTMLtags(collaborator, option, decrementTags, category, dataClass.deletedTags, dataClass.tags)
+        dataClass.decrementHTMLtagsInResults(collaborator, option, decrementTags, category, dataClass.deletedTags, dataClass.tags)
     if decrementTemplateTags:
-        dataClass.decrementHTMLtags(collaborator, option, decrementTemplateTags, category, dataClass.deletedTemplateTags, dataClass.templateTags)
+        dataClass.decrementHTMLtagsInResults(collaborator, option, decrementTemplateTags, category, dataClass.deletedTemplateTags, dataClass.templateTags)
     if classDefinitionList:
-        dataClass.removeClassDefinitionsList(collaborator, option, classDefinitionList, category, dataClass.deletedClasses, dataClass.classesList)
+        dataClass.removeClassDefinitionsListFromResults(collaborator, option, classDefinitionList, category, dataClass.deletedClasses, dataClass.classesList)
         
 
 
 if __name__ == '__main__':
-    # allows you to call openJsonFile() from terminal 
     globals()[sys.argv[1]]()
-    # RUN: python3 usingJSONResponse.py openJsonFile 
     

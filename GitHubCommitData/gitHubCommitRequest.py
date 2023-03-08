@@ -1,3 +1,4 @@
+import sys
 import requests 
 import json
 from textParse import filterFilenames
@@ -28,7 +29,7 @@ def set_up(owner, repo, accessToken):
 
 
 """creates URL to query a specific file """
-def specifcFileGitHubQuery(owner, repo, filename):
+def specificFileGitHubQuery(owner, repo, filename):
     OWNER = owner 
     REPO = repo 
     PATH = filename
@@ -38,11 +39,28 @@ def specifcFileGitHubQuery(owner, repo, filename):
 
 """Conducts the API get command with provided url and returns its response, takes headers as an optional parameter"""
 def getGitHubResponse(url, headers=None):
-    if headers: 
-        response = requests.get(url, headers=headers)
-    else:
-        response = requests.get(url)
-    return response
+    try:
+        if headers: 
+            response = requests.get(url, headers=headers)
+            response.raise_for_status()
+        else:
+            response = requests.get(url)
+            response.raise_for_status()
+        return response
+    except requests.exceptions.HTTPError as error:
+        print ("Http Error: ",error)
+        print("Please check the error stated above and try again")
+        sys.exit()
+    except requests.exceptions.ConnectionError as error:
+        print ("Error Connecting: ",error)
+        print("Please check the error stated above and try again")
+        sys.exit()
+    except requests.exceptions.RequestException as error:
+        print ("Error: ",error)
+        print("Please check the error stated above and try again")
+        sys.exit()
+        
+
 
 """Converts the GitHub API response into JSON format"""
 def convertGitHubResponseToJson(response):
@@ -54,7 +72,6 @@ def getFilenamesList(files):
     allFiles = []
     for file in files["tree"]:
          allFiles.append(file["path"])
-         
     return allFiles
 
 """Retrieves all collaborators of a specified file, as a list """
@@ -73,6 +90,7 @@ def storeCollaboratorInList(collaborators):
     return collaboratorsList
 
 
+"""Prints all collaborators in given repository to terminal"""
 def printCollaborators(collaboratorsList):
     print("All collaborators:")
     print(collaboratorsList)
@@ -90,8 +108,9 @@ def storeCommitsInListOfDictionaries(allCommits, OWNER, REPO, headers):
         commitAuthor = allCommits[i]['author']['login']
 
         specificCommitUrl = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/commits/" + commitSha
-        specificCommitResponse = requests.get(specificCommitUrl, headers=headers)
-        commit = specificCommitResponse.json()
+        # specificCommitResponse = requests.get(specificCommitUrl, headers=headers)
+        specificCommitResponse = getGitHubResponse(specificCommitUrl, headers=headers)
+        commit = convertGitHubResponseToJson(specificCommitResponse)
 
         additionsList = []
         additionsForFile = [{}]
@@ -100,7 +119,6 @@ def storeCommitsInListOfDictionaries(allCommits, OWNER, REPO, headers):
         allCommitLinesList = []
         allCommitCodeListAsOneString = []
         filenames = []
-
 
         for file in commit["files"]:
             if filterFilenames(file["filename"]):
@@ -152,9 +170,7 @@ def storeCommitsInListOfDictionaries(allCommits, OWNER, REPO, headers):
         listOfDictionary[i]["deletions"] = deletionsList
         listOfDictionary[i]["deletionsPerFile"] = deletionsForFile
 
-    """PRINT ALL COMMITS INFO::::"""
     # printListOfDictionaries(listOfDictionary)
-    # return listOfDictionary, size
     return listOfDictionary
 
 

@@ -3,60 +3,59 @@ import sys
 from CommitData import dataClass
 from gitHubCommitRequest import getCollaboratorsOfFile
 from textParse import filterFilenames
-from gitHubCommitRequest import set_up, specifcFileGitHubQuery, getGitHubResponse, convertGitHubResponseToJson, storeCollaboratorInList, storeCommitsInListOfDictionaries, getFilenamesList
+from gitHubCommitRequest import set_up, specificFileGitHubQuery, getGitHubResponse, convertGitHubResponseToJson, storeCollaboratorInList, storeCommitsInListOfDictionaries, getFilenamesList
 # sys.path.insert(0, '../pythonParsing')
 """RUN FROM THIS FILE TO GET CODE CONTRIBUTION DATA"""
 
 
-def codeContributionOf():
+def codeContributionOf(OWNER, REPO, accessToken):
     dataClassObject = dataClass()
-    OWNER = "FarihaChoudhury"
-    REPO = "PublicRepoTest"
-    # accessToken = "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"
-    accessToken =  "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"
 
     collaboratorsURL, commitURL, filesURL, headers = set_up(OWNER, REPO, accessToken)
 
     # DO GET ON GITHUB API:
     collaboratorsResponse = getGitHubResponse(collaboratorsURL, headers)
-    # allCommitsResponse = getGitHubResponse(commitURL)
     allCommitsResponse = getGitHubResponse(commitURL, headers)
     allFilesResponse = getGitHubResponse(filesURL, headers)
+
+    if (collaboratorsResponse and allCommitsResponse and allFilesResponse):
     # collaboratorsResponse, allCommitsResponse, allFilesResponse = getGitHubCommitData(collaboratorsURL, commitURL, filesURL, specificFileURL, headers)
 
-    # CONVERT TO JSON!
-    collaborators = convertGitHubResponseToJson(collaboratorsResponse)
-    commits = convertGitHubResponseToJson(allCommitsResponse)
-    files = convertGitHubResponseToJson(allFilesResponse)
-    # collaborators, commits = convertGitHubResponseToJson(collaboratorsResponse, allCommitsResponse)
+        # CONVERT TO JSON!
+        collaborators = convertGitHubResponseToJson(collaboratorsResponse)
+        commits = convertGitHubResponseToJson(allCommitsResponse)
+        files = convertGitHubResponseToJson(allFilesResponse)
+        # collaborators, commits = convertGitHubResponseToJson(collaboratorsResponse, allCommitsResponse)
 
 
-    """STORE IN DATA CLASS: """
-    # COLLABORATORS: 
-    dataClassObject.setCollaborators(collaborators = storeCollaboratorInList(collaborators))
+        """STORE IN DATA CLASS: """
+        # COLLABORATORS: 
+        dataClassObject.setCollaborators(collaborators = storeCollaboratorInList(collaborators))
 
-    # LIST OF DICTIONARY
-    # listOfDictionary, size = storeCommitsInListOfDictionaries(commits, OWNER, REPO, headers)
-    listOfDictionary = storeCommitsInListOfDictionaries(commits, OWNER, REPO, headers)
+        # LIST OF DICTIONARY
+        # listOfDictionary, size = storeCommitsInListOfDictionaries(commits, OWNER, REPO, headers)
+        listOfDictionary = storeCommitsInListOfDictionaries(commits, OWNER, REPO, headers)
 
-    # dataClassObject.createListOfDictionary(size)
-    dataClassObject.setListOfDictionary(listOfDictionary)
+        # dataClassObject.createListOfDictionary(size)
+        dataClassObject.setListOfDictionary(listOfDictionary)
 
-    """FILE NAMES DATA"""
-    allFiles = getFilenamesList(files)
-    dataClassObject.setFilenamesDictionaryKeys()
-    contributorsOfEachFile(OWNER, REPO, allFiles, headers, dataClassObject)   
+        """FILE NAMES DATA"""
+        allFiles = getFilenamesList(files)
+        dataClassObject.setFilenamesDictionaryKeys()
+        contributorsOfEachFile(OWNER, REPO, allFiles, headers, dataClassObject)   
 
-    listOfDictionary.append(REPO)
-    # STORE TO FILES: 'allCommitsInRepo.json 
-    jsonFile = storeDataInFile(listOfDictionary, 'allCommitsInRepo.json')
+        listOfDictionary.append(REPO)
+        # STORE TO FILES: 'allCommitsInRepo.json 
+        jsonFile = storeDataInFile(listOfDictionary, 'allCommitsInRepo.json')
 
-    listOfDictionary.pop()
-    # jsomFile = storeDataInFile(REPO, 'repositoryInfo.json')
-    # openJsonFile(jsonFile)
+        listOfDictionary.pop()
+        # jsomFile = storeDataInFile(REPO, 'repositoryInfo.json')
+        # openJsonFile(jsonFile)
 
-    return dataClassObject
-
+        return dataClassObject
+    else:
+        print("Please try again as an error has occurred")
+        sys.exit()
 
 
 """Calls on json query method to retrieve collaborators of each file in git repository
@@ -64,14 +63,17 @@ def codeContributionOf():
 def contributorsOfEachFile(owner, repo, allFiles, headers, dataClassObject):
     for filename in allFiles:
         if filterFilenames(filename):
-            specificFileURL = specifcFileGitHubQuery(owner, repo, filename)
+            specificFileURL = specificFileGitHubQuery(owner, repo, filename)
             specificFileResponse = getGitHubResponse(specificFileURL, headers)
-            file = convertGitHubResponseToJson(specificFileResponse)
-            collaboratorsOfFileList = getCollaboratorsOfFile(file)
+            if specificFileResponse:
+                file = convertGitHubResponseToJson(specificFileResponse)
+                collaboratorsOfFileList = getCollaboratorsOfFile(file)
 
-            for collaborator in collaboratorsOfFileList:
-                dataClassObject.setFilenamesDictionaryValues(collaborator, filename)
-
+                for collaborator in collaboratorsOfFileList:
+                    dataClassObject.setFilenamesDictionaryValues(collaborator, filename)
+            else:
+                print("Please try again as an error has occurred")
+                sys.exit()
 
 """Saves content of the list of dictionaries onto a .JSON file"""     
 def storeDataInFile(listOfDictionary, filename):

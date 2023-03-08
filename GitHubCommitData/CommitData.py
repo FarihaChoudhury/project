@@ -1,6 +1,7 @@
 """Data class holds all data needed to store for calculating the final results of the classification 
 - holds collaborators list, filenames each collaborator edited, and final results of commit data"""
 import json
+import os
 
 
 class dataClass:
@@ -45,7 +46,7 @@ class dataClass:
         self.filenamesDictionary[collaborator].add(file)
 
 
-    """RESULTS INFORMATION PER REPOSITORY - FOR ALL COMMITS"""
+    """prints the results information per repository, for all commits """
     def accessResultsList(self):
         print("RESULTS SO FAR")
         for i in range(len(self.resultsListSeparate)):
@@ -104,14 +105,14 @@ class dataClass:
             print("\n")
 
         # Saves content of all commits (list of dictionaries) into a JSON
-        with open('resultsTemplate.json', 'w') as file:
+        with open(os.path.join('../ResultsForCommitData','resultsTemplate.json'), 'w') as file:
             json.dump(self.resultsListSeparate, file)
     
-        self.fillFilenamesSeparate()
+        self.fillFilenames()
 
 
     """ populates results by all files edited by each collaborator"""
-    def fillFilenamesSeparate(self):
+    def fillFilenames(self):
         # - iterates through results list
         for i in range(len(self.resultsListSeparate)):
             # - iterates through keys and values of filename dictionary and results list
@@ -123,7 +124,7 @@ class dataClass:
 
 
     """increment data in a specific category for a collaborator, by a specific input value """
-    def incrementDataByValueForSeparate(self, collaborator, option, incrementValue, category):
+    def incrementResultsDataByValue(self, collaborator, option, incrementValue, category):
         # - iterates through all collaborator's results
         for i in range(len(self.resultsListSeparate)):
             # - retrieves the items: key and values of the dictionary 
@@ -139,7 +140,7 @@ class dataClass:
 
 
     """decrements data in a specific category for a collaborator, by a specific input value """
-    def decrementDataByValueForSeparate(self, collaborator, option, decrementValue, category):
+    def decrementResultsDataByValue(self, collaborator, option, decrementValue, category):
         # - iterates through all collaborator's results
         for i in range(len(self.resultsListSeparate)):
             # - retrieves the items: key and values of the dictionary 
@@ -154,24 +155,19 @@ class dataClass:
 
 
     """Appends item from provided additions list, and removed from the overall list"""
-    def appendClassDefinitionsList(self, collaborator, option, incrementItem, category, addedClassList, classList):
+    def appendClassDefinitionsListFromResults(self, collaborator, option, incrementItem, category, addedClassList, classList):
         addedClassList.append(incrementItem)
-        print("added list", self.addedClasses)
-        print(self.deletedClasses)
         # FOR OVERALL:
         classList.append(incrementItem)
         self.setValuesInResultsDictionary(collaborator, option, category, addedClassList, classList)
 
 
     """Appends item from provided deletion list, and removed from the overall list"""
-    def removeClassDefinitionsList(self, collaborator, option, decrementItem, category, deletedClassesList, classList):
+    def removeClassDefinitionsListFromResults(self, collaborator, option, decrementItem, category, deletedClassesList, classList):
         deletedClassesList.append(decrementItem)
         # FOR OVERALL:
         if decrementItem in classList:
-            print("FOUND!")
             classList.remove(decrementItem)
-        print("added list", self.addedClasses)
-        print(self.deletedClasses)
         self.setValuesInResultsDictionary(collaborator, option, category, deletedClassesList, classList)
 
 
@@ -188,13 +184,13 @@ class dataClass:
                         # sets the dictionary as the tags dictionary that we updated - using .update() updates ALL HTML tag dicts in the results dict!
                         # this is why i did self.tags!
                         self.resultsListSeparate[i][collaborator][category][option] = valueToSet1
-                        print(self.resultsListSeparate[i][collaborator][category][option])
+                        # print(self.resultsListSeparate[i][collaborator][category][option])
                         self.resultsListSeparate[i][collaborator]["overall"][option] = valueToSetOverall
-                        print(self.resultsListSeparate[i][collaborator]["overall"][option])
+                        # print(self.resultsListSeparate[i][collaborator]["overall"][option])
 
 
     """updates local dictionaries for added tags (tags and template tags) and overall dictionary"""
-    def incrementHTMLtags(self, collaborator, option, incrementItem, category, addedTagsDict, tagsDict):
+    def incrementHTMLtagsInResults(self, collaborator, option, incrementItem, category, addedTagsDict, tagsDict):
         print(category)
         # separate dictionaries for addedTags and deleted tags as well as overall
         if addedTagsDict: 
@@ -202,7 +198,7 @@ class dataClass:
                 for key2, val2 in incrementItem.items():
                     if key==key2:
                         addedTagsDict[key] = val + val2
-                        print(addedTagsDict[key])
+                        # print(addedTagsDict[key])
                     else:
                         addedTagsDict.update(incrementItem)
         else:
@@ -213,17 +209,16 @@ class dataClass:
                 for key2, val2 in incrementItem.items():
                     if key==key2:
                         tagsDict[key] = val + val2
-                        print(tagsDict[key])
+                        # print(tagsDict[key])
                     else:
                         tagsDict.update(incrementItem)
         else:
             tagsDict.update(incrementItem)
-        # self.updateHTMLDataByValueForSeparate(collaborator, option, category, addedTagsDict, tagsDict)
         self.setValuesInResultsDictionary(collaborator, option, category, addedTagsDict, tagsDict)
 
 
     """updates local dictionaries for deleted tags (tags and template tags) and overall dictionary"""
-    def decrementHTMLtags(self, collaborator, option, decrementItem, category, deletedTagsDict, tagsDict):
+    def decrementHTMLtagsInResults(self, collaborator, option, decrementItem, category, deletedTagsDict, tagsDict):
         # updates global tags dictionary: first checks if it is empty, if not then checks keys and vals
         # checks keys and vals of inputted dictionary so self.tags dictionary can be updated with the new values for existing and new keys
         # if self.tags does not exist, adds inputted dictionary into it. (for provided deleted and overall tags)
@@ -233,7 +228,7 @@ class dataClass:
                     if key==key2:
                         # UPDATE BY INCREMENTING WHAT WAS DELETED!
                         deletedTagsDict[key] = val + val2
-                        print(deletedTagsDict[key])
+                        # print(deletedTagsDict[key])
                     else:
                         deletedTagsDict.update(decrementItem)
         else:
@@ -244,7 +239,7 @@ class dataClass:
                 for key2, val2 in decrementItem.items():
                     if key==key2:
                         tagsDict[key] = val - val2
-                        print(tagsDict[key])
+                        # print(tagsDict[key])
         # print("removed - so increment:", deletedTagsDict)
         # print("removed - overall", tagsDict)
         # self.updateHTMLDataByValueForSeparate(collaborator, option, category, deletedTagsDict, tagsDict)

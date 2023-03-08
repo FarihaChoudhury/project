@@ -1,7 +1,7 @@
 import sys
 import re
 sys.path.insert(0, '../pythonParsing')
-from parserHelper import countEmptyLinesOfInput, countWhitespaces, countNewLines, openFile
+from pythonParse import countEmptyLinesOfInput, countWhitespaces, countNewLines
 from pythonHTMLparser import HTMLParserClass
 
 """Helper functions for HTML code parsing"""
@@ -95,6 +95,4 @@ def performClassificationOnHTMLInput(inputData):
 
 
 if __name__ == '__main__':
-    # allows you to call openJsonFile() from terminal 
     globals()[sys.argv[1]]()
-    # RUN: python3 parserHelper.py openJsonFile

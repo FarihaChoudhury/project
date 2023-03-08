@@ -1,6 +1,7 @@
 {
     "cSpell.words": [
-        "antlr"
+        "antlr",
+        "coveragerc"
     ],
     "python.analysis.extraPaths": [
         "./PythonParser/antlrPythonParser/antlrParser",
@@ -8,6 +9,8 @@
         "./PythonParser/antlrPythonParser/antlrParserGeneratedCode",
         "./PythonParser/antlrPythonParser/textParsing",
         "./PythonParser",
-        "./PythonParser/antlrPythonParser/htmlParsing"
+        "./PythonParser/antlrPythonParser/htmlParsing",
+        "./GitHubCommitData",
+        "./PythonParser/antlrPythonParser"
     ]
 }
