@@ -86,8 +86,8 @@ def countCommentsOnInputLine(line):
     - returns these """
 def performClassificationOnPythonInput(inputData):
     #PARSE TREE GENERATOR:
-    tree, parser = parseDataSingleInput(inputData)
-    result = tree.toStringTree(recog=parser)
+    # tree, parser = parseDataSingleInput(inputData)
+    # result = tree.toStringTree(recog=parser)
     # print(result)
 
     spaces = countWhitespaces(inputData)
@@ -95,6 +95,9 @@ def performClassificationOnPythonInput(inputData):
     newLines = countNewLines(inputData)
     totalLines, emptyLines = countEmptyLinesOfInput(inputData)
     comments = countCommentsOnInputLine(inputData)
+
+    tree, parser = parseDataSingleInput(inputData)
+    result = tree.toStringTree(recog=parser)
 
     printStatementCount, loopCount, conditionCount, importCount, funcCount, classCount, classDefinition, viewCount, modelCount, formCount= analyseCodeTypes(result)
     # print("Spaces:", spaces)

@@ -101,7 +101,7 @@ def printCollaborators(collaboratorsList):
 
 """Store GitHub API commit response in a list of dictionaries"""
 def storeCommitsInListOfDictionaries(allCommits, OWNER, REPO, headers):
-    listOfDictionary = [{} for x in range(len(allCommits))]
+    listOfDictionaryForCommits = [{} for x in range(len(allCommits))]
     # EACH COMMIT DATA:
     for i in range(len(allCommits)):
         commitSha = allCommits[i]['sha']
@@ -164,25 +164,25 @@ def storeCommitsInListOfDictionaries(allCommits, OWNER, REPO, headers):
         allCommitCodeListAsOneString = "\n".join(allCommitLinesList)
 
         # Populating list of dictionaries: for each commit made-
-        listOfDictionary[i]["commitAuthor"] = commitAuthor
-        listOfDictionary[i]["commitSha"] = commitSha
-        listOfDictionary[i]["filesEdited"] = filenames
-        listOfDictionary[i]["commitFileLinesAsList"] = allCommitLinesList  # i dont really use it
-        listOfDictionary[i]["pythonCode"] = allCommitCodeListAsOneString  # i dont really ever use it 
-        listOfDictionary[i]["additions"] = additionsList
-        listOfDictionary[i]["additionsPerFile"] = additionsForFile
-        listOfDictionary[i]["deletions"] = deletionsList
-        listOfDictionary[i]["deletionsPerFile"] = deletionsForFile
+        listOfDictionaryForCommits[i]["commitAuthor"] = commitAuthor
+        listOfDictionaryForCommits[i]["commitSha"] = commitSha
+        listOfDictionaryForCommits[i]["filesEdited"] = filenames
+        listOfDictionaryForCommits[i]["commitFileLinesAsList"] = allCommitLinesList  # i dont really use it
+        listOfDictionaryForCommits[i]["pythonCode"] = allCommitCodeListAsOneString  # i dont really ever use it 
+        listOfDictionaryForCommits[i]["additions"] = additionsList
+        listOfDictionaryForCommits[i]["additionsPerFile"] = additionsForFile
+        listOfDictionaryForCommits[i]["deletions"] = deletionsList
+        listOfDictionaryForCommits[i]["deletionsPerFile"] = deletionsForFile
 
-    # printListOfDictionaries(listOfDictionary)
-    return listOfDictionary
+    # printListOfDictionaries(listOfDictionaryForCommits)
+    return listOfDictionaryForCommits
 
 
 """Prints content of list of dictionary which holds commit data for each commit made in specified repository"""
-def printListOfDictionaries(listOfDictionary):
+def printListOfDictionaries(listOfDictionaryForCommits):
     print("List of dictionary:")
-    for i in range(len(listOfDictionary)):
-        print(listOfDictionary[i])
+    for i in range(len(listOfDictionaryForCommits)):
+        print(listOfDictionaryForCommits[i])
         print("\n")
 
 

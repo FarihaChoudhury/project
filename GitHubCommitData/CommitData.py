@@ -5,7 +5,7 @@ import os
 
 
 class DataClass:
-    listOfDictionary=[{}]
+    listOfDictionaryForCommits=[{}]
     collaboratorsList = []
     filenames = [{}]
     results= [{}]
@@ -31,7 +31,7 @@ class DataClass:
 
     """Sets the list of dictionaries with the commit data"""
     def setListOfDictionary(self, commitData):
-        self.listOfDictionary = commitData
+        self.listOfDictionaryForCommits = commitData
 
 
     """Sets the keys of filenamesDictionary being each collaborator"""

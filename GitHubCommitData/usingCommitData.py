@@ -23,15 +23,8 @@ def jsonSetSerializer(setObject):
     return setObject
 
 
-
-
-"""calls on additions for files in all commits and deletions for files in all commits"""
-def readAdditionsAndDeletions(dataClass):
-    # 1- create template for results
-    # dataClass.createResultsTemplate()
-    dataClass.createResultsTemplateSeparate()
-    print("\n template made --- \n")
-    # 2 - read additions and deletions
+def getClassificationsResults(dataClass):
+    setUpClassificationsResults(dataClass)
     print("\n addition ------------: \n")
     readAdditionsFromClass(dataClass)
     print("\n deletions------------: \n")
@@ -43,6 +36,27 @@ def readAdditionsAndDeletions(dataClass):
             print("\n")
     
     storeJSONresults(dataClass)
+
+
+"""calls on additions for files in all commits and deletions for files in all commits"""
+def setUpClassificationsResults(dataClass):
+# def readAdditionsAndDeletions(dataClass):
+    # 1- create template for results
+    # dataClass.createResultsTemplate()
+    dataClass.createResultsTemplateSeparate()
+    print("\n template made --- \n")
+    # 2 - read additions and deletions
+    # print("\n addition ------------: \n")
+    # readAdditionsFromClass(dataClass)
+    # print("\n deletions------------: \n")
+    # readDeletionsFromClass(dataClass)
+
+    # print("\n results ---------: \n")
+    # for i in range(len(dataClass.resultsListSeparate)):
+    #         print(dataClass.resultsListSeparate[i])
+    #         print("\n")
+    
+    # storeJSONresults(dataClass)
 
 
 """Stores results on a JSON file"""
@@ -59,7 +73,7 @@ def storeJSONresults(dataClass):
     
 
 # def readAdditionsFromClass(dataClass):
-#     commitData = dataClass.listOfDictionary
+#     commitData = dataClass.listOfDictionaryForCommits
 #     additions = []
 #     # for i in range(len(commitData)):
 #     print(0)
@@ -77,7 +91,7 @@ def storeJSONresults(dataClass):
 
 # """Reads the deletionsPerFile item in the list of dictionaries of all commits made in a repository"""
 # def readDeletionsFromClass(dataClass):
-#     commitData = dataClass.listOfDictionary
+#     commitData = dataClass.listOfDictionaryForCommits
 #     deletions = []
 #     # for i in range(len(commitData)):
 #     print(0)
@@ -93,7 +107,7 @@ def storeJSONresults(dataClass):
 # "''THIS IS REAL VERSIONS - USES ALLLLL COMMITS: "
 """Reads the additionsPerFile item in the list of dictionaries of all commits made in a repository"""
 def readAdditionsFromClass(dataClass):
-    commitData = dataClass.listOfDictionary
+    commitData = dataClass.listOfDictionaryForCommits
     additions = []
     for i in range(len(commitData)):
         print(i)
@@ -109,7 +123,7 @@ def readAdditionsFromClass(dataClass):
 
 # """Reads the deletionsPerFile item in the list of dictionaries of all commits made in a repository"""
 def readDeletionsFromClass(dataClass):
-    commitData = dataClass.listOfDictionary
+    commitData = dataClass.listOfDictionaryForCommits
     deletions = []
     for i in range(len(commitData)):
         print(i)

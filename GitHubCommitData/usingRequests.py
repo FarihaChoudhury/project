@@ -8,7 +8,7 @@ from gitHubCommitRequest import set_up, specificFileGitHubQuery, getGitHubRespon
 """RUN FROM THIS FILE TO GET CODE CONTRIBUTION DATA"""
 
 
-def codeContributionOf(OWNER, REPO, accessToken):
+def getCodeContributionOf(OWNER, REPO, accessToken):
     dataClassObject = DataClass()
 
     collaboratorsURL, commitURL, filesURL, headers = set_up(OWNER, REPO, accessToken)
@@ -33,22 +33,22 @@ def codeContributionOf(OWNER, REPO, accessToken):
         dataClassObject.setCollaborators(collaborators = storeCollaboratorInList(collaborators))
 
         # LIST OF DICTIONARY
-        # listOfDictionary, size = storeCommitsInListOfDictionaries(commits, OWNER, REPO, headers)
-        listOfDictionary = storeCommitsInListOfDictionaries(commits, OWNER, REPO, headers)
+        # listOfDictionaryForCommits, size = storeCommitsInListOfDictionaries(commits, OWNER, REPO, headers)
+        listOfDictionaryForCommits = storeCommitsInListOfDictionaries(commits, OWNER, REPO, headers)
 
         # dataClassObject.createListOfDictionary(size)
-        dataClassObject.setListOfDictionary(listOfDictionary)
+        dataClassObject.setListOfDictionary(listOfDictionaryForCommits)
 
         """FILE NAMES DATA"""
         allFiles = getFilenamesList(files)
         dataClassObject.setFilenamesDictionaryKeys()
         contributorsOfEachFile(OWNER, REPO, allFiles, headers, dataClassObject)   
 
-        listOfDictionary.append(REPO)
+        listOfDictionaryForCommits.append(REPO)
         # STORE TO FILES: 'allCommitsInRepo.json 
-        jsonFile = storeDataInFile(listOfDictionary, 'allCommitsInRepo.json')
+        jsonFile = storeDataInFile(listOfDictionaryForCommits, 'allCommitsInRepo.json')
 
-        listOfDictionary.pop()
+        listOfDictionaryForCommits.pop()
         # jsomFile = storeDataInFile(REPO, 'repositoryInfo.json')
         # openJsonFile(jsonFile)
 
@@ -76,10 +76,10 @@ def contributorsOfEachFile(owner, repo, allFiles, headers, dataClassObject):
                 sys.exit()
 
 """Saves content of the list of dictionaries onto a .JSON file"""     
-def storeDataInFile(listOfDictionary, filename):
+def storeDataInFile(listOfDictionaryForCommits, filename):
     # Saves content of all commits (list of dictionaries) into a JSON
     with open(filename, 'w') as file:
-        json.dump(listOfDictionary, file)
+        json.dump(listOfDictionaryForCommits, file)
     
     return 'allCommitsInRepo.json'
 
