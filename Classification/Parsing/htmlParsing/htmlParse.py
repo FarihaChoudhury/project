@@ -48,20 +48,15 @@ def identifyHTMLEvaluationVars(inputData):
 
 
 """Counts the number comments in a html line of code 
-    - includes: <!-- and --> comments
-    - Also inline comments """
+    - includes: <!-- and --> comments"""
 def countHTMLComments(line):
     strippedLine = line.strip()
     commentLinesCount = 0
-    # checks for <!-- starting lines comments 
-    if strippedLine.startswith("<!--"):
+    
+    if "<!--" in strippedLine:
         commentLinesCount += 1
-    # checks for end of comment lines (if comment is in 2 lines)
-    elif strippedLine.endswith("-->"):
-        commentLinesCount += 1
-    #checks for midline comments starting with <!-- ... -->
-    elif "<!--" and "-->" in strippedLine:
-        commentLinesCount += 1
+    elif "-->" in strippedLine:
+            commentLinesCount += 1  
 
     return commentLinesCount
 
@@ -82,7 +77,6 @@ def performClassificationOnHTMLInput(inputData):
     evalVars = identifyHTMLEvaluationVars(inputData)
 
     return spaces, spacesWithoutIndent, newLines, emptyLines, totalLines, htmlComments, tagCountDict, templateTagCountDict, evalVars
-
 
 
 if __name__ == '__main__':

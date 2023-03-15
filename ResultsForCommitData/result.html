@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	    <link rel="stylesheet" href="styles.css"> <!-- Link to my stylesheet -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+	    <link rel="stylesheet" href="styles.css"> <!-- Link to my stylesheet --> 
         <h1>GitHub Results</h1>
         <h2 id="repository">Results of classification for a specified repository:    </h2>
         
@@ -31,7 +31,7 @@
                         table_html = ""
                         key = Object.keys(data[i])
                         collaborator = key[0]
-                        table_html += "<div><h3>" + "Collaborator:  &nbsp" + collaborator +" </h3></div>"
+                        table_html += "<div><h3>" + "Collaborator:  &nbsp <br/>" + collaborator +" </h3></div>"
 
                         //retrieves 'files edited, addition, deletion, overall'
                         listOfHeader = Object.keys(data[i][collaborator])

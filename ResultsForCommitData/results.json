@@ -1,1 +1,192 @@
-[{"RahinAshraf": {"files edited": ["README.md"], "additions": {"spaces": 11, "spaces without indents": 11, "new lines": 0, "empty lines": 1, "comment lines": 0, "code lines": 0, "total lines": 3, "print statements": 0, "conditionals": 0, "loops": 0, "imports": 0, "functions": 0, "class definitions": 0, "class definitions list": [], "views": 0, "models": 0, "forms": 0, "HTML comments": 0, "HTML tags": {}, "HTML template tags": {}, "HTML evaluation vars": 0}, "deletions": {"spaces": 0, "spaces without indents": 0, "new lines": 0, "empty lines": 0, "comment lines": 0, "code lines": 0, "total lines": 0, "print statements": 0, "conditionals": 0, "loops": 0, "imports": 0, "functions": 0, "class definitions": 0, "class definitions list": [], "views": 0, "models": 0, "forms": 0, "HTML comments": 0, "HTML tags": {}, "HTML template tags": {}, "HTML evaluation vars": 0}, "overall": {"spaces": 11, "spaces without indents": 11, "new lines": 0, "empty lines": 1, "comment lines": 0, "code lines": 0, "total lines": 3, "print statements": 0, "conditionals": 0, "loops": 0, "imports": 0, "functions": 0, "class definitions": 0, "class definitions list": [], "views": 0, "models": 0, "forms": 0, "HTML comments": 0, "HTML tags": {}, "HTML template tags": {}, "HTML evaluation vars": 0}}}, {"FarihaChoudhury": {"files edited": ["template.html", "random.py", "README.md", "testing.py"], "additions": {"spaces": 154, "spaces without indents": 77, "new lines": 0, "empty lines": 1, "comment lines": 3, "code lines": 25, "total lines": 34, "print statements": 2, "conditionals": 0, "loops": 0, "imports": 1, "functions": 1, "class definitions": 3, "class definitions list": ["UserForm", "TestClass2", "TestClass"], "views": 0, "models": 0, "forms": 1, "HTML comments": 0, "HTML tags": {"input": 1, "div": 2, "h1": 1, "form": 1}, "HTML template tags": {"block": 1, "url": 1, "csrf_token": 1, "include": 1, "endblock": 1}, "HTML evaluation vars": 2}, "deletions": {"spaces": 29, "spaces without indents": 13, "new lines": 0, "empty lines": 0, "comment lines": 1, "code lines": 4, "total lines": 6, "print statements": 0, "conditionals": 0, "loops": 0, "imports": 0, "functions": 0, "class definitions": 2, "class definitions list": ["TestClass2", "TestClass"], "views": 0, "models": 0, "forms": 0, "HTML comments": 0, "HTML tags": {"input": 1}, "HTML template tags": {"csrf_token": 1}, "HTML evaluation vars": 1}, "overall": {"spaces": 125, "spaces without indents": 64, "new lines": 0, "empty lines": 1, "comment lines": 2, "code lines": 21, "total lines": 28, "print statements": 2, "conditionals": 0, "loops": 0, "imports": 1, "functions": 1, "class definitions": 1, "class definitions list": ["UserForm"], "views": 0, "models": 0, "forms": 1, "HTML comments": 0, "HTML tags": {"input": 0, "div": 2, "h1": 1, "form": 1}, "HTML template tags": {"block": 1, "url": 1, "csrf_token": 0, "include": 1, "endblock": 1}, "HTML evaluation vars": 1}}}]
+[
+    {
+        "RahinAshraf": {
+            "files edited": [
+                "README.md"
+            ],
+            "additions": {
+                "spaces": 11,
+                "spaces without indents": 11,
+                "new lines": 0,
+                "empty lines": 1,
+                "comment lines": 0,
+                "code lines": 0,
+                "total lines": 3,
+                "print statements": 0,
+                "conditionals": 0,
+                "loops": 0,
+                "imports": 0,
+                "functions": 0,
+                "class definitions": 0,
+                "class definitions list": [],
+                "views": 0,
+                "models": 0,
+                "forms": 0,
+                "HTML comments": 0,
+                "HTML tags": {},
+                "HTML template tags": {},
+                "HTML evaluation vars": 0
+            },
+            "deletions": {
+                "spaces": 0,
+                "spaces without indents": 0,
+                "new lines": 0,
+                "empty lines": 0,
+                "comment lines": 0,
+                "code lines": 0,
+                "total lines": 0,
+                "print statements": 0,
+                "conditionals": 0,
+                "loops": 0,
+                "imports": 0,
+                "functions": 0,
+                "class definitions": 0,
+                "class definitions list": [],
+                "views": 0,
+                "models": 0,
+                "forms": 0,
+                "HTML comments": 0,
+                "HTML tags": {},
+                "HTML template tags": {},
+                "HTML evaluation vars": 0
+            },
+            "overall": {
+                "spaces": 11,
+                "spaces without indents": 11,
+                "new lines": 0,
+                "empty lines": 1,
+                "comment lines": 0,
+                "code lines": 0,
+                "total lines": 3,
+                "print statements": 0,
+                "conditionals": 0,
+                "loops": 0,
+                "imports": 0,
+                "functions": 0,
+                "class definitions": 0,
+                "class definitions list": [],
+                "views": 0,
+                "models": 0,
+                "forms": 0,
+                "HTML comments": 0,
+                "HTML tags": {},
+                "HTML template tags": {},
+                "HTML evaluation vars": 0
+            }
+        }
+    },
+    {
+        "FarihaChoudhury": {
+            "files edited": [
+                "template.html",
+                "README.md",
+                "testing.py",
+                "random.py"
+            ],
+            "additions": {
+                "spaces": 154,
+                "spaces without indents": 77,
+                "new lines": 0,
+                "empty lines": 1,
+                "comment lines": 3,
+                "code lines": 25,
+                "total lines": 34,
+                "print statements": 2,
+                "conditionals": 0,
+                "loops": 0,
+                "imports": 1,
+                "functions": 1,
+                "class definitions": 3,
+                "class definitions list": [
+                    "UserForm",
+                    "TestClass2",
+                    "TestClass"
+                ],
+                "views": 0,
+                "models": 0,
+                "forms": 1,
+                "HTML comments": 0,
+                "HTML tags": {
+                    "input": 1,
+                    "div": 2,
+                    "h1": 1,
+                    "form": 1
+                },
+                "HTML template tags": {
+                    "block": 1,
+                    "url": 1,
+                    "csrf_token": 1,
+                    "include": 1,
+                    "endblock": 1
+                },
+                "HTML evaluation vars": 2
+            },
+            "deletions": {
+                "spaces": 29,
+                "spaces without indents": 13,
+                "new lines": 0,
+                "empty lines": 0,
+                "comment lines": 1,
+                "code lines": 4,
+                "total lines": 6,
+                "print statements": 0,
+                "conditionals": 0,
+                "loops": 0,
+                "imports": 0,
+                "functions": 0,
+                "class definitions": 2,
+                "class definitions list": [
+                    "TestClass2",
+                    "TestClass"
+                ],
+                "views": 0,
+                "models": 0,
+                "forms": 0,
+                "HTML comments": 0,
+                "HTML tags": {
+                    "input": 1
+                },
+                "HTML template tags": {
+                    "csrf_token": 1
+                },
+                "HTML evaluation vars": 1
+            },
+            "overall": {
+                "spaces": 125,
+                "spaces without indents": 64,
+                "new lines": 0,
+                "empty lines": 1,
+                "comment lines": 2,
+                "code lines": 21,
+                "total lines": 28,
+                "print statements": 2,
+                "conditionals": 0,
+                "loops": 0,
+                "imports": 1,
+                "functions": 1,
+                "class definitions": 1,
+                "class definitions list": [
+                    "UserForm"
+                ],
+                "views": 0,
+                "models": 0,
+                "forms": 1,
+                "HTML comments": 0,
+                "HTML tags": {
+                    "input": 0,
+                    "div": 2,
+                    "h1": 1,
+                    "form": 1
+                },
+                "HTML template tags": {
+                    "block": 1,
+                    "url": 1,
+                    "csrf_token": 0,
+                    "include": 1,
+                    "endblock": 1
+                },
+                "HTML evaluation vars": 1
+            }
+        }
+    }
+]

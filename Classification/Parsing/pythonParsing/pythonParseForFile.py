@@ -142,3 +142,34 @@ def performClassificationOnFile():
     #COMMENTS COUNTER:
     comments = count_comments('testFile.py')
     print("Comment Lines", comments)
+
+
+
+def testFarse(data):
+    strippedData = data.strip()
+    # Add \n for end of file - antlr requires 
+    input_stream = InputStream(f'{strippedData}')
+    lexer = Python3Lexer(input_stream)
+    stream = CommonTokenStream(lexer)
+    parser = Python3Parser(stream)
+    tree = parser.single_input()  #May print error message to terminal - this is handled by ANTLR and can be ignored
+    # print(tree.toStringTree(recog=parser))
+    # print("\n")
+    # ree, parser = parseDataFileInput(data)
+    print(tree.toStringTree(recog=parser))
+    print("\n")
+    return tree, parser
+
+def test():
+    list = ["def printHelloWorld():",'x = "Hello world"', "print(x)"]
+    print(list)
+    for i in range(len(list)):
+        print(list[i])
+        testFarse(list[i])
+
+    #  def printHelloWorld():
+    #                 x = "Hello world"
+    #                 print(x)}     
+
+if __name__ == '__main__':
+    globals()[sys.argv[1]]()

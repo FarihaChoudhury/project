@@ -118,8 +118,8 @@ def storeCommitsInListOfDictionaries(allCommits, OWNER, REPO, headers):
         additionsForFile = [{}]
         deletionsForFile = [{}]
         deletionsList = []
-        allCommitLinesList = []
-        allCommitCodeListAsOneString = []
+        # allCommitLinesList = []
+        # allCommitCodeListAsOneString = []
         filenames = []
 
         for file in commit["files"]:
@@ -151,8 +151,8 @@ def storeCommitsInListOfDictionaries(allCommits, OWNER, REPO, headers):
                             deletionsList.append(lines[j][1:])
                             """append to per file list so it can be accumulated at the end """
                             deletionsPerFile.append(lines[j][1:])
-                        else:
-                            allCommitLinesList.append(lines[j][1:])   #  add all lines from commit file - DO I EVEN NEED??
+                        # else:
+                        #     allCommitLinesList.append(lines[j][1:])   #  add all lines from commit file - DO I EVEN NEED??
                     # checks if there was any additions/deletions in current commit => if so then adds to accumulated dictionary 
                     if len(additionsPerFile) != 0:
                         additionsForFile[x][file["filename"]] = additionsPerFile
@@ -161,17 +161,17 @@ def storeCommitsInListOfDictionaries(allCommits, OWNER, REPO, headers):
                         deletionsForFile[x][file["filename"]] = deletionsPerFile
                     x+=1
 
-        allCommitCodeListAsOneString = "\n".join(allCommitLinesList)
+        # allCommitCodeListAsOneString = "\n".join(allCommitLinesList)
 
         # Populating list of dictionaries: for each commit made-
         listOfDictionaryForCommits[i]["commitAuthor"] = commitAuthor
         listOfDictionaryForCommits[i]["commitSha"] = commitSha
         listOfDictionaryForCommits[i]["filesEdited"] = filenames
-        listOfDictionaryForCommits[i]["commitFileLinesAsList"] = allCommitLinesList  # i dont really use it
-        listOfDictionaryForCommits[i]["pythonCode"] = allCommitCodeListAsOneString  # i dont really ever use it 
-        listOfDictionaryForCommits[i]["additions"] = additionsList
+        # listOfDictionaryForCommits[i]["commitFileLinesAsList"] = allCommitLinesList  # i dont really use it
+        # listOfDictionaryForCommits[i]["pythonCode"] = allCommitCodeListAsOneString  # i dont really ever use it 
+        # listOfDictionaryForCommits[i]["additions"] = additionsList
         listOfDictionaryForCommits[i]["additionsPerFile"] = additionsForFile
-        listOfDictionaryForCommits[i]["deletions"] = deletionsList
+        # listOfDictionaryForCommits[i]["deletions"] = deletionsList
         listOfDictionaryForCommits[i]["deletionsPerFile"] = deletionsForFile
 
     # printListOfDictionaries(listOfDictionaryForCommits)
