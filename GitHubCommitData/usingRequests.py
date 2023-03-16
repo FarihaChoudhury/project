@@ -8,10 +8,10 @@ from gitHubCommitRequest import set_up, specificFileGitHubQuery, getGitHubRespon
 """RUN FROM THIS FILE TO GET CODE CONTRIBUTION DATA"""
 
 
-def getCodeContributionOf(OWNER, REPO, accessToken):
+def getCodeContributionOf(OWNER, REPO, BRANCH, accessToken):
     dataClassObject = DataClass()
 
-    collaboratorsURL, commitURL, filesURL, headers = set_up(OWNER, REPO, accessToken)
+    collaboratorsURL, commitURL, filesURL, headers = set_up(OWNER, REPO, BRANCH, accessToken)
 
     # DO GET ON GITHUB API:
     collaboratorsResponse = getGitHubResponse(collaboratorsURL, headers)

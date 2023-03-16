@@ -6,7 +6,7 @@ from textParse import filterFilenames
 """Sets up GitHub API querying with access tokens and creating the URLs to query
     - returns the URL to retrieve collaborators data and commit data for a single repository
 """
-def set_up(owner, repo, accessToken):
+def set_up(owner, repo, branch, accessToken):
     # Set the personal access token and HTTP headers: replace with your own
 
     headers = {
@@ -17,7 +17,8 @@ def set_up(owner, repo, accessToken):
     # replace owner and repository name by repository you wish to query
     OWNER = owner     # OWNER = "FarihaChoudhury"
     REPO = repo       # REPO = "PublicRepoTest"
-    BRANCH = "main"
+    BRANCH = branch
+    # BRANCH = "master"
     # REF_SHA = "a19b766" # Last commit made
 
     # COLLABORATORS DATA: name and repository ID
@@ -89,6 +90,7 @@ def storeCollaboratorInList(collaborators):
     for i in range(len(collaborators)):
         collaboratorsList.append(collaborators[i]["login"])
         # collaboratorsList.append(collaborators[i]["id"])    to include collaborator unique i
+    print(collaboratorsList)
     return collaboratorsList
 
 
@@ -123,12 +125,15 @@ def storeCommitsInListOfDictionaries(allCommits, OWNER, REPO, headers):
         filenames = []
 
         for file in commit["files"]:
+            # print("UGH", file)
+            # print(file['patch'])
             
             if filterFilenames(file["filename"]):
                 x=0
                 filenames.append(file["filename"])
             
-                if (file["patch"]):
+                # if (file["patch"]):
+                if "patch" in file:
                     patchCode = file["patch"]  # string contains code for whole file, includes the initial @@ -1,3 +1,6 @@ (AKA 'diff')
                     # Remove: @@ .... @@
                     newLineSymbol = "\n"

@@ -23,7 +23,7 @@ def jsonSetSerializer(setObject):
     return setObject
 
 
-def getClassificationsResults(dataClass):
+def getClassificationsResults(dataClass, REPO):
     setUpClassificationsResults(dataClass)
     print("\n addition ------------: \n")
     readAdditionsFromClass(dataClass)
@@ -35,7 +35,8 @@ def getClassificationsResults(dataClass):
             print(dataClass.resultsListSeparate[i])
             print("\n")
     
-    storeJSONresults(dataClass)
+    # listOfDictionaryForCommits.append(REPO)
+    storeJSONresults(dataClass, REPO)
 
 
 """calls on additions for files in all commits and deletions for files in all commits"""
@@ -60,7 +61,7 @@ def setUpClassificationsResults(dataClass):
 
 
 """Stores results on a JSON file"""
-def storeJSONresults(dataClass):
+def storeJSONresults(dataClass, REPO):
     # Change set of filenames to list so that it can be dumped into JSON
     for i in range(len(dataClass.resultsListSeparate)):
         if dataClass.resultsListSeparate[i].items(): 
@@ -68,6 +69,7 @@ def storeJSONresults(dataClass):
                 # set the filenames set as list:
                 dataClass.resultsListSeparate[i][key]["files edited"] = jsonSetSerializer(dataClass.resultsListSeparate[i][key]["files edited"])
     # store results to json file
+    dataClass.resultsListSeparate.append(REPO)
     with open(os.path.join('../ResultsForCommitData', 'results.json'), "w") as file:
         json.dump(dataClass.resultsListSeparate, file)
     
