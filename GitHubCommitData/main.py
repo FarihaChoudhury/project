@@ -4,10 +4,10 @@ from usingRequests import getCodeContributionOf
 
 """To run the whole code contribution classifier"""
 def main():
-    # OWNER = "FarihaChoudhury"
-    # REPO = "PublicRepoTest"
     OWNER = "FarihaChoudhury"
-    REPO = "SEG-small-group-project"
+    REPO = "PublicRepoTest"
+    # OWNER = "FarihaChoudhury"
+    # REPO = "SEG-small-group-project"
     BRANCH = "main"
     # BRANCH = "master"
 

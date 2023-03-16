@@ -3,8 +3,8 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 	    <link rel="stylesheet" href="styles.css"> <!-- Link to my stylesheet --> 
-        <h1>GitHub Results</h1>
-        <h2 id="repository"> Results of classification for a specified repository:    </h2>
+        <h1 style="text-align:center;">GitHub Results</h1>
+        <h2 id="repository" style="text-align:center;"> Results of classification for a specified repository:    </h2>
         
     </head>
     <body>
@@ -42,11 +42,11 @@
                             
                             if (Array.isArray(contents)){
                                 displayResults += "&nbsp"
-                                displayResults += "<div><div><h4><b>" + eachHeader+ ":</b>&nbsp"+ contents.join(", &nbsp") +"</h4></div>" 
+                                displayResults += "<div><div><h4><u><b>" +(eachHeader.charAt(0).toUpperCase() + eachHeader.slice(1)) + ":</b></u>&nbsp"+ contents.join(", &nbsp") +"</h4></div>" 
                             }
                             else{
                                 displayResults += "&nbsp"
-                                displayResults += "<div><h4><b>" + eachHeader+ ":</b></h4></div>"
+                                displayResults += "<div><h4><b><u>" + (eachHeader.charAt(0).toUpperCase() + eachHeader.slice(1))+ ":</u></b></h4></div>"
                                 getContentsOfList(data, eachHeader, contents)
                             }
                         }
@@ -73,29 +73,24 @@
                                 
                                 //Sometimes tags hold empty list due to deletions thus consider empty case
                                 if (listOfObjects.length != 0){
-                                    displayResults += "<div><div><div>" + listOfTitles[i]+ ":     "
+                                    displayResults += "<div><div><div><b>" + listOfTitles[i]+ ":</b>     "
                                     getContentsOfDict(data, eachHeader, values, listOfObjects)
                                 }
                                 else {  //if it is 0:
                                     // console.log(listOfObjects)
                                     // console.log("MISSING??" + listOfTitles[i])
-                                    displayResults += "<div><div><div>" + listOfTitles[i]+ ":     <b>"+  0 +"</b></div></div></div>" 
+                                    displayResults += "<div><div><div><b>" + listOfTitles[i]+ ":     </b>"+  0 +"</div></div></div>" 
                                 }
                             }
                             else{
                                 // for list of class definitions - needs to iterature through list
                                 if (Array.isArray(values)){
-                                    displayResults += "<div><div><div>" + listOfTitles[i]+ ":      <b>"
-                                    for (var i=0; i<values.length; i++){
-                                        value = contents[values[i]]
-                                        // displayResults += value 
-                                    // getContentsOfDict(data, eachHeader, values, listOfObjects)
-                                    }
-                                    displayResults += "</b></div></div></div>" 
+                                    displayResults += "<div><div><div><b>" + listOfTitles[i] + ": </b>&nbsp"+ values.join(", &nbsp") +"</div></div></div>" 
+                                    // displayResults += "</b></div></div></div>" 
                                 }
                                 else{
-                                    console.log("not obkject", values)
-                                    displayResults += "<div><div><div>" + listOfTitles[i]+ ":      <b>"+  values +"</b></div></div></div>" 
+                                    // console.log("not obkject", values)
+                                    displayResults += "<div><div><div><b>" + listOfTitles[i]+ ": </b>&nbsp"+  values +"</div></div></div>" 
                                 }
                                 // console.log("not obkject", values)
                                 // displayResults += "<div><div><div>" + listOfTitles[i]+ ":      <b>"+  values +"</b></div></div></div>" 
@@ -112,7 +107,7 @@
                         for (var i =0; i<listOfObjects.length; i++){
                             item = listOfObjects[i]
                             // console.log("REACHED HERE ---" +values[item])
-                            displayResults += "<b>&nbsp"+ item + "=      "+  values[item] +", &nbsp</b>"  
+                            displayResults += "&nbsp"+ item + "=      "+  values[item] +", &nbsp"  
                         }
                         displayResults += "</div></div></div></div></div>"
                         //closes the divs
