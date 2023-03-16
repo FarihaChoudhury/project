@@ -12,9 +12,11 @@ def getCodeContributionOf(OWNER, REPO, BRANCH, accessToken):
     dataClassObject = DataClass()
 
     collaboratorsURL, commitURL, filesURL, headers = set_up(OWNER, REPO, BRANCH, accessToken)
+    print(collaboratorsURL)
 
     # DO GET ON GITHUB API:
     collaboratorsResponse = getGitHubResponse(collaboratorsURL, headers)
+    # print(collaboratorsResponse.json)
     allCommitsResponse = getGitHubResponse(commitURL, headers)
     allFilesResponse = getGitHubResponse(filesURL, headers)
 
@@ -23,6 +25,7 @@ def getCodeContributionOf(OWNER, REPO, BRANCH, accessToken):
 
         # CONVERT TO JSON!
         collaborators = convertGitHubResponseToJson(collaboratorsResponse)
+        # print(collaborators)
         commits = convertGitHubResponseToJson(allCommitsResponse)
         files = convertGitHubResponseToJson(allFilesResponse)
         # collaborators, commits = convertGitHubResponseToJson(collaboratorsResponse, allCommitsResponse)

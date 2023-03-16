@@ -6,10 +6,20 @@ from usingRequests import getCodeContributionOf
 def main():
     OWNER = "FarihaChoudhury"
     REPO = "PublicRepoTest"
+    BRANCH = "main"
+
+    # OWNER = "lisa947"
+    # REPO = "SEG-small-group-project"
+    # BRANCH = "main"
+    
     # OWNER = "FarihaChoudhury"
     # REPO = "SEG-small-group-project"
-    BRANCH = "main"
-    # BRANCH = "master"
+    # BRANCH = "main"
+
+
+    # OWNER = "RahinAshraf"
+    # REPO = "Mockingbirds"
+    # BRANCH = "main"
 
 
     # accessToken = "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"

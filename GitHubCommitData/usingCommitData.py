@@ -285,11 +285,17 @@ def incrementResults(dataClass, collaborator, option, incrementValue, category, 
     if incrementValue:
         dataClass.incrementResultsDataByValue(collaborator, option, incrementValue, category)
     if incrementTags:
-        dataClass.incrementHTMLtagsInResults(collaborator, option, incrementTags, category, dataClass.addedTags, dataClass.tags)
+        print("ADDITIONS TURN")
+        # dataClass.incrementHTMLtagsInResults(collaborator, option, incrementTags, category)
+        dataClass.updateHTMLtagsInResults(collaborator, option, incrementTags, category, "+")
+        # dataClass.incrementHTMLtagsInResults(collaborator, option, incrementTags, "overall", dataClass.addedTags, dataClass.tags)
     if incrementTemplateTags:
-        dataClass.incrementHTMLtagsInResults(collaborator, option, incrementTemplateTags, category, dataClass.addedTemplateTags,  dataClass.templateTags)
+        # dataClass.incrementHTMLtagsInResults(collaborator, option, incrementTemplateTags, category)
+        dataClass.updateHTMLtagsInResults(collaborator, option, incrementTemplateTags, category, "+")
     if classDefinitionList:
-        dataClass.appendClassDefinitionsListFromResults(collaborator, option, classDefinitionList, category, dataClass.addedClasses, dataClass.classesList)
+        # dataClass.appendClassDefinitionsListFromResults(collaborator, option, classDefinitionList, category)
+        dataClass.updateDefinitionsListInResults(collaborator, option, classDefinitionList, category, "+")
+        
         
 
 def decrementResults(dataClass, collaborator, option, decrementValue, category, decrementTags=None, decrementTemplateTags=None, classDefinitionList=None):
@@ -297,11 +303,14 @@ def decrementResults(dataClass, collaborator, option, decrementValue, category, 
     # increment the "deletions" category then decrement overall 
         dataClass.decrementResultsDataByValue(collaborator, option, decrementValue, category)
     if decrementTags:
-        dataClass.decrementHTMLtagsInResults(collaborator, option, decrementTags, category, dataClass.deletedTags, dataClass.tags)
+        # dataClass.decrementHTMLtagsInResults(collaborator, option, decrementTags, category)
+        dataClass.updateHTMLtagsInResults(collaborator, option, decrementTags, category, "-")
     if decrementTemplateTags:
-        dataClass.decrementHTMLtagsInResults(collaborator, option, decrementTemplateTags, category, dataClass.deletedTemplateTags, dataClass.templateTags)
+        # dataClass.decrementHTMLtagsInResults(collaborator, option, decrementTemplateTags, category)
+        dataClass.updateHTMLtagsInResults(collaborator, option, decrementTemplateTags, category, "-")
     if classDefinitionList:
-        dataClass.removeClassDefinitionsListFromResults(collaborator, option, classDefinitionList, category, dataClass.deletedClasses, dataClass.classesList)
+        dataClass.updateDefinitionsListInResults(collaborator, option, classDefinitionList, category, "-")
+        # dataClass.removeClassDefinitionsListFromResults(collaborator, option, classDefinitionList, category)
         
 
 

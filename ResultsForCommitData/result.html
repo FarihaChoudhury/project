@@ -85,7 +85,15 @@
                             else{
                                 // for list of class definitions - needs to iterature through list
                                 if (Array.isArray(values)){
-                                    displayResults += "<div><div><div><b>" + listOfTitles[i] + ": </b>&nbsp"+ values.join(", &nbsp") +"</div></div></div>" 
+                                    console.log(values.length)
+                                    if (values.length ==0){
+                                        displayResults += "<div><div><div><b>" + listOfTitles[i] + ": </b>&nbsp"+ 0 +"</div></div></div>" 
+                                    }
+                                    else{
+                                        displayResults += "<div><div><div><b>" + listOfTitles[i] + ": </b>&nbsp"+ values.join(", &nbsp") +"</div></div></div>" 
+                                    }
+
+                                    // displayResults += "<div><div><div><b>" + listOfTitles[i] + ": </b>&nbsp"+ values.join(", &nbsp") +"</div></div></div>" 
                                     // displayResults += "</b></div></div></div>" 
                                 }
                                 else{

@@ -23,6 +23,7 @@ def set_up(owner, repo, branch, accessToken):
 
     # COLLABORATORS DATA: name and repository ID
     collaboratorsURL = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/collaborators"
+    # print(collaboratorsURL)
 
     commitURL = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/commits"
     filesURL =  "https://api.github.com/repos/"+ OWNER + "/" + REPO +"/git/trees/"+ BRANCH +"?recursive=1"
@@ -89,6 +90,7 @@ def storeCollaboratorInList(collaborators):
     collaboratorsList = []  
     for i in range(len(collaborators)):
         collaboratorsList.append(collaborators[i]["login"])
+        # print(collaborators[i]["login"])
         # collaboratorsList.append(collaborators[i]["id"])    to include collaborator unique i
     print(collaboratorsList)
     return collaboratorsList
