@@ -11,17 +11,17 @@ class DataClass:
     results= [{}]
 
     """Class variables were used as editing a list/ dictionary within dictionary causes effects on other collections in the datatype"""
-    addedTags={}
-    deletedTags={}
-    tags={} 
+    # addedTags={}
+    # deletedTags={}
+    # tags={} 
 
-    addedTemplateTags={}
-    deletedTemplateTags={}
-    templateTags={}
+    # addedTemplateTags={}
+    # deletedTemplateTags={}
+    # templateTags={}
 
-    addedClasses=[]
-    classesList = []
-    deletedClasses=[]
+    # addedClasses=[]
+    # classesList = []
+    # deletedClasses=[]
 
 
     """deals with data types to create foundation of template"""
@@ -189,50 +189,6 @@ class DataClass:
         self.setValuesInResultsDictionary(collaborator, option, category, classListResults, classListOverall)
 
 
-    # """Appends item from provided additions list, and removed from the overall list"""
-    # def appendClassDefinitionsListFromResults(self, collaborator, option, incrementItem, category):
-    #     for i in range(len(self.resultsListSeparate)):
-    #         # - retrieves the items: key and values of the dictionary 
-    #         if self.resultsListSeparate[i].items(): 
-    #             for key, val in self.resultsListSeparate[i].items():
-    #                 # # - finds entry for specific collaborator
-    #                 if key == collaborator:
-    #                     # sets the dictionary as the tags dictionary that we updated - using .update() updates ALL HTML tag dicts in the results dict!
-    #                     # this is why i did self.tags!
-    #                     classListAdditions = self.resultsListSeparate[i][collaborator][category][option].copy()
-    #                     # print(self.resultsListSeparate[i][collaborator][category][option])
-    #                     classListOverall = self.resultsListSeparate[i][collaborator]["overall"][option].copy()
-
-
-    #     classListAdditions.append(incrementItem)
-    #     # FOR OVERALL:
-    #     classListOverall.append(incrementItem)
-    #     self.setValuesInResultsDictionary(collaborator, option, category, classListAdditions, classListOverall)
-
-
-    # """Appends item from provided deletion list, and removed from the overall list"""
-    # def removeClassDefinitionsListFromResults(self, collaborator, option, decrementItem, category):
-    #     for i in range(len(self.resultsListSeparate)):
-    #                 # - retrieves the items: key and values of the dictionary 
-    #                 if self.resultsListSeparate[i].items(): 
-    #                     for key, val in self.resultsListSeparate[i].items():
-    #                         # # - finds entry for specific collaborator
-    #                         if key == collaborator:
-    #                             # sets the dictionary as the tags dictionary that we updated - using .update() updates ALL HTML tag dicts in the results dict!
-    #                             # this is why i did self.tags!
-    #                             classListDeletions = self.resultsListSeparate[i][collaborator][category][option].copy()
-    #                             # print(self.resultsListSeparate[i][collaborator][category][option])
-    #                             classListOverall = self.resultsListSeparate[i][collaborator]["overall"][option].copy()
-
-
-    #     classListDeletions.append(decrementItem)
-    #     # FOR OVERALL:
-    #     if decrementItem in classListOverall:
-    #         classListOverall.remove(decrementItem)
-
-    #     self.setValuesInResultsDictionary(collaborator, option, category, classListDeletions, classListOverall)
-
-
     """Sets the result values in the result dictionary for a given collaborator, addition/deletion and under which category
         - takes a value or item for the addition/deletion 
         - takes a second value or item for the overall category"""
@@ -304,123 +260,4 @@ class DataClass:
 
     
     
-    
-    
-    # def decrementHTMLtagsInResults(self, collaborator, option, decrementItem, category):
-    #     ONE = self.one( collaborator, option, decrementItem, category, "-")
-
-    #     print("CURRENT:", ONE)
-
-
-    # """updates local dictionaries for added tags (tags and template tags) and overall dictionary"""
-    # def incrementHTMLtagsInResults(self, collaborator, option, incrementItem, category):
-    #     self.one( collaborator, option, incrementItem, category, "+")
-
-
-
-
-
-    # """updates local dictionaries for added tags (tags and template tags) and overall dictionary"""
-    # def incrementHTMLtagsInResultsREAL(self, collaborator, option, incrementItem, category, addedTagsDict, tagsDict):
-    #     print("CATEGORYYYYY", category)
-    #     print("ITEMM:", incrementItem)
-    #     currentList=[]
-    #     currentOverall=[]
-
-    #     for i in range(len(self.resultsListSeparate)):
-    #         # - retrieves the items: key and values of the dictionary 
-    #         if self.resultsListSeparate[i].items(): 
-    #             for key, val in self.resultsListSeparate[i].items():
-    #                 # # - finds entry for specific collaborator
-    #                 if key == collaborator:
-    #                     currentList = self.resultsListSeparate[i][collaborator][category][option]
-    #                     currentOverall = self.resultsListSeparate[i][collaborator]["overall"][option]
-    #                     print(self.resultsListSeparate[i][collaborator][category][option])
-    #                     print(self.resultsListSeparate[i][collaborator]["overall"][option])
-    #                     print(currentList)
-    #                     print(currentOverall)
-    #     print("done")
-
-    #     if currentList: 
-    #         for key, val in currentList.copy().items():
-    #             for key2, val2 in incrementItem.items():
-    #                 if key==key2:
-    #                     currentList[key] = val + val2
-    #                     # print(addedTagsDict[key])
-    #                 else:
-    #                     currentList.update(incrementItem)
-    #     else:
-    #         currentList.update(incrementItem)
-
-    #     print(currentList)
-    #     print(currentOverall)
-    #     print("first", currentList)
-
-    #     self.update2(collaborator, option, incrementItem, category, currentOverall)
-
-
-    #     print("hi", currentList)
-
-
-    #     # get current items from storage + current overall
-    #     # store in var
-    #     # append new item to var 
-    #     # update with new item  
-
-    #     # separate dictionaries for addedTags and deleted tags as well as overall
-    #     # if addedTagsDict: 
-    #     #     for key, val in addedTagsDict.copy().items():
-    #     #         for key2, val2 in incrementItem.items():
-    #     #             if key==key2:
-    #     #                 addedTagsDict[key] = val + val2
-    #     #                 # print(addedTagsDict[key])
-    #     #             else:
-    #     #                 addedTagsDict.update(incrementItem)
-    #     # else:
-    #     #     addedTagsDict.update(incrementItem)
-        
-    #     # if tagsDict: 
-    #     #     for key, val in tagsDict.copy().items():
-    #     #         for key2, val2 in incrementItem.items():
-    #     #             if key==key2:
-    #     #                 tagsDict[key] = val + val2
-    #     #                 # print(tagsDict[key])
-    #     #             else:
-    #     #                 tagsDict.update(incrementItem)
-    #     # else:
-    #     #     tagsDict.update(incrementItem)
-
-
-    #     # self.setValuesInResultsDictionary(collaborator, option, category, currentList, currentOverall)
-
-
-
-
-
-    # """updates local dictionaries for deleted tags (tags and template tags) and overall dictionary"""
-    # def decrementHTMLtagsInResultsREAL(self, collaborator, option, decrementItem, category, deletedTagsDict, tagsDict):
-    #     # updates global tags dictionary: first checks if it is empty, if not then checks keys and vals
-    #     # checks keys and vals of inputted dictionary so self.tags dictionary can be updated with the new values for existing and new keys
-    #     # if self.tags does not exist, adds inputted dictionary into it. (for provided deleted and overall tags)
-    #     if deletedTagsDict: 
-    #         for key, val in deletedTagsDict.copy().items():
-    #             for key2, val2 in decrementItem.items():
-    #                 if key==key2:
-    #                     # UPDATE BY INCREMENTING WHAT WAS DELETED!
-    #                     deletedTagsDict[key] = val + val2
-    #                     # print(deletedTagsDict[key])
-    #                 else:
-    #                     deletedTagsDict.update(decrementItem)
-    #     else:
-    #         deletedTagsDict.update(decrementItem)
-    #     # now remove from overall list:
-    #     if tagsDict:
-    #         for key, val in tagsDict.items():
-    #             for key2, val2 in decrementItem.items():
-    #                 if key==key2:
-    #                     tagsDict[key] = val - val2
-    #                     # print(tagsDict[key])
-    #     # print("removed - so increment:", deletedTagsDict)
-    #     # print("removed - overall", tagsDict)
-    #     # self.updateHTMLDataByValueForSeparate(collaborator, option, category, deletedTagsDict, tagsDict)
-    #     self.setValuesInResultsDictionary(collaborator, option, category, deletedTagsDict, tagsDict)
+ 

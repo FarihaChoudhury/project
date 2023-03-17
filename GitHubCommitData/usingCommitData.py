@@ -41,23 +41,8 @@ def getClassificationsResults(dataClass, REPO):
 
 """calls on additions for files in all commits and deletions for files in all commits"""
 def setUpClassificationsResults(dataClass):
-# def readAdditionsAndDeletions(dataClass):
-    # 1- create template for results
-    # dataClass.createResultsTemplate()
     dataClass.createResultsTemplateSeparate()
     print("\n template made --- \n")
-    # 2 - read additions and deletions
-    # print("\n addition ------------: \n")
-    # readAdditionsFromClass(dataClass)
-    # print("\n deletions------------: \n")
-    # readDeletionsFromClass(dataClass)
-
-    # print("\n results ---------: \n")
-    # for i in range(len(dataClass.resultsListSeparate)):
-    #         print(dataClass.resultsListSeparate[i])
-    #         print("\n")
-    
-    # storeJSONresults(dataClass)
 
 
 """Stores results on a JSON file"""
@@ -145,13 +130,10 @@ def differentiateCodeTypes(dataClass, contributor, listOfDictionariesForCommits,
     if listOfDictionariesForCommits.items(): 
         for key, val in listOfDictionariesForCommits.items():
             if key.endswith(".py"):
-                # print(" PYTHON FILE: ")
                 retrievePythonCodeToParse(dataClass, contributor, key, val, increment)
             elif key.endswith(".md") or key.endswith(".txt") or key.endswith(".JSON"):
-                # print(" TEXT OR JSON FILE:")
                 retrieveTextCodeToParse(dataClass, contributor, key, val, increment)
             elif key.endswith(".html"):
-                # print(" HTML FILES:")
                 retrieveHTMLCodeToParse(dataClass, contributor, key, val, increment)
 
 
@@ -285,15 +267,10 @@ def incrementResults(dataClass, collaborator, option, incrementValue, category, 
     if incrementValue:
         dataClass.incrementResultsDataByValue(collaborator, option, incrementValue, category)
     if incrementTags:
-        print("ADDITIONS TURN")
-        # dataClass.incrementHTMLtagsInResults(collaborator, option, incrementTags, category)
         dataClass.updateHTMLtagsInResults(collaborator, option, incrementTags, category, "+")
-        # dataClass.incrementHTMLtagsInResults(collaborator, option, incrementTags, "overall", dataClass.addedTags, dataClass.tags)
     if incrementTemplateTags:
-        # dataClass.incrementHTMLtagsInResults(collaborator, option, incrementTemplateTags, category)
         dataClass.updateHTMLtagsInResults(collaborator, option, incrementTemplateTags, category, "+")
     if classDefinitionList:
-        # dataClass.appendClassDefinitionsListFromResults(collaborator, option, classDefinitionList, category)
         dataClass.updateDefinitionsListInResults(collaborator, option, classDefinitionList, category, "+")
         
         
@@ -303,14 +280,11 @@ def decrementResults(dataClass, collaborator, option, decrementValue, category, 
     # increment the "deletions" category then decrement overall 
         dataClass.decrementResultsDataByValue(collaborator, option, decrementValue, category)
     if decrementTags:
-        # dataClass.decrementHTMLtagsInResults(collaborator, option, decrementTags, category)
         dataClass.updateHTMLtagsInResults(collaborator, option, decrementTags, category, "-")
     if decrementTemplateTags:
-        # dataClass.decrementHTMLtagsInResults(collaborator, option, decrementTemplateTags, category)
         dataClass.updateHTMLtagsInResults(collaborator, option, decrementTemplateTags, category, "-")
     if classDefinitionList:
         dataClass.updateDefinitionsListInResults(collaborator, option, classDefinitionList, category, "-")
-        # dataClass.removeClassDefinitionsListFromResults(collaborator, option, classDefinitionList, category)
         
 
 

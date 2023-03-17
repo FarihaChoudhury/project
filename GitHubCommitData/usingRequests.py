@@ -1,6 +1,6 @@
 import json
 import sys
-from CommitData import DataClass
+from commitData import DataClass
 from gitHubCommitRequest import getCollaboratorsOfFile
 from textParse import filterFilenames
 from gitHubCommitRequest import set_up, specificFileGitHubQuery, getGitHubResponse, convertGitHubResponseToJson, storeCollaboratorInList, storeCommitsInListOfDictionaries, getFilenamesList
@@ -12,23 +12,17 @@ def getCodeContributionOf(OWNER, REPO, BRANCH, accessToken):
     dataClassObject = DataClass()
 
     collaboratorsURL, commitURL, filesURL, headers = set_up(OWNER, REPO, BRANCH, accessToken)
-    print(collaboratorsURL)
 
     # DO GET ON GITHUB API:
     collaboratorsResponse = getGitHubResponse(collaboratorsURL, headers)
-    # print(collaboratorsResponse.json)
     allCommitsResponse = getGitHubResponse(commitURL, headers)
     allFilesResponse = getGitHubResponse(filesURL, headers)
 
     if (collaboratorsResponse and allCommitsResponse and allFilesResponse):
-    # collaboratorsResponse, allCommitsResponse, allFilesResponse = getGitHubCommitData(collaboratorsURL, commitURL, filesURL, specificFileURL, headers)
-
         # CONVERT TO JSON!
         collaborators = convertGitHubResponseToJson(collaboratorsResponse)
-        # print(collaborators)
         commits = convertGitHubResponseToJson(allCommitsResponse)
         files = convertGitHubResponseToJson(allFilesResponse)
-        # collaborators, commits = convertGitHubResponseToJson(collaboratorsResponse, allCommitsResponse)
 
 
         """STORE IN DATA CLASS: """
@@ -36,10 +30,8 @@ def getCodeContributionOf(OWNER, REPO, BRANCH, accessToken):
         dataClassObject.setCollaborators(collaborators = storeCollaboratorInList(collaborators))
 
         # LIST OF DICTIONARY
-        # listOfDictionaryForCommits, size = storeCommitsInListOfDictionaries(commits, OWNER, REPO, headers)
         listOfDictionaryForCommits = storeCommitsInListOfDictionaries(commits, OWNER, REPO, headers)
 
-        # dataClassObject.createListOfDictionary(size)
         dataClassObject.setListOfDictionary(listOfDictionaryForCommits)
 
         """FILE NAMES DATA"""
@@ -52,8 +44,7 @@ def getCodeContributionOf(OWNER, REPO, BRANCH, accessToken):
         jsonFile = storeDataInFile(listOfDictionaryForCommits, 'allCommitsInRepo.json')
 
         listOfDictionaryForCommits.pop()
-        # jsomFile = storeDataInFile(REPO, 'repositoryInfo.json')
-        # openJsonFile(jsonFile)
+        # jsonFile = storeDataInFile(REPO, 'repositoryInfo.json')
 
         return dataClassObject
     else:
@@ -85,23 +76,6 @@ def storeDataInFile(listOfDictionaryForCommits, filename):
         json.dump(listOfDictionaryForCommits, file)
     
     return 'allCommitsInRepo.json'
-
-
-# """Opens JSON file and prints its content for the last commit made [0]"""
-# def openJsonFile(jsonFile):
-#     print("JSON FILE: ")
-#     with open(jsonFile, 'r') as file:
-#         d = json.load(file)
-#         # print(d)
-
-#     print("\n")
-#     print(d[0]['commitAuthor'])
-#     print(d[0]['filesEdited'])
-#     # print(d[0]['pythonCode'])
-#     print(d[0]['additions'])
-#     print(d[0]["additionsPerFile"])
-#     print(d[0]['deletions'])
-#     print(d[0]["deletionsPerFile"])
 
 
 

@@ -13,6 +13,7 @@
             - REPO: Name of the repository 
             - accessToken: personal access token for OAuth access to GitHub REST API
     - Run main.py whilst inside the GitHubCommitData directory, from the terminal using command 'python3 main.py'
+    - Wait until terminal displays: "Sorry for the wait, the classification is complete." before loading results
 
 -  Navigate to the ResultsForCommitData directory  (project/ResultsForCommitData)
     - Run the HTTP server using the command:  'python3 -m http.server'
@@ -29,6 +30,8 @@
 
 - The commands I ran to set up ANTLR (which is already done for you and not necessary) can be found in 'project/PythonParser/antlrPythonParserGenerator/parserGenerator.sh'
 - These were run inside the 'project/PythonParser/antlrPythonParser/antlrParserGeneratedCode' directory 
+- Follow this link if failure to set up: https://stackoverflow.com/questions/75294250/im-trying-to-generate-the-parse-tree-for-antlr4-python3-g4-grammar-file-to-par
+
 
 
 # Author: Fariha Choudhury K20059723

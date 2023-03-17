@@ -14,12 +14,9 @@ def set_up(owner, repo, branch, accessToken):
         "Authorization": f"Bearer {accessToken}"
     }
 
-    # replace owner and repository name by repository you wish to query
-    OWNER = owner     # OWNER = "FarihaChoudhury"
-    REPO = repo       # REPO = "PublicRepoTest"
+    OWNER = owner
+    REPO = repo 
     BRANCH = branch
-    # BRANCH = "master"
-    # REF_SHA = "a19b766" # Last commit made
 
     # COLLABORATORS DATA: name and repository ID
     collaboratorsURL = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/collaborators"
@@ -92,7 +89,7 @@ def storeCollaboratorInList(collaborators):
         collaboratorsList.append(collaborators[i]["login"])
         # print(collaborators[i]["login"])
         # collaboratorsList.append(collaborators[i]["id"])    to include collaborator unique i
-    print(collaboratorsList)
+    # print(collaboratorsList)
     return collaboratorsList
 
 
