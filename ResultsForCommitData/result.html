@@ -13,12 +13,9 @@
             fetch('results.json', {cache: "no-cache"})
                 .then(response => response.json())
                 .then(data => {
-                    val = data.length - 1 //get last item in list
+                    val = data.length - 1 //get last item in list which is the repository name
                     var repoName = document.getElementById('repository');
-                    console.log(repoName)
                     repoName.innerHTML += data[val]
-                    // console.log(data[0])
-                    // console.log(Object.keys(data[0]))
 
                     displayResults = ""   
                     for (var i=0; i<data.length-1; i++){
@@ -29,16 +26,11 @@
 
                         //retrieves 'files edited, addition, deletion, overall'
                         listOfHeader = Object.keys(data[i][collaborator])
-                        // console.log("Titles:" + listOfHeader)
         
                         for (var j=0; j< listOfHeader.length; j++){
                             eachHeader = listOfHeader[j]
-                            console.log(listOfHeader[j])
-
-                            //contents of each 'files added'/ 'additions' / 'deletion' / 'overall' 
-                            // IF CONTENTS is just an array list (e.g., for files added), displays them, else fetches internals 
+                            // If contents is just an array list (e.g., for files added), displays them, else fetches internals 
                             contents =  data[i][collaborator][eachHeader]
-                            // console.log("CONTENTS:", contents)
                             
                             if (Array.isArray(contents)){
                                 displayResults += "&nbsp"
@@ -50,76 +42,51 @@
                                 getContentsOfList(data, eachHeader, contents)
                             }
                         }
-
                         var resultsDiv = document.getElementById('display results');
                         resultsDiv.innerHTML += displayResults 
                     }
 
-
+                   // Retrieves data stored within a list to display
                     function getContentsOfList(data, eachHeader, contents){
                         listOfTitles = Object.keys(contents)
-                        // console.log("INSIDE:" + listOfTitles)
-                        console.log("INSIDE:" + eachHeader)
                         for (var i=0; i<listOfTitles.length; i++){
                             values = contents[listOfTitles[i]]
                             
                             if (values == '[object Object]'){
-                                console.log("VALES:::::")
-                                console.log(values)
                                 listOfObjects = Object.keys(values)
-                                // console.log("OBJECT is:" + values)
-                                console.log("BOO", listOfObjects)
-
-                                
-                                //Sometimes tags hold empty list due to deletions thus consider empty case
-                                if (listOfObjects.length != 0){
+                                if (listOfObjects.length != 0){  //If not empty, display categories and query the dictionary within it
                                     displayResults += "<div><div><div><b>" + listOfTitles[i]+ ":</b>     "
                                     getContentsOfDict(data, eachHeader, values, listOfObjects)
                                 }
-                                else {  //if it is 0:
-                                    // console.log(listOfObjects)
-                                    // console.log("MISSING??" + listOfTitles[i])
+                                else { //In the case that there are no objects, display 0 
                                     displayResults += "<div><div><div><b>" + listOfTitles[i]+ ":     </b>"+  0 +"</div></div></div>" 
                                 }
                             }
                             else{
-                                // for list of class definitions - needs to iterature through list
+                                // for list of class definitions - needs to iterate through list
                                 if (Array.isArray(values)){
-                                    console.log(values.length)
-                                    if (values.length ==0){
+                                    if (values.length ==0){ //in the case that there are no items in the list
                                         displayResults += "<div><div><div><b>" + listOfTitles[i] + ": </b>&nbsp"+ 0 +"</div></div></div>" 
                                     }
                                     else{
                                         displayResults += "<div><div><div><b>" + listOfTitles[i] + ": </b>&nbsp"+ values.join(", &nbsp") +"</div></div></div>" 
                                     }
-
-                                    // displayResults += "<div><div><div><b>" + listOfTitles[i] + ": </b>&nbsp"+ values.join(", &nbsp") +"</div></div></div>" 
-                                    // displayResults += "</b></div></div></div>" 
                                 }
                                 else{
-                                    // console.log("not obkject", values)
                                     displayResults += "<div><div><div><b>" + listOfTitles[i]+ ": </b>&nbsp"+  values +"</div></div></div>" 
                                 }
-                                // console.log("not obkject", values)
-                                // displayResults += "<div><div><div>" + listOfTitles[i]+ ":      <b>"+  values +"</b></div></div></div>" 
                             }
-                            // console.log("key is:" + listOfTitles[i])
-                            // console.log("value is:" + values)
                         }
      
 
                     }
+                    // Retrieves data stored within a dictionary to display
                     function getContentsOfDict(data, eachHeader, values, listOfObjects){
-                        // console.log("REACHED HERE ---" +listOfObjects[0])
-                        // console.log("HEREEEEE", listOfObjects[0])
                         for (var i =0; i<listOfObjects.length; i++){
                             item = listOfObjects[i]
-                            // console.log("REACHED HERE ---" +values[item])
                             displayResults += "&nbsp"+ item + "=      "+  values[item] +", &nbsp"  
                         }
                         displayResults += "</div></div></div></div></div>"
-                        //closes the divs
-
                     }
                 })
         </script>
