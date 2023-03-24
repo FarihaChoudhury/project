@@ -271,7 +271,7 @@ def incrementResults(dataClass, collaborator, option, incrementValue, category, 
     if incrementTemplateTags:
         dataClass.updateHTMLtagsInResults(collaborator, option, incrementTemplateTags, category, "+")
     if classDefinitionList:
-        dataClass.updateDefinitionsListInResults(collaborator, option, classDefinitionList, category, "+")
+        dataClass.updateListInResults(collaborator, option, classDefinitionList, category, "+")
         
         
 
@@ -284,7 +284,7 @@ def decrementResults(dataClass, collaborator, option, decrementValue, category, 
     if decrementTemplateTags:
         dataClass.updateHTMLtagsInResults(collaborator, option, decrementTemplateTags, category, "-")
     if classDefinitionList:
-        dataClass.updateDefinitionsListInResults(collaborator, option, classDefinitionList, category, "-")
+        dataClass.updateListInResults(collaborator, option, classDefinitionList, category, "-")
         
 
 

@@ -49,17 +49,11 @@ def getGitHubResponse(url, headers=None):
         response.raise_for_status()
         return response
     except requests.exceptions.HTTPError as error:
-        print ("Http Error: ",error)
-        print("Please check the error stated above and try again")
-        sys.exit()
+        sys.exit("HTTP Error occurred, please check the error and try again:   " + repr(error))
     except requests.exceptions.ConnectionError as error:
-        print ("Error Connecting: ",error)
-        print("Please check the error stated above and try again")
-        sys.exit()
+        sys.exit("HTTP Error occurred, please check the error and try again:   " + repr(error))
     except requests.exceptions.RequestException as error:
-        print ("Error: ",error)
-        print("Please check the error stated above and try again")
-        sys.exit()
+        sys.exit("HTTP Error occurred, please check the error and try again:   " + repr(error))
         
 
 

@@ -43,19 +43,14 @@ class DataClass:
 
 
     """Sets the values being the filenames for the collaborator keys, in filenamesDictionary"""
-    # def setFilenamesDictionaryValues(self, collaborator, file):
-    #     self.filenamesDictionary[collaborator].add(file)
-
-    #     """Sets the values being the filenames for the collaborator keys, in filenamesDictionary"""
     def setFilenamesDictionaryValues(self, collaborator, file):
-        # self.filenamesDictionary[collaborator].add(file)
         for key, val in self.filenamesDictionary.items():
             if key == (collaborator):
                 self.filenamesDictionary[collaborator].add(file)
 
     """prints the results information per repository, for all commits """
     def accessResultsList(self):
-        print("RESULTS SO FAR")
+        print("Results so far:")
         for i in range(len(self.resultsListSeparate)):
             print(self.collaboratorsList[i])
             element = self.resultsListSeparate[i][(self.collaboratorsList[i])]
@@ -104,7 +99,6 @@ class DataClass:
             resultsPerContributor[collaborator].update(additions)
             resultsPerContributor[collaborator].update(deletions)
             resultsPerContributor[collaborator].update(overall)
-            # resultsPerContributor[collaborator].append(contributorData)
             self.resultsListSeparate.append(resultsPerContributor)
         
         for i in range(len(self.resultsListSeparate)):
@@ -131,7 +125,7 @@ class DataClass:
 
 
     """increment data in a specific category for a collaborator, by a specific input value """
-    def incrementResultsDataByValue(self, collaborator, option, incrementValue, category):
+    def incrementResultsDataByValue(self, collaborator, classificationOption, incrementValue, category):
         # - iterates through all collaborator's results
         for i in range(len(self.resultsListSeparate)):
             # - retrieves the items: key and values of the dictionary 
@@ -139,15 +133,13 @@ class DataClass:
                 for key, val in self.resultsListSeparate[i].items():
                     # # - finds entry for specific collaborator
                     if key == collaborator:
-                        # print(self.resultsListSeparate[i][collaborator][category][option])
                         # - increments the specific category by 1 
-                        self.resultsListSeparate[i][collaborator][category][option] = (self.resultsListSeparate[i][collaborator][category][option] + incrementValue)
-                        self.resultsListSeparate[i][collaborator]["overall"][option] = (self.resultsListSeparate[i][collaborator]["overall"][option] + incrementValue)
-        """CANNOT REFACTOR TO USE setValuesInResultsDictionary AS THE CURRENT VALUE IS NEEDED FOR THE INCREMENT"""
+                        self.resultsListSeparate[i][collaborator][category][classificationOption] = (self.resultsListSeparate[i][collaborator][category][classificationOption] + incrementValue)
+                        self.resultsListSeparate[i][collaborator]["overall"][classificationOption] = (self.resultsListSeparate[i][collaborator]["overall"][classificationOption] + incrementValue)
 
 
     """decrements data in a specific category for a collaborator, by a specific input value """
-    def decrementResultsDataByValue(self, collaborator, option, decrementValue, category):
+    def decrementResultsDataByValue(self, collaborator, classificationOption, decrementValue, category):
         # - iterates through all collaborator's results
         for i in range(len(self.resultsListSeparate)):
             # - retrieves the items: key and values of the dictionary 
@@ -156,15 +148,12 @@ class DataClass:
                     # - finds entry for specific collaborator
                     if key == collaborator:
                         # - decrements the specific category by 1 in overall, but +1 in deletes sectionx 
-                        self.resultsListSeparate[i][collaborator][category][option] = (self.resultsListSeparate[i][collaborator][category][option] + decrementValue)
-                        self.resultsListSeparate[i][collaborator]["overall"][option] = (self.resultsListSeparate[i][collaborator]["overall"][option] - decrementValue)
-                """CANNOT REFACTOR TO USE setValuesInResultsDictionary AS THE CURRENT VALUE IS NEEDED FOR THE IN/DECREMENT"""
+                        self.resultsListSeparate[i][collaborator][category][classificationOption] = (self.resultsListSeparate[i][collaborator][category][classificationOption] + decrementValue)
+                        self.resultsListSeparate[i][collaborator]["overall"][classificationOption] = (self.resultsListSeparate[i][collaborator]["overall"][classificationOption] - decrementValue)
 
 
-
-
-
-    def updateDefinitionsListInResults(self, collaborator, option, resultItem, category, condition):
+    """Appends result item to list of specified option"""
+    def updateListInResults(self, collaborator, classificationOption, resultItem, category, condition):
         for i in range(len(self.resultsListSeparate)):
             # - retrieves the items: key and values of the dictionary 
             if self.resultsListSeparate[i].items(): 
@@ -173,26 +162,23 @@ class DataClass:
                     if key == collaborator:
                         # sets the dictionary as the tags dictionary that we updated - using .update() updates ALL HTML tag dicts in the results dict!
                         # this is why i did self.tags!
-                        classListResults = self.resultsListSeparate[i][collaborator][category][option].copy()
-                        # print(self.resultsListSeparate[i][collaborator][category][option])
-                        classListOverall = self.resultsListSeparate[i][collaborator]["overall"][option].copy()
+                        classListResults = self.resultsListSeparate[i][collaborator][category][classificationOption].copy()
+                        classListOverall = self.resultsListSeparate[i][collaborator]["overall"][classificationOption].copy()
         
         if (condition == "+"):
             classListResults.append(resultItem)
-            # FOR OVERALL:
             classListOverall.append(resultItem)
         elif (condition == "-"):
             classListResults.append(resultItem)
-            # FOR OVERALL:
             if resultItem in classListOverall:
                 classListOverall.remove(resultItem)
-        self.setValuesInResultsDictionary(collaborator, option, category, classListResults, classListOverall)
+        self.setValuesInResultsDictionary(collaborator, classificationOption, category, classListResults, classListOverall)
 
 
     """Sets the result values in the result dictionary for a given collaborator, addition/deletion and under which category
         - takes a value or item for the addition/deletion 
         - takes a second value or item for the overall category"""
-    def setValuesInResultsDictionary(self, collaborator, option, category, valueToSet1, valueToSetOverall):
+    def setValuesInResultsDictionary(self, collaborator, classificationOption, category, valueToSet1, valueToSetOverall):
         for i in range(len(self.resultsListSeparate)):
             # - retrieves the items: key and values of the dictionary 
             if self.resultsListSeparate[i].items(): 
@@ -201,44 +187,36 @@ class DataClass:
                     if key == collaborator:
                         # sets the dictionary as the tags dictionary that we updated - using .update() updates ALL HTML tag dicts in the results dict!
                         # this is why i did self.tags!
-                        self.resultsListSeparate[i][collaborator][category][option] = valueToSet1.copy()
+                        self.resultsListSeparate[i][collaborator][category][classificationOption] = valueToSet1.copy()
                         # print(self.resultsListSeparate[i][collaborator][category][option])
-                        self.resultsListSeparate[i][collaborator]["overall"][option] = valueToSetOverall.copy()
+                        self.resultsListSeparate[i][collaborator]["overall"][classificationOption] = valueToSetOverall.copy()
                         # print(self.resultsListSeparate[i][collaborator]["overall"][option])
 
 
 
-    """updates local dictionaries for REMOVED  tags (tags and template tags) and overall dictionary"""
-    def updateHTMLtagsInResults(self, collaborator, option, resultItem, category, condition):
+    """Updates list which holds dictionary items  e.g., for tags and template tags """
+    def updateHTMLtagsInResults(self, collaborator, classificationOption, resultItem, category, condition):
         for i in range(len(self.resultsListSeparate)):
             # - retrieves the items: key and values of the dictionary 
             if self.resultsListSeparate[i].items(): 
                 for key, val in self.resultsListSeparate[i].items():
                     # # - finds entry for specific collaborator
                     if key == collaborator:
-                        currentList = self.resultsListSeparate[i][collaborator][category][option].copy()
-                        currentOverall = self.resultsListSeparate[i][collaborator]["overall"][option].copy()
+                        currentList = self.resultsListSeparate[i][collaborator][category][classificationOption].copy()
+                        currentOverall = self.resultsListSeparate[i][collaborator]["overall"][classificationOption].copy()
         # append to current list, regardless of addition or deletions
-        # resultUpdated = []
         if currentList:
-            print(resultItem) 
-            print("before:", currentList)
+            # print(resultItem) 
+            # print("before:", currentList)
             for key, val in currentList.copy().items():
                 for key2, val2 in resultItem.items():
                     if key==key2:
-                        # print("matched:", key)
-                        # print("need to be", val + val2)
                         currentList[key] = val + val2
                     else:
                         currentList.update(resultItem)
-                        # resultUpdated = currentList.copy()
         else:
             currentList.update(resultItem)
-            # resultUpdated = currentList.copy()
 
-        print("after:", currentList)
-        # if resultUpdated:
-        #     print("after TRY:", resultUpdated)
         # if its +, then adds to list even if it doesn't exist for overall, if - then dont add if it doesn't exist because then they deleted something they didn't add!
         # this is because if they added it, it would be in overall already 
         if currentOverall: 
@@ -254,9 +232,9 @@ class DataClass:
         elif (condition == "+"):
             currentOverall.update(resultItem)
         
-        print("after:", currentOverall)
+        # print("after:", currentOverall)
 
-        self.setValuesInResultsDictionary(collaborator, option, category, currentList, currentOverall)
+        self.setValuesInResultsDictionary(collaborator, classificationOption, category, currentList, currentOverall)
 
     
     

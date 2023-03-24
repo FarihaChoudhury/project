@@ -17,10 +17,6 @@ def main():
     # BRANCH = "main"
 
 
-    # OWNER = "RahinAshraf"
-    # REPO = "Mockingbirds"
-    # BRANCH = "main"
-
 
     # accessToken = "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"
     accessToken =  "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"

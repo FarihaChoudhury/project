@@ -66,8 +66,8 @@ def contributorsOfEachFile(owner, repo, allFiles, headers, dataClassObject):
                 for collaborator in collaboratorsOfFileList:
                     dataClassObject.setFilenamesDictionaryValues(collaborator, filename)
             else:
-                print("Please try again as an error has occurred")
-                sys.exit()
+                sys.exit("Error occurred, please try again.")
+
 
 """Saves content of the list of dictionaries onto a .JSON file"""     
 def storeDataInFile(listOfDictionaryForCommits, filename):
