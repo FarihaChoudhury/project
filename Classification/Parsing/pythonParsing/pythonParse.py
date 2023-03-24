@@ -45,32 +45,30 @@ def countEmptyLinesOfInput(inputData):
     totalLines = 1
     emptyLines = 0
     if not inputData.strip():
-        # cannot strip if empty => increments count 
         emptyLines = 1
     return totalLines, emptyLines
 
 
-"""inaccurate as it considers line by line - mid block comment lines not accounted for..."""
+""" Calculates if a line is a comment line
+    - Looks for single line comments and mid line comments by #, and single line comments by '/ "
+    - Looks for start or end lines of block comments by triple "/' """
 def countCommentsOnInputLine(line):
     strippedLine = line.strip()
     commentLinesCount = 0
     # single # comments 
     if strippedLine.startswith("#"):
         commentLinesCount += 1
-
     # triple """ or '''
     elif strippedLine.startswith('"""') or strippedLine.endswith('"""'):
         commentLinesCount += 1
     elif strippedLine.startswith("'''") or strippedLine.endswith("'''"):
         commentLinesCount += 1
-
     # single " or ' 
     elif strippedLine.startswith('"') or strippedLine.endswith('"'):
         commentLinesCount += 1
     elif strippedLine.startswith("'") or strippedLine.endswith("'"):
         commentLinesCount += 1
-
-     #midline comments starting with # - not 100% accurate 
+    #midline comments starting with # - not 100% accurate 
     elif "#" in strippedLine:
         commentLinesCount += 1
 
@@ -79,16 +77,13 @@ def countCommentsOnInputLine(line):
 
 
 
-"""Performs classification on the python code inputted
-    - takes input in terms of code text, not a file
+""" Performs classification on the python code inputted
+    - takes input of single line of code 
+    - performs classifications for spaces, lines, comments
     - passes code into parser 
-    - performs classifications and prints to terminal
-    - returns these """
+    - performs classifications for parse tree
+    - returns classification results"""
 def performClassificationOnPythonInput(inputData):
-    #PARSE TREE GENERATOR:
-    # tree, parser = parseDataSingleInput(inputData)
-    # result = tree.toStringTree(recog=parser)
-    # print(result)
 
     spaces = countWhitespaces(inputData)
     spacesWithoutIndent = countWhitespaces(inputData.strip())
@@ -100,24 +95,13 @@ def performClassificationOnPythonInput(inputData):
     result = tree.toStringTree(recog=parser)
 
     printStatementCount, loopCount, conditionCount, importCount, funcCount, classCount, classDefinition, viewCount, modelCount, formCount= analyseCodeTypes(result)
-    # print("Spaces:", spaces)
-    # print("Spaces without indents:", spacesWithoutIndent)
-    # print("Newlines:", newLines)
-    # print("Empty Lines:", emptyLines)
-    # print("Total lines:", totalLines)
-    # print("Comment Lines", comments)
-    # print("Prints:", printStatementCount)
-    # print("Loops:", loopCount)
-    # print("Conditions:", conditionCount)
-    # print("Imports:", importCount)
-    # print("Functions:", funcCount)
-    # print("ClassDefs:", classCount)   
-    # print("classDef list:", classDefinition)
 
     return spaces, spacesWithoutIndent, newLines, emptyLines, totalLines, comments, printStatementCount, loopCount, conditionCount, importCount, funcCount, classCount, classDefinition, viewCount, modelCount, formCount
 
 
-
+""" Given a parse tree result, searches for particular rules for classifications
+    - when class definitions are found, retrieves the class name and checks calls upon Model/Form/View checker
+    - returns classification results """
 def analyseCodeTypes(parsedData):
     list =  parsedData.split()
     printStatementCount=0
@@ -140,16 +124,17 @@ def analyseCodeTypes(parsedData):
             case '(funcdef':
                 funcCount+= 1
             case '(classdef':
-                # +3 to get the name from the antlr result of ..(classdef class (name UserModelTestCase) => UserModelTestCase)
+                # +3 to get the name from the antlr result 
+                # e.g.,  (classdef class (name UserModelTestCase) => UserModelTestCase)
                 className = removeBracket(list[i+3])
                 classCount +=1
     # Checks if the class is a view, model, form or none
     viewCount, modelCount, formCount = viewModelFormChecker(className, parsedData)
 
-    # print("", viewCount, modelCount, formCount)
     return printStatementCount, loopCount, conditionCount, importCount, funcCount, classCount, className, viewCount, modelCount, formCount
 
 
+""" Checks if a given class is a Model, Form, View or none"""
 def viewModelFormChecker(className, parsedData):
     viewCount = 0
     modelCount = 0
@@ -164,11 +149,9 @@ def viewModelFormChecker(className, parsedData):
                 modelCount += 1
 
     return viewCount, modelCount, formCount
-        # # define variables here to avoid repetition
-        # viewCount, modelCount, formCount = checkViews(parsedData, viewCount, modelCount, formCount)
-        # print("", viewCount, modelCount, formCount)
 
-"""Removes bracket from parse tree result of class names"""
+
+""" Removes bracket from parse tree result of class names"""
 def removeBracket(className):
     if className.endswith(")"):
         return className[:-1]
@@ -177,28 +160,6 @@ def removeBracket(className):
 
 
 
-# def testing():
-#     CODE = "class Post(models.Model):"
-#     # CODE = "class dataClass:"
-#     # strippedData = data.strip()
-#     # Add \n for end of file - antlr requires 
-#     input_stream = InputStream(f'{CODE}\n')
-#     lexer = Python3Lexer(input_stream)
-#     stream = CommonTokenStream(lexer)
-#     parser = Python3Parser(stream)
-#     # tree = parser.single_input()
-#     tree = parser.single_input()
-#     result = tree.toStringTree(recog=parser)
-
-#     print(result)
-#     analyseCodeTypes(result)
-    
-#     return tree, parser
-
-
-
-# if __name__ == '__main__':
-#     main()
 
 if __name__ == '__main__':
     globals()[sys.argv[1]]()

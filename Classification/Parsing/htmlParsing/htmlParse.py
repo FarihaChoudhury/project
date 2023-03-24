@@ -6,7 +6,10 @@ from pythonHTMLparser import HTMLParserClass
 
 """Helper functions for HTML code parsing"""
 
-"""identifies <..> tags"""
+
+""" Identifies HTML tags
+    - finds <...> tags using the Python HTML parser library
+    - return the tag and the number of occurrences in a dictionary"""
 def identifyHTMLtags(inputData):
     # Create a new parser object and feed it the HTML code
     htmlParser = HTMLParserClass()
@@ -23,7 +26,8 @@ def identifyHTMLtags(inputData):
 
 """ Identifies Django template tags
     - finds {%, retrieves first word after it 
-    - stores this word in dict with its count """
+    - stores this word in dict with its count 
+    - returns the template tags found """
 def identifyDjangoTemplateTags(inputData):
     templateTag = {}
     # to identify and store {%...%}
@@ -35,20 +39,18 @@ def identifyDjangoTemplateTags(inputData):
     return templateTag
 
 
-"""Identifies HTML Evaluation variables
-    - finds {{, keeps count of occurrence """
+"""Identifies HTML evaluation variables
+    - finds {{, keeps count of occurrence 
+    - returns the number of evaluation variables found"""
 def identifyHTMLEvaluationVars(inputData):
     matches = re.findall(r'{\s*{\s*(\S+)\b', inputData)
     count = len(matches)
     return count
-    """EXPLANATION:
-        r'{\s*{\s*(\S+)\b'
-        Find { with any amount of spaces (\s*), followed by { again, then matches any non white space \S, 
-        \b ensures that the match stops at the end of the first word after the {% delimiter}}"""
 
 
 """Counts the number comments in a html line of code 
-    - includes: <!-- and --> comments"""
+    - includes: <!-- and --> comments
+    - returns the comments found """
 def countHTMLComments(line):
     strippedLine = line.strip()
     commentLinesCount = 0
@@ -71,7 +73,7 @@ def performClassificationOnHTMLInput(inputData):
     newLines = countNewLines(inputData)
     totalLines, emptyLines = countEmptyLinesOfInput(inputData)
     htmlComments = countHTMLComments(inputData)
-    # retrieves tags, template tags, and evaluation variables
+
     tagCountDict = identifyHTMLtags(inputData)
     templateTagCountDict = identifyDjangoTemplateTags(inputData)
     evalVars = identifyHTMLEvaluationVars(inputData)
