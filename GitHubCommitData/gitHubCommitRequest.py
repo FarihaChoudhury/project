@@ -3,9 +3,8 @@ import requests
 import json
 from textParse import filterFilenames
 
-"""Sets up GitHub API querying with access tokens and creating the URLs to query
-    - returns the URL to retrieve collaborators data and commit data for a single repository
-"""
+""" Sets up GitHub API querying with access tokens and creating the URLs to query
+    - returns the URL to retrieve collaborators data and commit data for a single repository """
 def set_up(owner, repo, branch, accessToken):
     # Set the personal access token and HTTP headers: replace with your own
 
@@ -28,7 +27,7 @@ def set_up(owner, repo, branch, accessToken):
     return collaboratorsURL, commitURL, filesURL, headers
 
 
-"""creates URL to query a specific file """
+""" Creates URL to query a specific file """
 def specificFileGitHubQuery(owner, repo, filename):
     OWNER = owner 
     REPO = repo 
@@ -37,7 +36,8 @@ def specificFileGitHubQuery(owner, repo, filename):
     return specificFileURL
 
 
-"""Conducts the API get command with provided url and returns its response, takes headers as an optional parameter"""
+""" Conducts the API get command with provided url and returns its response, takes headers as an optional parameter
+    - Exits with error displayed to users if HTTP request is unsuccessful """
 def getGitHubResponse(url, headers=None):
     try:
         if headers: 
@@ -57,75 +57,63 @@ def getGitHubResponse(url, headers=None):
         
 
 
-"""Converts the GitHub API response into JSON format"""
+""" Converts the GitHub API response into JSON format """
 def convertGitHubResponseToJson(response):
     jsonResponse = response.json()
     return jsonResponse
 
-"""Query all file names to return list of all filenames"""
+""" Query all file names to return list of all filenames """
 def getFilenamesList(files):
     allFiles = []
     for file in files["tree"]:
          allFiles.append(file["path"])
     return allFiles
 
-"""Retrieves all collaborators of a specified file, as a list """
+""" Retrieves all collaborators of a specified file, as a list """
 def getCollaboratorsOfFile(file):
     collaboratorsOfFile = []
     for i in range(len(file)):
         collaboratorsOfFile.append(file[i]["author"]["login"])
     return collaboratorsOfFile
 
-"""Store GitHub API collaborators response in a list"""
+""" Store GitHub API collaborators response in a list """
 def storeCollaboratorInList(collaborators):
     collaboratorsList = []  
     for i in range(len(collaborators)):
         collaboratorsList.append(collaborators[i]["login"])
-        # print(collaborators[i]["login"])
-        # collaboratorsList.append(collaborators[i]["id"])    to include collaborator unique i
-    # print(collaboratorsList)
     return collaboratorsList
 
 
-"""Prints all collaborators in given repository to terminal"""
+""" Prints all collaborators in given repository to terminal """
 def printCollaborators(collaboratorsList):
     print("All collaborators:")
     print(collaboratorsList)
     print("\n")
 
 
-"""Store GitHub API commit response in a list of dictionaries"""
-def storeCommitsInListOfDictionaries(allCommits, OWNER, REPO, headers):
+""" Retrieves the additions and deletions source code for each individual using the GitHub API, 
+    then stores necessary response in a list of dictionaries """
+def retrieveCommitsSourceCodeIntoListOfDictionaries(allCommits, OWNER, REPO, headers):
     listOfDictionaryForCommits = [{} for x in range(len(allCommits))]
     # EACH COMMIT DATA:
     for i in range(len(allCommits)):
         commitSha = allCommits[i]['sha']
-        # USES FULL LOGIN NAME - NOT JUST NAME!!
-        # commitAuthor = allCommits[i]['commit']['author']['name']
-        commitAuthor = allCommits[i]['author']['login']
+        commitAuthor = allCommits[i]['author']['login'] # must use login not name for accuracy
 
+        # Retrieve the content of each individual commit via the GitHub API
         specificCommitUrl = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/commits/" + commitSha
-        # specificCommitResponse = requests.get(specificCommitUrl, headers=headers)
         specificCommitResponse = getGitHubResponse(specificCommitUrl, headers=headers)
         commit = convertGitHubResponseToJson(specificCommitResponse)
 
-        additionsList = []
         additionsForFile = [{}]
         deletionsForFile = [{}]
-        deletionsList = []
-        # allCommitLinesList = []
-        # allCommitCodeListAsOneString = []
         filenames = []
 
-        for file in commit["files"]:
-            # print("UGH", file)
-            # print(file['patch'])
-            
+        for file in commit["files"]:            
             if filterFilenames(file["filename"]):
                 x=0
                 filenames.append(file["filename"])
-            
-                # if (file["patch"]):
+        
                 if "patch" in file:
                     patchCode = file["patch"]  # string contains code for whole file, includes the initial @@ -1,3 +1,6 @@ (AKA 'diff')
                     # Remove: @@ .... @@
@@ -133,7 +121,6 @@ def storeCommitsInListOfDictionaries(allCommits, OWNER, REPO, headers):
                     parts = patchCode.split(newLineSymbol, 1)
                     if len(parts) > 1:
                         patchCode = parts[1]
-                    # print(patchCode)
 
                     # splits patchCode into lines:
                     lines = patchCode.split("\n")  # list of each line of code from whole commit file, includes '@@ -1,3 +1,6 @@'
@@ -143,14 +130,9 @@ def storeCommitsInListOfDictionaries(allCommits, OWNER, REPO, headers):
                     # Populate each additions line into
                     for j in range(len(lines)):
                         if lines[j].startswith("+"):
-                            additionsList.append(lines[j][1:])    # [1:]removes the +/ - from beginning of lines
-                            additionsPerFile.append(lines[j][1:])
+                            additionsPerFile.append(lines[j][1:])  #[1:]removes the +/ - from beginning of lines
                         if lines[j].startswith("-"):
-                            deletionsList.append(lines[j][1:])
-                            """append to per file list so it can be accumulated at the end """
                             deletionsPerFile.append(lines[j][1:])
-                        # else:
-                        #     allCommitLinesList.append(lines[j][1:])   #  add all lines from commit file - DO I EVEN NEED??
                     # checks if there was any additions/deletions in current commit => if so then adds to accumulated dictionary 
                     if len(additionsPerFile) != 0:
                         additionsForFile[x][file["filename"]] = additionsPerFile
@@ -159,20 +141,13 @@ def storeCommitsInListOfDictionaries(allCommits, OWNER, REPO, headers):
                         deletionsForFile[x][file["filename"]] = deletionsPerFile
                     x+=1
 
-        # allCommitCodeListAsOneString = "\n".join(allCommitLinesList)
-
         # Populating list of dictionaries: for each commit made-
         listOfDictionaryForCommits[i]["commitAuthor"] = commitAuthor
         listOfDictionaryForCommits[i]["commitSha"] = commitSha
         listOfDictionaryForCommits[i]["filesEdited"] = filenames
-        # listOfDictionaryForCommits[i]["commitFileLinesAsList"] = allCommitLinesList  # i dont really use it
-        # listOfDictionaryForCommits[i]["pythonCode"] = allCommitCodeListAsOneString  # i dont really ever use it 
-        # listOfDictionaryForCommits[i]["additions"] = additionsList
         listOfDictionaryForCommits[i]["additionsPerFile"] = additionsForFile
-        # listOfDictionaryForCommits[i]["deletions"] = deletionsList
         listOfDictionaryForCommits[i]["deletionsPerFile"] = deletionsForFile
 
-    # printListOfDictionaries(listOfDictionaryForCommits)
     return listOfDictionaryForCommits
 
 

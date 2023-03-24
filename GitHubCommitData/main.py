@@ -2,19 +2,22 @@ from usingCommitData import getClassificationsResults
 from usingRequests import getCodeContributionOf
 
 
-"""To run the whole code contribution classifier"""
+""" Runs the code contribution classifier 
+    - OWNER, REPO, BRANCH and accessToken must be supplied with correct information 
+    - A repository with access rights is provided"""
 def main():
-    OWNER = "FarihaChoudhury"
-    REPO = "PublicRepoTest"
-    BRANCH = "main"
+    # OWNER = "FarihaChoudhury"
+    # REPO = "PublicRepoTest"
+    # BRANCH = "main"
 
     # OWNER = "lisa947"
     # REPO = "SEG-small-group-project"
     # BRANCH = "main"
     
-    # OWNER = "FarihaChoudhury"
-    # REPO = "SEG-small-group-project"
-    # BRANCH = "main"
+    
+    OWNER = "FarihaChoudhury"
+    REPO = "SEG-small-group-project"
+    BRANCH = "main"
 
 
 

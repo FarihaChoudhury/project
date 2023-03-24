@@ -1,9 +1,6 @@
 import json
 import os
 import sys
-# from CommitData import dataClass
-# from antlrPythonParser.htmlParsing.htmlParse import performClassificationOnHTMLInput
-# from PythonParser.antlrPythonParser.textParsing.textParse import performClassificationOnTextInput
 sys.path.insert(0, '../Classification/Parsing/pythonParsing')
 sys.path.insert(0, '../Classification/Parsing/htmlParsing')
 sys.path.insert(0, '../Classification/Parsing/textParsing')
@@ -12,19 +9,18 @@ from pythonParse import performClassificationOnPythonInput
 from textParse import performClassificationOnTextInput
 from htmlParse import performClassificationOnHTMLInput
 
-# from htmlParse import performClassificationOnHTMLInput
-# from pythonParsing import 
 
-
-"""Converts a set into a list object for JSON serialize purposes"""
+""" Converts a set into a list object for JSON serialize purposes"""
 def jsonSetSerializer(setObject):
     if isinstance(setObject, set):
         return list(setObject)
     return setObject
 
 
+"""Controls the receiving of stored commit data for classifications and storing of the results into the results.json file  """
 def getClassificationsResults(dataClass, REPO):
     setUpClassificationsResults(dataClass)
+    
     print("\n addition ------------: \n")
     readAdditionsFromClass(dataClass)
     print("\n deletions------------: \n")
@@ -35,23 +31,22 @@ def getClassificationsResults(dataClass, REPO):
             print(dataClass.resultsListSeparate[i])
             print("\n")
     
-    # listOfDictionaryForCommits.append(REPO)
     storeJSONresults(dataClass, REPO)
 
 
-"""calls on additions for files in all commits and deletions for files in all commits"""
+""" Sets up base template for results in the dataClass """
 def setUpClassificationsResults(dataClass):
     dataClass.createResultsTemplateSeparate()
     print("\n template made --- \n")
 
 
-"""Stores results on a JSON file"""
+""" Stores results on a JSON file
+    - Must change sets to lists for JSON compatibility; convert set of filenames to list """
 def storeJSONresults(dataClass, REPO):
-    # Change set of filenames to list so that it can be dumped into JSON
     for i in range(len(dataClass.resultsListSeparate)):
         if dataClass.resultsListSeparate[i].items(): 
             for key, val in dataClass.resultsListSeparate[i].items():
-                # set the filenames set as list:
+                # change the filenames set as list:
                 dataClass.resultsListSeparate[i][key]["files edited"] = jsonSetSerializer(dataClass.resultsListSeparate[i][key]["files edited"])
     # store results to json file
     dataClass.resultsListSeparate.append(REPO)
@@ -91,16 +86,15 @@ def storeJSONresults(dataClass, REPO):
 #         differentiateCodeTypes(dataClass, contributor, deletions, False)
 #     return deletions
 
-# "''THIS IS REAL VERSIONS - USES ALLLLL COMMITS: "
-"""Reads the additionsPerFile item in the list of dictionaries of all commits made in a repository"""
+
+""" Reads the additionsPerFile item in the list of dictionaries of all commits made in a repository
+    Then calls on classifications on retrieved additions"""
 def readAdditionsFromClass(dataClass):
     commitData = dataClass.listOfDictionaryForCommits
     additions = []
     for i in range(len(commitData)):
         print(i)
         if (commitData[i]["additionsPerFile"][0]):
-            # print(commitData[i])
-            # sets all additions for specific commits into one list
             contributor = commitData[i]["commitAuthor"]
             print(contributor)
             additions = commitData[i]["additionsPerFile"][0]
@@ -108,7 +102,8 @@ def readAdditionsFromClass(dataClass):
             differentiateCodeTypes(dataClass, contributor, additions, True)
     return additions
 
-# """Reads the deletionsPerFile item in the list of dictionaries of all commits made in a repository"""
+""" Reads the deletionsPerFile item in the list of dictionaries of all commits made in a repository
+    Then calls on classifications on retrieved deletions"""
 def readDeletionsFromClass(dataClass):
     commitData = dataClass.listOfDictionaryForCommits
     deletions = []
@@ -119,13 +114,12 @@ def readDeletionsFromClass(dataClass):
             print(contributor)
             deletions = commitData[i]["deletionsPerFile"][0]
             print(deletions)
-            # call function to differentiate the code types of each line and perform classification
             differentiateCodeTypes(dataClass, contributor, deletions, False)
     return deletions
 
 
-"""Takes a list which contains dictionary items and checks the keys of these items
-    - if the key holds a Python file, text file or HTML file, the necessary classifications will be called on the values """
+""" Takes a list which contains dictionary items and checks the keys of these items.
+    Based on file type, corresponding classifications take place """
 def differentiateCodeTypes(dataClass, contributor, listOfDictionariesForCommits, increment): 
     if listOfDictionariesForCommits.items(): 
         for key, val in listOfDictionariesForCommits.items():
@@ -138,7 +132,8 @@ def differentiateCodeTypes(dataClass, contributor, listOfDictionariesForCommits,
 
 
 
-"""Accesses the value of the dictionaries which store the Python code, calls function to perform the classification and passes the results to be updated"""
+""" Accesses the value of the dictionaries which store the Python code, calls function to perform the classification,
+    passes the results to be updated"""
 def retrievePythonCodeToParse(dataClass, contributor, filename, valueList, increment):
     print(increment)
     for valItem in valueList:
@@ -165,11 +160,10 @@ def retrievePythonCodeToParse(dataClass, contributor, filename, valueList, incre
             viewCount = viewCount, 
             modelCount = modelCount, 
             formCount= formCount)
-        # print(dataClass.resultsListSeparate)
-        # print("\n")
 
 
-"""Accesses the value of the dictionaries which store the text/JSON data, calls function to perform the classification and passes the results to be updated"""
+""" Accesses the value of the dictionaries which store the text/JSON data, calls function to perform the classification,
+    passes the results to be updated"""
 def retrieveTextCodeToParse(dataClass, contributor, filename, valueList, increment):
     for valItem in valueList:
         spaces, spacesWithoutIndent, emptyLines, totalLines = performClassificationOnTextInput(valItem)
@@ -181,11 +175,10 @@ def retrieveTextCodeToParse(dataClass, contributor, filename, valueList, increme
             strippedSpaces=spacesWithoutIndent, 
             emptyLines = emptyLines, 
             totalLines = totalLines)
-        # print(dataClass.resultsListSeparate)
-        # print("\n")
 
 
-"""Accesses the value of the dictionaries which store the HTML code, calls function to perform the classification and passes the results to be updated"""
+""" Accesses the value of the dictionaries which store the HTML code, calls function to perform the classification,
+    passes the results to be updated"""
 def retrieveHTMLCodeToParse(dataClass, contributor, filename, valueList, increment):
     for valItem in valueList:
         spaces, spacesWithoutIndent, newLines, emptyLines, totalLines, htmlComments, tagCountDict, templateTagCountDict, evalVars = performClassificationOnHTMLInput(valItem)
@@ -204,10 +197,9 @@ def retrieveHTMLCodeToParse(dataClass, contributor, filename, valueList, increme
             HTMLtags = tagCountDict,
             HTMLtemplateTags = templateTagCountDict,
             HTMLevalVars = evalVars)
-        # print(dataClass.resultsListSeparate)
-        # print("\n")
         
 
+""" Given classification results obtained for each line of code parsed, updates the corresponding categories for collaborator """
 def updateDataInResults(dataClass, contributor, increment, spaces = None, strippedSpaces =None, newLines = None, emptyLines = None, comments = None, 
                         codeLines = None, totalLines = None, printStatementCount = None, loopCount = None, conditionCount = None, importCount = None, 
                         funcCount = None, classCount = None, classDefinitionList = None, viewCount = None, modelCount = None, formCount= None,
@@ -263,6 +255,7 @@ def updateDataInResults(dataClass, contributor, increment, spaces = None, stripp
         # print("DECREMENT")
 
 
+""" Calls DataClass to increment its additions and overall with the classification results for a collaborator """
 def incrementResults(dataClass, collaborator, option, incrementValue, category, incrementTags=None, incrementTemplateTags=None, classDefinitionList=None):
     if incrementValue:
         dataClass.incrementResultsDataByValue(collaborator, option, incrementValue, category)
@@ -274,10 +267,9 @@ def incrementResults(dataClass, collaborator, option, incrementValue, category, 
         dataClass.updateListInResults(collaborator, option, classDefinitionList, category, "+")
         
         
-
+""" Calls DataClass to decrement its deletions and update its overall with the classification results for a collaborator """
 def decrementResults(dataClass, collaborator, option, decrementValue, category, decrementTags=None, decrementTemplateTags=None, classDefinitionList=None):
     if decrementValue: 
-    # increment the "deletions" category then decrement overall 
         dataClass.decrementResultsDataByValue(collaborator, option, decrementValue, category)
     if decrementTags:
         dataClass.updateHTMLtagsInResults(collaborator, option, decrementTags, category, "-")
