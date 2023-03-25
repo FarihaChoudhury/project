@@ -6,7 +6,7 @@
 - Python3 
 - ANTLR for Python3 (see steps below)
 - A repository with access/ownership and a GitHub access token.
-
+- This project was coded in VScode - system paths remain in settings.json, use VScode if unable to work on other IDEs
 ## TO INSTALL ANTLR: 
 - All ANTLR generated code is provided in the repository, within the directory at 'project/Classification/Parsing/antlrParserGeneratedCode'
 - To test for this:

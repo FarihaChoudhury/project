@@ -30,7 +30,6 @@ def identifyHTMLtags(inputData):
     - returns the template tags found """
 def identifyDjangoTemplateTags(inputData):
     templateTag = {}
-    # to identify and store {%...%}
     matches = re.findall(r'{\s*%\s*(\S+)\b', inputData)
     if matches:
         for match in matches:
@@ -39,16 +38,16 @@ def identifyDjangoTemplateTags(inputData):
     return templateTag
 
 
-"""Identifies HTML evaluation variables
+""" Identifies HTML evaluation variables
     - finds {{, keeps count of occurrence 
-    - returns the number of evaluation variables found"""
+    - returns the number of evaluation variables found """
 def identifyHTMLEvaluationVars(inputData):
     matches = re.findall(r'{\s*{\s*(\S+)\b', inputData)
     count = len(matches)
     return count
 
 
-"""Counts the number comments in a html line of code 
+""" Counts the number comments in a html line of code 
     - includes: <!-- and --> comments
     - returns the comments found """
 def countHTMLComments(line):
@@ -63,7 +62,7 @@ def countHTMLComments(line):
     return commentLinesCount
 
 
-"""Performs classification on the HTML code inputted
+""" Performs classification on the HTML code inputted
     - takes input in terms of code text, not a file
     - performs classifications and prints to terminal
     - returns these """
