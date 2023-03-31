@@ -64,9 +64,9 @@ def countCommentsOnInputLine(line):
     elif strippedLine.startswith("'''") or strippedLine.endswith("'''"):
         commentLinesCount += 1
     # single " or ' 
-    elif strippedLine.startswith('"') or strippedLine.endswith('"'):
+    elif strippedLine.startswith('"') and strippedLine.endswith('"'):
         commentLinesCount += 1
-    elif strippedLine.startswith("'") or strippedLine.endswith("'"):
+    elif strippedLine.startswith("'") and strippedLine.endswith("'"):
         commentLinesCount += 1
     #midline comments starting with # - not 100% accurate 
     elif "#" in strippedLine:

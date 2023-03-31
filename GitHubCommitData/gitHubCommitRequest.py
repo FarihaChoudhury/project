@@ -16,11 +16,8 @@ def set_up(owner, repo, branch, accessToken):
     OWNER = owner
     REPO = repo 
     BRANCH = branch
-
-    # COLLABORATORS DATA: name and repository ID
+    
     collaboratorsURL = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/collaborators"
-    # print(collaboratorsURL)
-
     commitURL = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/commits"
     filesURL =  "https://api.github.com/repos/"+ OWNER + "/" + REPO +"/git/trees/"+ BRANCH +"?recursive=1"
    

@@ -15,11 +15,13 @@ def main():
     # BRANCH = "main"
     
     
+    # OWNER = "FarihaChoudhury"
+    # REPO = "SEG-small-group-project"
+    # BRANCH = "main"
+
     OWNER = "FarihaChoudhury"
-    REPO = "SEG-small-group-project"
+    REPO = "TestProject"
     BRANCH = "main"
-
-
 
     # accessToken = "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"
     accessToken =  "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"
