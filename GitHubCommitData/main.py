@@ -4,6 +4,7 @@ from usingRequests import getCodeContributionOf
 
 """ Runs the code contribution classifier 
     - OWNER, REPO, BRANCH and accessToken must be supplied with correct information 
+    - BRANCH must be the repository's default branch, i.e., main or master
     - A repository with access rights is provided"""
 def main():
     # OWNER = "FarihaChoudhury"

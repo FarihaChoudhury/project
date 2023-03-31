@@ -2,7 +2,6 @@ from io import StringIO
 from antlr4 import *
 import sys
 sys.path.insert(0, '../antlrParserGeneratedCode')
-# from Python3ParserListener import Python3ParserListener
 from Python3Lexer import Python3Lexer
 from Python3Parser import Python3Parser
 import numpy as np
@@ -21,8 +20,6 @@ def parseDataSingleInput(data):
     stream = CommonTokenStream(lexer)
     parser = Python3Parser(stream)
     tree = parser.single_input()  #May print error message to terminal - this is handled by ANTLR and can be ignored
-    # print(tree.toStringTree(recog=parser))
-    # print("\n")
     return tree, parser
 
 
@@ -58,22 +55,21 @@ def countCommentsOnInputLine(line):
     # single # comments 
     if strippedLine.startswith("#"):
         commentLinesCount += 1
-    # triple """ or '''
+    # triple """ or ''' - multi line
     elif strippedLine.startswith('"""') or strippedLine.endswith('"""'):
         commentLinesCount += 1
     elif strippedLine.startswith("'''") or strippedLine.endswith("'''"):
         commentLinesCount += 1
-    # single " or ' 
+    # single " or ' - single line
     elif strippedLine.startswith('"') and strippedLine.endswith('"'):
         commentLinesCount += 1
     elif strippedLine.startswith("'") and strippedLine.endswith("'"):
         commentLinesCount += 1
-    #midline comments starting with # - not 100% accurate 
+    #midline comments starting with # - not 100% accurate as # can be have other uses
     elif "#" in strippedLine:
         commentLinesCount += 1
 
     return commentLinesCount
-
 
 
 
