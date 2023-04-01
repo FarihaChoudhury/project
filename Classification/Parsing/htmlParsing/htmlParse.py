@@ -15,7 +15,6 @@ def identifyHTMLtags(committedLine):
     htmlParser = HTMLParserClass()
     htmlParser.feed(committedLine.strip())
     tagCountDict={}
-
     for tag, count in htmlParser.tagTypesDictionary.items():
         temp = {tag: count}
         tagCountDict.update(temp)
