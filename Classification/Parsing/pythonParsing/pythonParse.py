@@ -106,6 +106,7 @@ def analyseCodeTypes(parsedData):
     importCount = 0
     funcCount = 0
     classCount = 0 
+    funcName=""
     className=""
     for i in range(len(list)):
         match list[i]:
@@ -118,6 +119,7 @@ def analyseCodeTypes(parsedData):
             case '(import_stmt':
                 importCount += 1
             case '(funcdef':
+                funcName = removeBracket(list[i+3])
                 funcCount+= 1
             case '(classdef':
                 # +3 to get the name from the antlr result 
@@ -125,23 +127,38 @@ def analyseCodeTypes(parsedData):
                 className = removeBracket(list[i+3])
                 classCount +=1
     # Checks if the class is a view, model, form or none
+    viewCountFunc = viewFunctionChecker(funcName, parsedData)
     viewCount, modelCount, formCount = viewModelFormChecker(className, parsedData)
+    viewCount = viewCount + viewCountFunc
 
     return printStatementCount, loopCount, conditionCount, importCount, funcCount, classCount, className, viewCount, modelCount, formCount
 
+""" checks if a given function is a View function or not"""
+def viewFunctionChecker(funcName, parsedDataLine):
+    viewCount=0
+    if (funcName):
+        if not "TestCase" in parsedDataLine:
+            if "request" in parsedDataLine:
+                print("\n!!!!!!!!!!!!!!!!!!!!!!")
+                print(parsedDataLine)
+                print("\n!!!!!!!!!!!!")
+                viewCount += 1
+   
+    return viewCount
 
-""" Checks if a given class is a Model, Form, View or none"""
-def viewModelFormChecker(className, parsedData):
+    
+""" Checks if a given class is a Model, Form, View class or none"""
+def viewModelFormChecker(className, parsedDataLine):
     viewCount = 0
     modelCount = 0
     formCount = 0 
     if (className):
-        if not "TestCase" in parsedData:
-            if "View" in parsedData:
-                viewCount += 1
-            elif "Form" in parsedData:
+        if not "TestCase" in parsedDataLine:
+            # if "View" in parsedDataLine:
+            #     viewCount += 1
+            if "Form" in parsedDataLine:
                 formCount += 1
-            elif "Model" in parsedData:
+            elif "Model" in parsedDataLine:
                 modelCount += 1
 
     return viewCount, modelCount, formCount
