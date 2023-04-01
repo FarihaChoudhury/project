@@ -4,10 +4,10 @@ from pythonParse import countEmptyLinesOfInput, countWhitespaces
 
 """Performs classification on a input
     - returns the number of spaces, new lines, empty lines and total lines """
-def performClassificationOnTextInput(inputData):
-    spaces = countWhitespaces(inputData)
-    spacesWithoutIndent = countWhitespaces(inputData.strip())
-    totalLines, emptyLines = countEmptyLinesOfInput(inputData)
+def performClassificationOnTextInput(committedLine):
+    spaces = countWhitespaces(committedLine)
+    spacesWithoutIndent = countWhitespaces(committedLine.strip())
+    totalLines, emptyLines = countEmptyLinesOfInput(committedLine)
 
     return spaces, spacesWithoutIndent, emptyLines, totalLines
 

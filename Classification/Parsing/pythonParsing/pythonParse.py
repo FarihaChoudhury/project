@@ -12,8 +12,8 @@ import re
 """ Parsing: using the ANTLR parser 
     - generates parse tree for single inputted data 
     - returns parse tree and parser """
-def parseDataSingleInput(data):
-    strippedData = data.strip()
+def parseDataSingleInput(committedLine):
+    strippedData = committedLine.strip()
     # Add \n for end of file - antlr requires 
     input_stream = InputStream(f'{strippedData}\n')
     lexer = Python3Lexer(input_stream)
@@ -25,23 +25,23 @@ def parseDataSingleInput(data):
 
 """ Counts white space / tabs / empty strings for inputted data:
     - returns the number of spaces and newlines"""
-def countWhitespaces(data):
-    spaces = len(re.findall(r" ", data))
+def countWhitespaces(committedLine):
+    spaces = len(re.findall(r" ", committedLine))
     return spaces
 
 
 """ Counts new lines made by '\n' command for inputted data:
     - returns the number of newlines"""
-def countNewLines(data):
-    newlines = len(re.findall(r"\n", data))
+def countNewLines(committedLine):
+    newlines = len(re.findall(r"\n", committedLine))
     return newlines
 
 
 """ Counts empty lines of code from input text and total lines of code """
-def countEmptyLinesOfInput(inputData):
+def countEmptyLinesOfInput(committedLine):
     totalLines = 1
     emptyLines = 0
-    if not inputData.strip():
+    if not committedLine.strip():
         emptyLines = 1
     return totalLines, emptyLines
 
@@ -49,8 +49,8 @@ def countEmptyLinesOfInput(inputData):
 """ Calculates if a line is a comment line
     - Looks for single line comments and mid line comments by #, and single line comments by '/ "
     - Looks for start or end lines of block comments by triple "/' """
-def countCommentsOnInputLine(line):
-    strippedLine = line.strip()
+def countCommentsOnInputLine(committedLine):
+    strippedLine = committedLine.strip()
     commentLinesCount = 0
     # single # comments 
     if strippedLine.startswith("#"):
@@ -79,15 +79,15 @@ def countCommentsOnInputLine(line):
     - passes code into parser 
     - performs classifications for parse tree
     - returns classification results"""
-def performClassificationOnPythonInput(inputData):
+def performClassificationOnPythonInput(committedLine):
 
-    spaces = countWhitespaces(inputData)
-    spacesWithoutIndent = countWhitespaces(inputData.strip())
-    newLines = countNewLines(inputData)
-    totalLines, emptyLines = countEmptyLinesOfInput(inputData)
-    comments = countCommentsOnInputLine(inputData)
+    spaces = countWhitespaces(committedLine)
+    spacesWithoutIndent = countWhitespaces(committedLine.strip())
+    newLines = countNewLines(committedLine)
+    totalLines, emptyLines = countEmptyLinesOfInput(committedLine)
+    comments = countCommentsOnInputLine(committedLine)
 
-    tree, parser = parseDataSingleInput(inputData)
+    tree, parser = parseDataSingleInput(committedLine)
     result = tree.toStringTree(recog=parser)
 
     printStatementCount, loopCount, conditionCount, importCount, funcCount, classCount, classDefinition, viewCount, modelCount, formCount= analyseCodeTypes(result)
@@ -98,8 +98,8 @@ def performClassificationOnPythonInput(inputData):
 """ Given a parse tree result, searches for particular rules for classifications
     - when class definitions are found, retrieves the class name and checks calls upon Model/Form/View checker
     - returns classification results """
-def analyseCodeTypes(parsedData):
-    list =  parsedData.split()
+def analyseCodeTypes(parsedLine):
+    list =  parsedLine.split()
     printStatementCount=0
     loopCount = 0
     conditionCount = 0
@@ -127,32 +127,32 @@ def analyseCodeTypes(parsedData):
                 className = removeBracket(list[i+3])
                 classCount +=1
     # Checks if the function is view or class is a, model, form or none
-    viewCount = viewFunctionChecker(funcName, parsedData)
-    modelCount, formCount = modelFormClassChecker(className, parsedData)
+    viewCount = viewFunctionChecker(funcName, parsedLine)
+    modelCount, formCount = modelFormClassChecker(className, parsedLine)
 
     return printStatementCount, loopCount, conditionCount, importCount, funcCount, classCount, className, viewCount, modelCount, formCount
 
 
 """ Checks if a given function is a View function or not"""
-def viewFunctionChecker(funcName, parsedDataLine):
+def viewFunctionChecker(funcName, parsedLine):
     viewCount=0
     if (funcName):
-        if not "TestCase" in parsedDataLine:
-            if "request" in parsedDataLine:
-                viewCount += 1
+        # if not "TestCase" in parsedLine:
+        if "request" in parsedLine:
+             viewCount += 1
    
     return viewCount
 
     
 """ Checks if a given class is a Model or Form class or none"""
-def modelFormClassChecker(className, parsedDataLine):
+def modelFormClassChecker(className, parsedLine):
     modelCount = 0
     formCount = 0 
     if (className):
-        if not "TestCase" in parsedDataLine:
-            if "Form" in parsedDataLine:
+        if not "TestCase" in parsedLine:
+            if "Form" in parsedLine:
                 formCount += 1
-            elif "Model" in parsedDataLine:
+            elif "Model" in parsedLine:
                 modelCount += 1
 
     return modelCount, formCount

@@ -10,10 +10,10 @@ from pythonHTMLparser import HTMLParserClass
 """ Identifies HTML tags
     - finds <...> tags using the Python HTML parser library
     - return the tag and the number of occurrences in a dictionary"""
-def identifyHTMLtags(inputData):
+def identifyHTMLtags(committedLine):
     # Create a new parser object and feed it the HTML code
     htmlParser = HTMLParserClass()
-    htmlParser.feed(inputData.strip())
+    htmlParser.feed(committedLine.strip())
     tagCountDict={}
 
     for tag, count in htmlParser.tagTypesDictionary.items():
@@ -28,21 +28,21 @@ def identifyHTMLtags(inputData):
     - finds {%, retrieves first word after it 
     - stores this word in dict with its count 
     - returns the template tags found """
-def identifyDjangoTemplateTags(inputData):
+def identifyDjangoTemplateTags(committedLine):
     templateTag = {}
-    matches = re.findall(r'{\s*%\s*(\S+)\b', inputData)
+    matches = re.findall(r'{\s*%\s*(\S+)\b', committedLine)
     if matches:
         for match in matches:
-            first_word = re.search(r'\w+', match).group()
-            templateTag[first_word]=1
+            firstWord = re.search(r'\w+', match).group()
+            templateTag[firstWord]=1
     return templateTag
 
 
 """ Identifies HTML evaluation variables
     - finds {{, keeps count of occurrence 
     - returns the number of evaluation variables found """
-def identifyHTMLEvaluationVars(inputData):
-    matches = re.findall(r'{\s*{\s*(\S+)\b', inputData)
+def identifyHTMLEvaluationVars(committedLine):
+    matches = re.findall(r'{\s*{\s*(\S+)\b', committedLine)
     count = len(matches)
     return count
 
@@ -66,16 +66,16 @@ def countHTMLComments(line):
     - takes input in terms of code text, not a file
     - performs classifications and prints to terminal
     - returns these """
-def performClassificationOnHTMLInput(inputData):
-    spaces = countWhitespaces(inputData)
-    spacesWithoutIndent = countWhitespaces(inputData.strip())
-    newLines = countNewLines(inputData)
-    totalLines, emptyLines = countEmptyLinesOfInput(inputData)
-    htmlComments = countHTMLComments(inputData)
+def performClassificationOnHTMLInput(committedLine):
+    spaces = countWhitespaces(committedLine)
+    spacesWithoutIndent = countWhitespaces(committedLine.strip())
+    newLines = countNewLines(committedLine)
+    totalLines, emptyLines = countEmptyLinesOfInput(committedLine)
+    htmlComments = countHTMLComments(committedLine)
 
-    tagCountDict = identifyHTMLtags(inputData)
-    templateTagCountDict = identifyDjangoTemplateTags(inputData)
-    evalVars = identifyHTMLEvaluationVars(inputData)
+    tagCountDict = identifyHTMLtags(committedLine)
+    templateTagCountDict = identifyDjangoTemplateTags(committedLine)
+    evalVars = identifyHTMLEvaluationVars(committedLine)
 
     return spaces, spacesWithoutIndent, newLines, emptyLines, totalLines, htmlComments, tagCountDict, templateTagCountDict, evalVars
 
