@@ -1,1 +1,382 @@
-[{"FarihaChoudhury": {"files edited": ["microblogs/admin.py", "microblogs/follow_views.py", "microblogs", "microblogs/templates", "microblogs/apps.py", "microblogs/migrations", "microblogs/views.py", "microblogs/forms.py", "microblogs/templates/show_user.html", "cluckerNew/settings.py", "microblogs/authentication_views.py", "microblogs/migrations/0001_initial.py", "cluckerNew/urls.py", "cluckerNew", "microblogs/templates/home.html", "microblogs/models.py", "microblogs/templates/sign_up.html", "microblogs/feed_views.py"], "additions": {"spaces": 1911, "spaces without indents": 687, "new lines": 0, "empty lines": 66, "comment lines": 40, "code lines": 254, "total lines": 360, "print statements": 3, "conditionals": 2, "loops": 0, "imports": 31, "functions": 7, "class definitions": 8, "class definitions list": ["FeedView", "UserAdmin", "MicroblogsConfig", "LogInView", "SignUpForm", "Meta", "Migration", "User"], "views": 4, "models": 1, "forms": 1, "HTML comments": 0, "HTML tags": {"div": 4, "html": 1, "head": 1, "title": 1, "body": 1, "h1": 1, "p": 1, "a": 2, "form": 1, "input": 1}, "HTML template tags": {"extends": 1, "block": 1, "include": 4, "endblock": 1, "url": 2, "csrf_token": 1}, "HTML evaluation vars": 1}, "deletions": {"spaces": 28, "spaces without indents": 4, "new lines": 0, "empty lines": 2, "comment lines": 0, "code lines": 5, "total lines": 7, "print statements": 2, "conditionals": 0, "loops": 0, "imports": 0, "functions": 1, "class definitions": 0, "class definitions list": [], "views": 1, "models": 0, "forms": 0, "HTML comments": 0, "HTML tags": {}, "HTML template tags": {}, "HTML evaluation vars": 0}, "overall": {"spaces": 1883, "spaces without indents": 683, "new lines": 0, "empty lines": 64, "comment lines": 40, "code lines": 249, "total lines": 353, "print statements": 1, "conditionals": 2, "loops": 0, "imports": 31, "functions": 6, "class definitions": 8, "class definitions list": ["FeedView", "UserAdmin", "MicroblogsConfig", "LogInView", "SignUpForm", "Meta", "Migration", "User"], "views": 3, "models": 1, "forms": 1, "HTML comments": 0, "HTML tags": {"div": 4, "html": 1, "head": 1, "title": 1, "body": 1, "h1": 1, "p": 1, "a": 2, "form": 1, "input": 1}, "HTML template tags": {"extends": 1, "block": 1, "include": 4, "endblock": 1, "url": 2, "csrf_token": 1}, "HTML evaluation vars": 1}}}, {"homiehotdogs": {"files edited": ["microblogs/templates/base.html", "microblogs", "microblogs/templates", "microblogs/forms.py", "README.md"], "additions": {"spaces": 156, "spaces without indents": 76, "new lines": 0, "empty lines": 2, "comment lines": 1, "code lines": 23, "total lines": 28, "print statements": 0, "conditionals": 0, "loops": 0, "imports": 0, "functions": 0, "class definitions": 1, "class definitions list": ["UserForm"], "views": 0, "models": 0, "forms": 1, "HTML comments": 0, "HTML tags": {"html": 1, "head": 1, "meta": 2, "link": 4, "title": 1, "body": 1, "script": 2}, "HTML template tags": {"load": 1, "static": 2, "block": 1, "endblock": 1}, "HTML evaluation vars": 0}, "deletions": {"spaces": 72, "spaces without indents": 22, "new lines": 0, "empty lines": 2, "comment lines": 2, "code lines": 6, "total lines": 10, "print statements": 0, "conditionals": 0, "loops": 0, "imports": 0, "functions": 0, "class definitions": 1, "class definitions list": ["PostForm"], "views": 0, "models": 0, "forms": 1, "HTML comments": 0, "HTML tags": {}, "HTML template tags": {}, "HTML evaluation vars": 0}, "overall": {"spaces": 84, "spaces without indents": 54, "new lines": 0, "empty lines": 0, "comment lines": -1, "code lines": 17, "total lines": 18, "print statements": 0, "conditionals": 0, "loops": 0, "imports": 0, "functions": 0, "class definitions": 0, "class definitions list": ["UserForm"], "views": 0, "models": 0, "forms": 0, "HTML comments": 0, "HTML tags": {"html": 1, "head": 1, "meta": 2, "link": 4, "title": 1, "body": 1, "script": 2}, "HTML template tags": {"load": 1, "static": 2, "block": 1, "endblock": 1}, "HTML evaluation vars": 0}}}, {"rufia1": {"files edited": ["microblogs/follow_views.py", "microblogs", "microblogs/templates", "microblogs/views.py", "microblogs/forms.py", "microblogs/templates/home.html", "microblogs/models.py"], "additions": {"spaces": 522, "spaces without indents": 128, "new lines": 0, "empty lines": 12, "comment lines": 7, "code lines": 58, "total lines": 77, "print statements": 2, "conditionals": 0, "loops": 0, "imports": 4, "functions": 4, "class definitions": 3, "class definitions list": ["Meta", "PostForm", "Meta"], "views": 1, "models": 0, "forms": 1, "HTML comments": 0, "HTML tags": {"div": 5, "h1": 1, "p": 1, "a": 2}, "HTML template tags": {"extends": 1, "block": 1, "url": 2, "endblock": 1}, "HTML evaluation vars": 0}, "deletions": {"spaces": 57, "spaces without indents": 23, "new lines": 0, "empty lines": 2, "comment lines": 2, "code lines": 11, "total lines": 15, "print statements": 0, "conditionals": 0, "loops": 0, "imports": 0, "functions": 0, "class definitions": 0, "class definitions list": [], "views": 0, "models": 0, "forms": 0, "HTML comments": 0, "HTML tags": {"html": 1, "head": 1, "title": 1, "body": 1, "h1": 1, "p": 1, "a": 2}, "HTML template tags": {"url": 1}, "HTML evaluation vars": 0}, "overall": {"spaces": 465, "spaces without indents": 105, "new lines": 0, "empty lines": 10, "comment lines": 5, "code lines": 47, "total lines": 62, "print statements": 2, "conditionals": 0, "loops": 0, "imports": 4, "functions": 4, "class definitions": 3, "class definitions list": ["Meta", "PostForm", "Meta"], "views": 1, "models": 0, "forms": 1, "HTML comments": 0, "HTML tags": {"div": 5, "h1": 0, "p": -2, "a": 0}, "HTML template tags": {"extends": 1, "block": 1, "url": 1, "endblock": 1}, "HTML evaluation vars": 0}}}, "TestProject"]
+[
+    {
+        "userA": {
+            "files edited": [
+                "cluckerNew",
+                "microblogs/forms.py",
+                "microblogs/templates",
+                "microblogs/feed_views.py",
+                "cluckerNew/settings.py",
+                "microblogs/follow_views.py",
+                "microblogs/admin.py",
+                "cluckerNew/urls.py",
+                "microblogs/migrations/0001_initial.py",
+                "microblogs/migrations",
+                "microblogs/templates/show_user.html",
+                "microblogs/models.py",
+                "microblogs/apps.py",
+                "microblogs/views.py",
+                "microblogs/templates/sign_up.html",
+                "microblogs/authentication_views.py",
+                "microblogs/templates/home.html",
+                "microblogs"
+            ],
+            "additions": {
+                "spaces": 1911,
+                "spaces without indents": 687,
+                "new lines": 0,
+                "empty lines": 66,
+                "comment lines": 40,
+                "code lines": 254,
+                "total lines": 360,
+                "print statements": 3,
+                "conditionals": 2,
+                "loops": 0,
+                "imports": 31,
+                "functions": 7,
+                "class definitions": 8,
+                "class definitions list": [
+                    "FeedView",
+                    "UserAdmin",
+                    "MicroblogsConfig",
+                    "LogInView",
+                    "SignUpForm",
+                    "Meta",
+                    "Migration",
+                    "User"
+                ],
+                "views": 4,
+                "models": 1,
+                "forms": 1,
+                "HTML comments": 0,
+                "HTML tags": {
+                    "div": 4,
+                    "html": 1,
+                    "head": 1,
+                    "title": 1,
+                    "body": 1,
+                    "h1": 1,
+                    "p": 1,
+                    "a": 2,
+                    "form": 1,
+                    "input": 1
+                },
+                "HTML template tags": {
+                    "extends": 1,
+                    "block": 1,
+                    "include": 4,
+                    "endblock": 1,
+                    "url": 2,
+                    "csrf_token": 1
+                },
+                "HTML evaluation vars": 1
+            },
+            "deletions": {
+                "spaces": 28,
+                "spaces without indents": 4,
+                "new lines": 0,
+                "empty lines": 2,
+                "comment lines": 0,
+                "code lines": 5,
+                "total lines": 7,
+                "print statements": 2,
+                "conditionals": 0,
+                "loops": 0,
+                "imports": 0,
+                "functions": 1,
+                "class definitions": 0,
+                "class definitions list": [],
+                "views": 1,
+                "models": 0,
+                "forms": 0,
+                "HTML comments": 0,
+                "HTML tags": {},
+                "HTML template tags": {},
+                "HTML evaluation vars": 0
+            },
+            "overall": {
+                "spaces": 1883,
+                "spaces without indents": 683,
+                "new lines": 0,
+                "empty lines": 64,
+                "comment lines": 40,
+                "code lines": 249,
+                "total lines": 353,
+                "print statements": 1,
+                "conditionals": 2,
+                "loops": 0,
+                "imports": 31,
+                "functions": 6,
+                "class definitions": 8,
+                "class definitions list": [
+                    "FeedView",
+                    "UserAdmin",
+                    "MicroblogsConfig",
+                    "LogInView",
+                    "SignUpForm",
+                    "Meta",
+                    "Migration",
+                    "User"
+                ],
+                "views": 3,
+                "models": 1,
+                "forms": 1,
+                "HTML comments": 0,
+                "HTML tags": {
+                    "div": 4,
+                    "html": 1,
+                    "head": 1,
+                    "title": 1,
+                    "body": 1,
+                    "h1": 1,
+                    "p": 1,
+                    "a": 2,
+                    "form": 1,
+                    "input": 1
+                },
+                "HTML template tags": {
+                    "extends": 1,
+                    "block": 1,
+                    "include": 4,
+                    "endblock": 1,
+                    "url": 2,
+                    "csrf_token": 1
+                },
+                "HTML evaluation vars": 1
+            }
+        }
+    },
+    {
+        "userC": {
+            "files edited": [
+                "microblogs/templates",
+                "microblogs/forms.py",
+                "README.md",
+                "microblogs",
+                "microblogs/templates/base.html"
+            ],
+            "additions": {
+                "spaces": 156,
+                "spaces without indents": 76,
+                "new lines": 0,
+                "empty lines": 2,
+                "comment lines": 1,
+                "code lines": 23,
+                "total lines": 28,
+                "print statements": 0,
+                "conditionals": 0,
+                "loops": 0,
+                "imports": 0,
+                "functions": 0,
+                "class definitions": 1,
+                "class definitions list": [
+                    "UserForm"
+                ],
+                "views": 0,
+                "models": 0,
+                "forms": 1,
+                "HTML comments": 0,
+                "HTML tags": {
+                    "html": 1,
+                    "head": 1,
+                    "meta": 2,
+                    "link": 4,
+                    "title": 1,
+                    "body": 1,
+                    "script": 2
+                },
+                "HTML template tags": {
+                    "load": 1,
+                    "static": 2,
+                    "block": 1,
+                    "endblock": 1
+                },
+                "HTML evaluation vars": 0
+            },
+            "deletions": {
+                "spaces": 72,
+                "spaces without indents": 22,
+                "new lines": 0,
+                "empty lines": 2,
+                "comment lines": 2,
+                "code lines": 6,
+                "total lines": 10,
+                "print statements": 0,
+                "conditionals": 0,
+                "loops": 0,
+                "imports": 0,
+                "functions": 0,
+                "class definitions": 1,
+                "class definitions list": [
+                    "PostForm"
+                ],
+                "views": 0,
+                "models": 0,
+                "forms": 1,
+                "HTML comments": 0,
+                "HTML tags": {},
+                "HTML template tags": {},
+                "HTML evaluation vars": 0
+            },
+            "overall": {
+                "spaces": 84,
+                "spaces without indents": 54,
+                "new lines": 0,
+                "empty lines": 0,
+                "comment lines": -1,
+                "code lines": 17,
+                "total lines": 18,
+                "print statements": 0,
+                "conditionals": 0,
+                "loops": 0,
+                "imports": 0,
+                "functions": 0,
+                "class definitions": 0,
+                "class definitions list": [
+                    "UserForm"
+                ],
+                "views": 0,
+                "models": 0,
+                "forms": 0,
+                "HTML comments": 0,
+                "HTML tags": {
+                    "html": 1,
+                    "head": 1,
+                    "meta": 2,
+                    "link": 4,
+                    "title": 1,
+                    "body": 1,
+                    "script": 2
+                },
+                "HTML template tags": {
+                    "load": 1,
+                    "static": 2,
+                    "block": 1,
+                    "endblock": 1
+                },
+                "HTML evaluation vars": 0
+            }
+        }
+    },
+    {
+        "userB": {
+            "files edited": [
+                "microblogs/forms.py",
+                "microblogs/templates",
+                "microblogs/follow_views.py",
+                "microblogs/views.py",
+                "microblogs/models.py",
+                "microblogs/templates/home.html",
+                "microblogs"
+            ],
+            "additions": {
+                "spaces": 522,
+                "spaces without indents": 128,
+                "new lines": 0,
+                "empty lines": 12,
+                "comment lines": 7,
+                "code lines": 58,
+                "total lines": 77,
+                "print statements": 2,
+                "conditionals": 0,
+                "loops": 0,
+                "imports": 4,
+                "functions": 4,
+                "class definitions": 3,
+                "class definitions list": [
+                    "Meta",
+                    "PostForm",
+                    "Meta"
+                ],
+                "views": 1,
+                "models": 0,
+                "forms": 1,
+                "HTML comments": 0,
+                "HTML tags": {
+                    "div": 5,
+                    "h1": 1,
+                    "p": 1,
+                    "a": 2
+                },
+                "HTML template tags": {
+                    "extends": 1,
+                    "block": 1,
+                    "url": 2,
+                    "endblock": 1
+                },
+                "HTML evaluation vars": 0
+            },
+            "deletions": {
+                "spaces": 57,
+                "spaces without indents": 23,
+                "new lines": 0,
+                "empty lines": 2,
+                "comment lines": 2,
+                "code lines": 11,
+                "total lines": 15,
+                "print statements": 0,
+                "conditionals": 0,
+                "loops": 0,
+                "imports": 0,
+                "functions": 0,
+                "class definitions": 0,
+                "class definitions list": [],
+                "views": 0,
+                "models": 0,
+                "forms": 0,
+                "HTML comments": 0,
+                "HTML tags": {
+                    "html": 1,
+                    "head": 1,
+                    "title": 1,
+                    "body": 1,
+                    "h1": 1,
+                    "p": 1,
+                    "a": 2
+                },
+                "HTML template tags": {
+                    "url": 1
+                },
+                "HTML evaluation vars": 0
+            },
+            "overall": {
+                "spaces": 465,
+                "spaces without indents": 105,
+                "new lines": 0,
+                "empty lines": 10,
+                "comment lines": 5,
+                "code lines": 47,
+                "total lines": 62,
+                "print statements": 2,
+                "conditionals": 0,
+                "loops": 0,
+                "imports": 4,
+                "functions": 4,
+                "class definitions": 3,
+                "class definitions list": [
+                    "Meta",
+                    "PostForm",
+                    "Meta"
+                ],
+                "views": 1,
+                "models": 0,
+                "forms": 1,
+                "HTML comments": 0,
+                "HTML tags": {
+                    "div": 5,
+                    "h1": 0,
+                    "p": -2,
+                    "a": 0
+                },
+                "HTML template tags": {
+                    "extends": 1,
+                    "block": 1,
+                    "url": 1,
+                    "endblock": 1
+                },
+                "HTML evaluation vars": 0
+            }
+        }
+    },
+    "TestProject"
+]

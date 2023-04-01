@@ -119,49 +119,43 @@ def analyseCodeTypes(parsedData):
             case '(import_stmt':
                 importCount += 1
             case '(funcdef':
-                funcName = removeBracket(list[i+3])
+                funcName = removeBracket(list[i+3]) # +3 to get the name from the antlr result 
                 funcCount+= 1
             case '(classdef':
                 # +3 to get the name from the antlr result 
                 # e.g.,  (classdef class (name UserModelTestCase) => UserModelTestCase)
                 className = removeBracket(list[i+3])
                 classCount +=1
-    # Checks if the class is a view, model, form or none
-    viewCountFunc = viewFunctionChecker(funcName, parsedData)
-    viewCount, modelCount, formCount = viewModelFormChecker(className, parsedData)
-    viewCount = viewCount + viewCountFunc
+    # Checks if the function is view or class is a, model, form or none
+    viewCount = viewFunctionChecker(funcName, parsedData)
+    modelCount, formCount = modelFormClassChecker(className, parsedData)
 
     return printStatementCount, loopCount, conditionCount, importCount, funcCount, classCount, className, viewCount, modelCount, formCount
 
-""" checks if a given function is a View function or not"""
+
+""" Checks if a given function is a View function or not"""
 def viewFunctionChecker(funcName, parsedDataLine):
     viewCount=0
     if (funcName):
         if not "TestCase" in parsedDataLine:
             if "request" in parsedDataLine:
-                print("\n!!!!!!!!!!!!!!!!!!!!!!")
-                print(parsedDataLine)
-                print("\n!!!!!!!!!!!!")
                 viewCount += 1
    
     return viewCount
 
     
-""" Checks if a given class is a Model, Form, View class or none"""
-def viewModelFormChecker(className, parsedDataLine):
-    viewCount = 0
+""" Checks if a given class is a Model or Form class or none"""
+def modelFormClassChecker(className, parsedDataLine):
     modelCount = 0
     formCount = 0 
     if (className):
         if not "TestCase" in parsedDataLine:
-            # if "View" in parsedDataLine:
-            #     viewCount += 1
             if "Form" in parsedDataLine:
                 formCount += 1
             elif "Model" in parsedDataLine:
                 modelCount += 1
 
-    return viewCount, modelCount, formCount
+    return modelCount, formCount
 
 
 """ Removes bracket from parse tree result of class names"""
