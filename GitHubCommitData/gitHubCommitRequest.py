@@ -39,10 +39,8 @@ def getGitHubResponse(url, headers=None):
     try:
         if headers: 
             response = requests.get(url, headers=headers)
-            # response.raise_for_status()
         else:
             response = requests.get(url)
-            # response.raise_for_status()
         response.raise_for_status()
         return response
     except requests.exceptions.HTTPError as error:
@@ -92,7 +90,7 @@ def printCollaborators(collaboratorsList):
     then stores necessary response in a list of dictionaries """
 def retrieveCommitsSourceCodeIntoListOfDictionaries(allCommits, OWNER, REPO, headers):
     listOfDictionaryForCommits = [{} for x in range(len(allCommits))]
-    # EACH COMMIT DATA:
+    # for each commit, extract the data:
     for i in range(len(allCommits)):
         commitSha = allCommits[i]['sha']
         commitAuthor = allCommits[i]['author']['login'] # must use login not name for accuracy
