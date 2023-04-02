@@ -1,5 +1,6 @@
 # PROJECT
-3rd year project - Analysing code contributions through code classification for Python and Django projects
+## Analysing code contributions through code classification for Python and Django projects
+3rd year project
 
 All ANTLR-generated files are not my intellectual property. These have been taken from the ANTLR documentation: 
     - https://www.antlr.org
@@ -54,6 +55,6 @@ To view results:
 
 
 
-# Author: Fariha Choudhury K20059723
-# GitHub link for this project: https://github.com/FarihaChoudhury/project
+### Author: Fariha Choudhury K20059723
+### GitHub link for this project: https://github.com/FarihaChoudhury/project
 
