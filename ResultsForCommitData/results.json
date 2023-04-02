@@ -1,25 +1,25 @@
 [
     {
-        "userA": {
+        "FarihaChoudhury": {
             "files edited": [
-                "microblogs/forms.py",
-                "microblogs/migrations/0001_initial.py",
-                "cluckerNew/urls.py",
-                "microblogs/views.py",
-                "cluckerNew",
-                "microblogs/admin.py",
                 "microblogs/migrations",
-                "microblogs/templates/show_user.html",
-                "microblogs/templates/sign_up.html",
-                "microblogs/feed_views.py",
-                "microblogs/apps.py",
-                "microblogs/authentication_views.py",
-                "microblogs/templates",
                 "cluckerNew/settings.py",
-                "microblogs/templates/home.html",
+                "microblogs/follow_views.py",
                 "microblogs/models.py",
-                "microblogs",
-                "microblogs/follow_views.py"
+                "cluckerNew/urls.py",
+                "microblogs/authentication_views.py",
+                "microblogs/templates/sign_up.html",
+                "microblogs/forms.py",
+                "microblogs/apps.py",
+                "microblogs/feed_views.py",
+                "microblogs/migrations/0001_initial.py",
+                "microblogs/admin.py",
+                "cluckerNew",
+                "microblogs/templates",
+                "microblogs/templates/home.html",
+                "microblogs/views.py",
+                "microblogs/templates/show_user.html",
+                "microblogs"
             ],
             "additions": {
                 "spaces": 1911,
@@ -147,13 +147,13 @@
         }
     },
     {
-        "userB": {
+        "homiehotdogs": {
             "files edited": [
-                "microblogs/forms.py",
-                "microblogs/templates/base.html",
                 "microblogs/templates",
+                "microblogs",
+                "microblogs/forms.py",
                 "README.md",
-                "microblogs"
+                "microblogs/templates/base.html"
             ],
             "additions": {
                 "spaces": 156,
@@ -259,15 +259,15 @@
         }
     },
     {
-        "userC": {
+        "rufia1": {
             "files edited": [
-                "microblogs/forms.py",
-                "microblogs/views.py",
-                "microblogs/templates",
-                "microblogs/templates/home.html",
                 "microblogs/models.py",
-                "microblogs",
-                "microblogs/follow_views.py"
+                "microblogs/forms.py",
+                "microblogs/templates/home.html",
+                "microblogs/follow_views.py",
+                "microblogs/templates",
+                "microblogs/views.py",
+                "microblogs"
             ],
             "additions": {
                 "spaces": 522,
