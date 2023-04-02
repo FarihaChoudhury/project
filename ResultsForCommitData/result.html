@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+	    <link rel="stylesheet" href="styles.css"> <!-- Link to stylesheet --> 
+        <h1 style="text-align:center;">GitHub Results</h1>
+        <h2 id="repository" style="text-align:center;"> Results of classification for a specified repository:    </h2>
+        
+    </head>
+    <body>
+        <script>
+            //ensures reload of cache - stores until each new reload - https://hacks.mozilla.org/2016/03/referrer-and-cache-control-apis-for-fetch/
+            fetch('results.json', {cache: "no-cache"})
+                .then(response => response.json())
+                .then(data => {
+                    val = data.length - 1 //get last item in list which is the repository name
+                    var repoName = document.getElementById('repository');
+                    repoName.innerHTML += data[val]
+                    
+                    displayResults = ""   
+                    for (var i=0; i<data.length-1; i++){
+                        displayResults = ""
+                        key = Object.keys(data[i])
+                        collaborator = key[0]
+                        displayResults += "<div><h3><u>" + "Collaborator:  &nbsp" + collaborator +" </u></h3></div>"
+                        //retrieves 'files edited, addition, deletion, overall'
+                        listOfHeader = Object.keys(data[i][collaborator])
+        
+                        for (var j=0; j< listOfHeader.length; j++){
+                            eachHeader = listOfHeader[j]
+                            contents =  data[i][collaborator][eachHeader]
+                            
+                            if (Array.isArray(contents)){
+                                displayResults += "&nbsp"
+                                displayResults += "<div><div><h4><u><b>" +(eachHeader.charAt(0).toUpperCase() + eachHeader.slice(1)) + ":</b></u></h4>&nbsp"+ contents.join(", &nbsp") +"</div>" 
+                            }
+                            else{
+                                displayResults += "&nbsp"
+                                displayResults += "<div><h4><b><u>" + (eachHeader.charAt(0).toUpperCase() + eachHeader.slice(1))+ ":</u></b></h4></div>"
+                                getContentsOfList(data, eachHeader, contents)
+                            }
+                        }
+                        var resultsDiv = document.getElementById('display results');
+                        resultsDiv.innerHTML += displayResults 
+                    }
+                    // Retrieves data stored within a list to display
+                    function getContentsOfList(data, eachHeader, contents){
+                        listOfTitles = Object.keys(contents)
+                        for (var i=0; i<listOfTitles.length; i++){
+                            values = contents[listOfTitles[i]]
+                            if (values == '[object Object]'){
+                                listOfObjects = Object.keys(values)
+                                if (listOfObjects.length != 0){  //If not empty, display categories and query the dictionary within it
+                                    displayResults += "<div><div><div><b>" + listOfTitles[i]+ ":</b>     "
+                                    getContentsOfDict(data, eachHeader, values, listOfObjects)
+                                }
+                                else { //In the case that there are no objects, display 0 
+                                    displayResults += "<div><div><div><b>" + listOfTitles[i]+ ":     </b>"+  0 +"</div></div></div>" 
+                                }
+                            }
+                            else{
+                                if (Array.isArray(values)){ // for list of class definitions - needs to iterate through list
+                                    if (values.length ==0){ //in the case that there are no items in the list
+                                        displayResults += "<div><div><div><b>" + listOfTitles[i] + ": </b>&nbsp"+ 0 +"</div></div></div>" 
+                                    }
+                                    else{
+                                        displayResults += "<div><div><div><b>" + listOfTitles[i] + ": </b>&nbsp"+ values.join(", &nbsp") +"</div></div></div>" 
+                                    }
+                                }
+                                else{
+                                    displayResults += "<div><div><div><b>" + listOfTitles[i]+ ": </b>&nbsp"+  values +"</div></div></div>" 
+                                }
+                            }
+                        }
+                    }
+                    // Retrieves data stored within a dictionary to display
+                    function getContentsOfDict(data, eachHeader, values, listOfObjects){
+                        for (var i =0; i<listOfObjects.length; i++){
+                            item = listOfObjects[i]
+                            displayResults += "&nbsp"+ item + "=      "+  values[item] +", &nbsp"  
+                        }
+                        displayResults += "</div></div></div></div></div>"
+                    }
+                })
+        </script>
+    </body>
+    <div id="display results">
+    </div>
+    
+</html>

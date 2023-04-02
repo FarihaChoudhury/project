@@ -1,0 +1,23 @@
+{
+    "cSpell.words": [
+        "antlr",
+        "coveragerc"
+    ],
+    "python.analysis.extraPaths": [
+        "./PythonParser/antlrPythonParser/antlrParser",
+        "./PythonParser/antlrPythonParser/pythonParsing",
+        "./PythonParser/antlrPythonParser/antlrParserGeneratedCode",
+        "./PythonParser/antlrPythonParser/textParsing",
+        "./PythonParser",
+        "./PythonParser/antlrPythonParser/htmlParsing",
+        "./GitHubCommitData",
+        "./PythonParser/antlrPythonParser",
+        "./Classification/antlrPythonParser/pythonParsing",
+        "./Classification/antlrPythonParser/textParsing",
+        "./Classification/antlrPythonParser/htmlParsing",
+        "./Classification/Parsing/pythonParsing",
+        "./Classification/Parsing/textParsing",
+        "./Classification/Parsing/htmlParsing",
+        "./Classification/Parsing/antlrParserGeneratedCode"
+    ]
+}
