@@ -64,7 +64,7 @@ class DataClass:
             contributorData["conditionals"]= 0
             contributorData["loops"]= 0
             contributorData["imports"]= 0
-            contributorData["functions"]= 0
+            contributorData["function definitions"]= 0
             contributorData["class definitions"]= 0
             contributorData["class definitions list"]= []
             contributorData["views"]= 0
