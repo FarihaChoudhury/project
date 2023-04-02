@@ -19,8 +19,7 @@ def identifyHTMLtags(committedLine):
         temp = {tag: count}
         tagCountDict.update(temp)
     
-    return tagCountDict
-    # gives a dictionary for each line of code --- 
+    return tagCountDict   # returns a dictionary for each line of code
 
 
 """ Identifies Django template tags
@@ -77,7 +76,3 @@ def performClassificationOnHTMLInput(committedLine):
     evalVars = identifyHTMLEvaluationVars(committedLine)
 
     return spaces, spacesWithoutIndent, newLines, emptyLines, totalLines, htmlComments, tagCountDict, templateTagCountDict, evalVars
-
-
-if __name__ == '__main__':
-    globals()[sys.argv[1]]()

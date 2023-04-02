@@ -2,7 +2,9 @@
 ## Analysing code contributions through code classification for Python and Django projects
 3rd year project
 
-All ANTLR-generated files are not my intellectual property. These have been taken from the ANTLR documentation: 
+All ANTLR-generated files are not my intellectual property
+These are located in: Classification/Parsing/antlrParserGeneratedCode
+These have been taken from the ANTLR documentation: 
     - https://www.antlr.org
     - https://github.com/antlr/antlr4/blob/master/doc/index.md
     - https://github.com/antlr/grammars-v4/tree/master/python/python3

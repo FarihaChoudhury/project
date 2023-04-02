@@ -14,12 +14,12 @@ import re
     - returns parse tree and parser """
 def parseDataSingleInput(committedLine):
     strippedData = committedLine.strip()
-    # Add \n for end of file - antlr requires 
+    # Add \n for end of file - antlr requires this
     input_stream = InputStream(f'{strippedData}\n')
     lexer = Python3Lexer(input_stream)
     stream = CommonTokenStream(lexer)
     parser = Python3Parser(stream)
-    tree = parser.single_input()  #May print error message to terminal - this is handled by ANTLR and can be ignored
+    tree = parser.single_input()  # prints error messages to terminal - this is handled by ANTLR and can be ignored
     return tree, parser
 
 
@@ -106,8 +106,7 @@ def analyseCodeTypes(parsedLine):
     importCount = 0
     funcCount = 0
     classCount = 0 
-    funcName=""
-    className=""
+    className= None
     for i in range(len(list)):
         match list[i]:
             case 'print))':
@@ -119,7 +118,6 @@ def analyseCodeTypes(parsedLine):
             case '(import_stmt':
                 importCount += 1
             case '(funcdef':
-                funcName = removeBracket(list[i+3]) # +3 to get the name from the antlr result 
                 funcCount+= 1
             case '(classdef':
                 # +3 to get the name from the antlr result 
@@ -127,28 +125,27 @@ def analyseCodeTypes(parsedLine):
                 className = removeBracket(list[i+3])
                 classCount +=1
     # Checks if the function is view or class is a, model, form or none
-    viewCount = viewFunctionChecker(funcName, parsedLine)
-    modelCount, formCount = modelFormClassChecker(className, parsedLine)
+    viewCount = viewFunctionChecker(funcCount, parsedLine)
+    modelCount, formCount = modelFormClassChecker(classCount, parsedLine)
 
     return printStatementCount, loopCount, conditionCount, importCount, funcCount, classCount, className, viewCount, modelCount, formCount
 
 
-""" Checks if a given function is a View function or not"""
-def viewFunctionChecker(funcName, parsedLine):
+""" Checks if a given function is a View function or not """
+def viewFunctionChecker(funcCount, parsedLine):
     viewCount=0
-    if (funcName):
-        # if not "TestCase" in parsedLine:
+    if (funcCount!=0):
         if "request" in parsedLine:
              viewCount += 1
    
     return viewCount
 
     
-""" Checks if a given class is a Model or Form class or none"""
-def modelFormClassChecker(className, parsedLine):
+""" Checks if a given class is a Model or Form class or none """
+def modelFormClassChecker(classCount, parsedLine):
     modelCount = 0
     formCount = 0 
-    if (className):
+    if (classCount!=0):
         if not "TestCase" in parsedLine:
             if "Form" in parsedLine:
                 formCount += 1
@@ -158,15 +155,9 @@ def modelFormClassChecker(className, parsedLine):
     return modelCount, formCount
 
 
-""" Removes bracket from parse tree result of class names"""
+""" Removes bracket from parse tree result of class names """
 def removeBracket(className):
     if className.endswith(")"):
         return className[:-1]
     else:
         return className
-
-
-
-
-if __name__ == '__main__':
-    globals()[sys.argv[1]]()

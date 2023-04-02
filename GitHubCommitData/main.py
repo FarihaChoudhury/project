@@ -7,24 +7,21 @@ from usingRequests import getCodeContributionOf
     - BRANCH must be the repository's default branch, i.e., main or master
     - A repository with access rights is provided"""
 def main():
-    # OWNER = "FarihaChoudhury"
-    # REPO = "PublicRepoTest"
-    # BRANCH = "main"
-
-    # OWNER = "lisa947"
-    # REPO = "SEG-small-group-project"
-    # BRANCH = "main"
-    
-    
-    # OWNER = "FarihaChoudhury"
-    # REPO = "SEG-small-group-project"
-    # BRANCH = "main"
-
     OWNER = "FarihaChoudhury"
     REPO = "TestProject"
     BRANCH = "main"
+    
+    # Alternative repositories: 
+    
+    # OWNER = "FarihaChoudhury"
+    # REPO = "PublicRepoTest"
+    # BRANCH = "main"
+    
+    
+    # OWNER = "FarihaChoudhury"
+    # REPO = "SEG-small-group-project"
+    # BRANCH = "main"
 
-    # accessToken = "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"
     accessToken =  "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"
 
     dataClass = getCodeContributionOf(OWNER, REPO, BRANCH, accessToken)

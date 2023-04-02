@@ -5,30 +5,19 @@ from textParse import filterFilenames
 
 """ Sets up GitHub API querying with access tokens and creating the URLs to query
     - returns the URL to retrieve collaborators data and commit data for a single repository """
-def set_up(owner, repo, branch, accessToken):
-    # Set the personal access token and HTTP headers: replace with your own
-
+def set_up(OWNER, REPO, BRANCH, accessToken):
     headers = {
         "Accept": "application/vnd.github+json",
         "Authorization": f"Bearer {accessToken}"
     }
-
-    OWNER = owner
-    REPO = repo 
-    BRANCH = branch
-    
     collaboratorsURL = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/collaborators"
     commitURL = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/commits"
     filesURL =  "https://api.github.com/repos/"+ OWNER + "/" + REPO +"/git/trees/"+ BRANCH +"?recursive=1"
-   
     return collaboratorsURL, commitURL, filesURL, headers
 
 
 """ Creates URL to query a specific file """
-def specificFileGitHubQuery(owner, repo, filename):
-    OWNER = owner 
-    REPO = repo 
-    PATH = filename
+def specificFileGitHubQuery(OWNER, REPO, PATH):
     specificFileURL = "http://api.github.com/repos/" + OWNER + "/" + REPO + "/commits?path="+PATH
     return specificFileURL
 
@@ -103,12 +92,10 @@ def retrieveCommitsSourceCodeIntoListOfDictionaries(allCommits, OWNER, REPO, hea
         additionsForFile = [{}]
         deletionsForFile = [{}]
         filenames = []
-
         for file in commit["files"]:            
             if filterFilenames(file["filename"]):
                 x=0
                 filenames.append(file["filename"])
-        
                 if "patch" in file:
                     patchCode = file["patch"]  # string contains code for whole file, includes the initial @@ -1,3 +1,6 @@ (AKA 'diff')
                     # Remove: @@ .... @@
@@ -116,13 +103,11 @@ def retrieveCommitsSourceCodeIntoListOfDictionaries(allCommits, OWNER, REPO, hea
                     parts = patchCode.split(newLineSymbol, 1)
                     if len(parts) > 1:
                         patchCode = parts[1]
-
                     # splits patchCode into lines:
                     lines = patchCode.split("\n")  # list of each line of code from whole commit file, includes '@@ -1,3 +1,6 @@'
                     additionsPerFile = []
                     deletionsPerFile = []
-                    
-                    # Populate each additions line into
+                    # Extract + and - lines and append to lists
                     for j in range(len(lines)):
                         if lines[j].startswith("+"):
                             additionsPerFile.append(lines[j][1:])  #[1:]removes the +/ - from beginning of lines
@@ -135,8 +120,7 @@ def retrieveCommitsSourceCodeIntoListOfDictionaries(allCommits, OWNER, REPO, hea
                     if len(deletionsPerFile) != 0:
                         deletionsForFile[x][file["filename"]] = deletionsPerFile
                     x+=1
-
-        # Populating list of dictionaries: for each commit made-
+        # Populating list of dictionaries: for each commit made
         listOfDictionaryForCommits[i]["commitAuthor"] = commitAuthor
         listOfDictionaryForCommits[i]["commitSha"] = commitSha
         listOfDictionaryForCommits[i]["filesEdited"] = filenames
@@ -146,7 +130,7 @@ def retrieveCommitsSourceCodeIntoListOfDictionaries(allCommits, OWNER, REPO, hea
     return listOfDictionaryForCommits
 
 
-"""Prints content of list of dictionary which holds commit data for each commit made in specified repository"""
+""" Prints content of list of dictionary which holds commit data for each commit made in specified repository """
 def printListOfDictionaries(listOfDictionaryForCommits):
     print("List of dictionary:")
     for i in range(len(listOfDictionaryForCommits)):

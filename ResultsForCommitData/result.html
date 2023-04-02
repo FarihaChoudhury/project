@@ -29,7 +29,6 @@
         
                         for (var j=0; j< listOfHeader.length; j++){
                             eachHeader = listOfHeader[j]
-                            // If contents is just an array list (e.g., for files added), displays them, else fetches internals 
                             contents =  data[i][collaborator][eachHeader]
                             
                             if (Array.isArray(contents)){
@@ -45,8 +44,7 @@
                         var resultsDiv = document.getElementById('display results');
                         resultsDiv.innerHTML += displayResults 
                     }
-
-                   // Retrieves data stored within a list to display
+                    // Retrieves data stored within a list to display
                     function getContentsOfList(data, eachHeader, contents){
                         listOfTitles = Object.keys(contents)
                         for (var i=0; i<listOfTitles.length; i++){
@@ -63,8 +61,7 @@
                                 }
                             }
                             else{
-                                // for list of class definitions - needs to iterate through list
-                                if (Array.isArray(values)){
+                                if (Array.isArray(values)){ // for list of class definitions - needs to iterate through list
                                     if (values.length ==0){ //in the case that there are no items in the list
                                         displayResults += "<div><div><div><b>" + listOfTitles[i] + ": </b>&nbsp"+ 0 +"</div></div></div>" 
                                     }

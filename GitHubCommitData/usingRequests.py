@@ -4,13 +4,12 @@ from commitData import DataClass
 from gitHubCommitRequest import getCollaboratorsOfFile
 from textParse import filterFilenames
 from gitHubCommitRequest import set_up, specificFileGitHubQuery, getGitHubResponse, convertGitHubResponseToJson, storeCollaboratorInList, retrieveCommitsSourceCodeIntoListOfDictionaries, getFilenamesList
-# sys.path.insert(0, '../pythonParsing')
-"""RUN FROM THIS FILE TO GET CODE CONTRIBUTION DATA"""
+""" Retrieves code contribution data by interacting with gitHubCommitRequests.py, and stores into DataClass in commitData.py """
 
 
-"""Gets the GitHub API response and stores relevant data into the DataClass and allCommitsInRepo.json file"""
+""" Gets the GitHub API response and stores relevant data into the DataClass and allCommitsInRepo.json file """
 def getCodeContributionOf(OWNER, REPO, BRANCH, accessToken):
-    dataClassObject = DataClass()
+    dataClass = DataClass()
 
     collaboratorsURL, commitURL, filesURL, headers = set_up(OWNER, REPO, BRANCH, accessToken)
     collaboratorsResponse = getGitHubResponse(collaboratorsURL, headers)
@@ -22,27 +21,24 @@ def getCodeContributionOf(OWNER, REPO, BRANCH, accessToken):
         commits = convertGitHubResponseToJson(allCommitsResponse)
         files = convertGitHubResponseToJson(allFilesResponse)
 
-        """STORE IN DATA CLASS: """
-        # Collaborators data: 
-        dataClassObject.setCollaborators(collaborators = storeCollaboratorInList(collaborators))
-        # All commits data:
+        """ Store in DataClass: collaborators data, all commits, filenames """
+        dataClass.setCollaborators(collaborators = storeCollaboratorInList(collaborators))
         listOfDictionaryForCommits = retrieveCommitsSourceCodeIntoListOfDictionaries(commits, OWNER, REPO, headers)
-        dataClassObject.setListOfDictionary(listOfDictionaryForCommits)
-        # Filenames data:
+        dataClass.setListOfDictionary(listOfDictionaryForCommits)
         allFiles = getFilenamesList(files)
-        dataClassObject.setFilenamesDictionaryKeys()
-        contributorsOfEachFile(OWNER, REPO, allFiles, headers, dataClassObject)   
+        dataClass.setFilenamesDictionaryKeys()
+        contributorsOfEachFile(OWNER, REPO, allFiles, headers, dataClass)   
         
-        """STORE IN JSON FILE: """
+        """ Store in JSON file: """
         storeDataInFile(listOfDictionaryForCommits)
-        return dataClassObject
+        return dataClass
     else:
         sys.exit("Please try again as an error has occurred")
 
 
-"""Calls on json query method to retrieve collaborators of each file in git repository
+""" Calls on json query method to retrieve collaborators of each file in GitHub repository
     - populates dictionary of collaborators for each file """
-def contributorsOfEachFile(owner, repo, allFiles, headers, dataClassObject):
+def contributorsOfEachFile(owner, repo, allFiles, headers, dataClass):
     for filename in allFiles:
         if filterFilenames(filename):
             specificFileURL = specificFileGitHubQuery(owner, repo, filename)
@@ -52,21 +48,13 @@ def contributorsOfEachFile(owner, repo, allFiles, headers, dataClassObject):
                 collaboratorsOfFileList = getCollaboratorsOfFile(file)
                 for collaborator in collaboratorsOfFileList:
                     # Sets the filenames to collaborator who edited it
-                    dataClassObject.setFilenamesDictionaryValues(collaborator, filename)
+                    dataClass.setFilenamesDictionaryValues(collaborator, filename)
             else:
                 sys.exit("Error occurred, please try again.")
 
 
-"""Saves content of the list of dictionaries onto a allCommitsInRepo.json file"""     
+""" Saves content of the list of dictionaries onto a allCommitsInRepo.json file """     
 def storeDataInFile(listOfDictionaryForCommits):
     with open('allCommitsInRepo.json', 'w') as file:
         json.dump(listOfDictionaryForCommits, file)
-    
-
-
-
-if __name__ == '__main__':
-    # allows you to call codeContributionOf from terminal 
-    globals()[sys.argv[1]]()
-    # RUN: python3 usingRequests.py codeContributionOf
 
