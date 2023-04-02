@@ -6,6 +6,7 @@ All ANTLR-generated files are not my intellectual property. These have been take
     - https://github.com/antlr/antlr4/blob/master/doc/index.md
     - https://github.com/antlr/grammars-v4/tree/master/python/python3
     - https://github.com/antlr/grammars-v4/tree/master/python/python3/Python3
+    - https://stackoverflow.com/questions/75294250/im-trying-to-generate-the-parse-tree-for-antlr4-python3-g4-grammar-file-to-par
 
 ## Requirements:
 - Python3 
