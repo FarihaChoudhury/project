@@ -3,7 +3,7 @@
 3rd year project
 
 All ANTLR-generated files are not my intellectual property
-These are located in: Classification/Parsing/antlrParserGeneratedCode
+These are located in: Classification/Parsing/antlrParserGeneratedCode, and in the Gen directories.
 These have been taken from the ANTLR documentation: 
     - https://www.antlr.org
     - https://github.com/antlr/antlr4/blob/master/doc/index.md
