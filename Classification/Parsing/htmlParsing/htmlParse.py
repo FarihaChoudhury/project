@@ -51,12 +51,10 @@ def identifyHTMLEvaluationVars(committedLine):
 def countHTMLComments(line):
     strippedLine = line.strip()
     commentLinesCount = 0
-    
     if "<!--" in strippedLine:
         commentLinesCount += 1
     elif "-->" in strippedLine:
             commentLinesCount += 1  
-
     return commentLinesCount
 
 

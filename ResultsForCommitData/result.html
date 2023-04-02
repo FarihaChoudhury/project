@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-	    <link rel="stylesheet" href="styles.css"> <!-- Link to my stylesheet --> 
+	    <link rel="stylesheet" href="styles.css"> <!-- Link to stylesheet --> 
         <h1 style="text-align:center;">GitHub Results</h1>
         <h2 id="repository" style="text-align:center;"> Results of classification for a specified repository:    </h2>
         
@@ -16,14 +16,13 @@
                     val = data.length - 1 //get last item in list which is the repository name
                     var repoName = document.getElementById('repository');
                     repoName.innerHTML += data[val]
-
+                    
                     displayResults = ""   
                     for (var i=0; i<data.length-1; i++){
                         displayResults = ""
                         key = Object.keys(data[i])
                         collaborator = key[0]
                         displayResults += "<div><h3><u>" + "Collaborator:  &nbsp" + collaborator +" </u></h3></div>"
-
                         //retrieves 'files edited, addition, deletion, overall'
                         listOfHeader = Object.keys(data[i][collaborator])
         
@@ -49,7 +48,6 @@
                         listOfTitles = Object.keys(contents)
                         for (var i=0; i<listOfTitles.length; i++){
                             values = contents[listOfTitles[i]]
-                            
                             if (values == '[object Object]'){
                                 listOfObjects = Object.keys(values)
                                 if (listOfObjects.length != 0){  //If not empty, display categories and query the dictionary within it
@@ -74,8 +72,6 @@
                                 }
                             }
                         }
-     
-
                     }
                     // Retrieves data stored within a dictionary to display
                     function getContentsOfDict(data, eachHeader, values, listOfObjects){

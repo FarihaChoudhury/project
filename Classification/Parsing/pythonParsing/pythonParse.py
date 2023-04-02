@@ -14,12 +14,11 @@ import re
     - returns parse tree and parser """
 def parseDataSingleInput(committedLine):
     strippedData = committedLine.strip()
-    # Add \n for end of file - antlr requires this
-    input_stream = InputStream(f'{strippedData}\n')
+    input_stream = InputStream(f'{strippedData}\n') # Add \n for end of file - antlr requires this
     lexer = Python3Lexer(input_stream)
     stream = CommonTokenStream(lexer)
     parser = Python3Parser(stream)
-    tree = parser.single_input()  # prints error messages to terminal - this is handled by ANTLR and can be ignored
+    tree = parser.single_input()  # prints error messages to terminal - handled by ANTLR, can be ignored
     return tree, parser
 
 
