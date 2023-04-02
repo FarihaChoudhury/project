@@ -26,9 +26,10 @@
 To perform classification:
 - Navigate to GitHubCommitData directory  'project/GitHubCommitData'
     - Navigate to main.py
-    - Fill the variables 'OWNER', 'REPO' and 'accessToken' with correct information
+    - The 'OWNER', 'REPO', 'BRANCH' and 'accessToken' are filled with correct information for testing a provided repository
             - OWNER: GitHub login name of the owner of the repository 
-            - REPO: Name of the repository 
+            - REPO: Name of the repository (must have ownership of repository tested)
+            - BRANCH: Default branch of repository, "main" or "master" depending on repository set up.
             - accessToken: personal access token for OAuth access to GitHub REST API
     - Run main.py whilst inside the GitHubCommitData directory, from the terminal using command 'python3 main.py'
             - If there was an error with the previous step, the system will exit with an error message
@@ -41,6 +42,12 @@ To view results:
 
 
 
+ GitHub link to TestProject repository: https://github.com/FarihaChoudhury/TestProject
+    - This is the repository that was developed for testing this software
+    - Details of this repository can be found in project/GitHubCommitData/main.py
+
+
+
 # Author: Fariha Choudhury K20059723
-# GitHub link: https://github.com/FarihaChoudhury/project
+# GitHub link for this project: https://github.com/FarihaChoudhury/project
 
