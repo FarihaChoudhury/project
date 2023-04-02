@@ -1,6 +1,6 @@
 [
     {
-        "commitAuthor": "userB",
+        "commitAuthor": "homiehotdogs",
         "commitSha": "fa8b13903ad793dd99064536105c8d561d6ea1d5",
         "filesEdited": [
             "README.md"
@@ -19,7 +19,7 @@
         ]
     },
     {
-        "commitAuthor": "userA",
+        "commitAuthor": "FarihaChoudhury",
         "commitSha": "9b9e118456fe0072296b8f9ad505a0069bf01937",
         "filesEdited": [],
         "additionsPerFile": [
@@ -30,7 +30,7 @@
         ]
     },
     {
-        "commitAuthor": "userA",
+        "commitAuthor": "FarihaChoudhury",
         "commitSha": "983403b2ec858a7f01b11739a9514c4a4488e11c",
         "filesEdited": [
             "microblogs/follow_views.py",
@@ -57,7 +57,7 @@
         ]
     },
     {
-        "commitAuthor": "userA",
+        "commitAuthor": "FarihaChoudhury",
         "commitSha": "d5b2c62d3c6f40e923de2c5ff118f8d090079c7b",
         "filesEdited": [
             "microblogs/feed_views.py",
@@ -127,7 +127,7 @@
         ]
     },
     {
-        "commitAuthor": "userC",
+        "commitAuthor": "rufia1",
         "commitSha": "2c75215aff78709f244dd2d44f2229d8b3cb63b5",
         "filesEdited": [
             "microblogs/follow_views.py",
@@ -196,7 +196,7 @@
         ]
     },
     {
-        "commitAuthor": "userB",
+        "commitAuthor": "homiehotdogs",
         "commitSha": "431dc759ff4213c96d697537f1efcdf35a03d91c",
         "filesEdited": [
             "microblogs/forms.py"
@@ -231,7 +231,7 @@
         ]
     },
     {
-        "commitAuthor": "userB",
+        "commitAuthor": "homiehotdogs",
         "commitSha": "6927c49c65e19fa78660425290fdc77b9adba444",
         "filesEdited": [
             "microblogs/templates/base.html"
@@ -266,7 +266,7 @@
         ]
     },
     {
-        "commitAuthor": "userC",
+        "commitAuthor": "rufia1",
         "commitSha": "6aae74f4030d45e78122357e468ddfca1ce50136",
         "filesEdited": [
             "microblogs/forms.py"
@@ -297,7 +297,7 @@
         ]
     },
     {
-        "commitAuthor": "userC",
+        "commitAuthor": "rufia1",
         "commitSha": "30afc0c2a893a55b1824eec272e5d8a82dfd9e68",
         "filesEdited": [
             "microblogs/templates/home.html"
@@ -352,7 +352,7 @@
         ]
     },
     {
-        "commitAuthor": "userA",
+        "commitAuthor": "FarihaChoudhury",
         "commitSha": "93fe47e799d57b33177e2edb75036a46ed3e914a",
         "filesEdited": [
             "microblogs/templates/home.html",
@@ -395,7 +395,7 @@
         ]
     },
     {
-        "commitAuthor": "userA",
+        "commitAuthor": "FarihaChoudhury",
         "commitSha": "56d7294e57ffd680c6aefc37eff3113b7a06d8f1",
         "filesEdited": [
             "microblogs/authentication_views.py"
@@ -420,7 +420,7 @@
         ]
     },
     {
-        "commitAuthor": "userA",
+        "commitAuthor": "FarihaChoudhury",
         "commitSha": "1e1dbf76073f5c888a3d6af9a55a229d2834a6d7",
         "filesEdited": [
             "cluckerNew/settings.py",
